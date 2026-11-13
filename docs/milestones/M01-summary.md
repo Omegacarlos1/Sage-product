@@ -80,7 +80,8 @@ All checks were run locally with Node `v24.19.0` and npm `11.17.0`:
 ## Blockers and PR status
 
 - No implementation blocker. No PR has been opened because the supplied instructions say to open a draft PR only when authorized; no separate authorization to create the external PR was provided.
-- The verified implementation is committed locally as `3d8b6a2`; publishing the branch is pending the required remote-write approval.
+- The verified implementation is committed as `3d8b6a2` and the verification report as `b5a5321`. The branch was pushed to `origin` after local verification.
+- GitHub provided the [create-PR page](https://github.com/Omegacarlos1/Sage-product/pull/new/feature/M01-backend-foundation). No PR has been opened.
 
 ### Ready-to-paste draft PR description
 

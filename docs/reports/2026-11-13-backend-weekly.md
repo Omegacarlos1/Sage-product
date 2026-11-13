@@ -8,7 +8,7 @@
 
 **PR:** Not opened; external PR creation was not separately authorized.
 
-**Commit:** [`3d8b6a2`](https://github.com/Omegacarlos1/Sage-product/commit/3d8b6a2) (`feat: add M01 backend foundation`); branch push pending remote-write approval.
+**Commits:** [`3d8b6a2`](https://github.com/Omegacarlos1/Sage-product/commit/3d8b6a2) (`feat: add M01 backend foundation`) and [`b5a5321`](https://github.com/Omegacarlos1/Sage-product/commit/b5a5321) (`docs: record M01 verification evidence`). Branch pushed to `origin/feature/M01-backend-foundation`.
 
 **Assigned scope:** Full SAGE LMS backend per PRD and milestone plan, with course/catalog/contact/newsletter as additional assigned responsibilities. This week's implementation is limited to M01.
 
@@ -16,13 +16,13 @@
 
 - Added Express 5, strict TypeScript, Socket.IO initialization, env validation, CORS baseline, health endpoint, structured 404/error handling, lint/typecheck/test scripts, and GitHub Actions CI.
 - Added Postman collection with health and unknown-route requests; expected responses are documented. The collection itself has not been executed in Postman.
-- Code and test evidence is committed locally as `3d8b6a2` on `feature/M01-backend-foundation`. The branch is not pushed yet.
+- Code and test evidence is committed on `feature/M01-backend-foundation` and pushed to the configured GitHub remote.
 
 ## In progress / blockers
 
 - M01 review is pending. M02 has not started.
 - `npm audit --omit=dev` reports 0 production vulnerabilities. Full `npm audit` reports 28 development dependency findings (4 low, 23 moderate, 1 high); available fixes require forceful version changes, so none were applied during M01.
-- No PR is open. Branch publication is pending the required remote-write approval; PR creation remains unauthorized.
+- No PR is open; creating one remains unauthorized. GitHub's [create-PR page](https://github.com/Omegacarlos1/Sage-product/pull/new/feature/M01-backend-foundation) is ready.
 
 ## Test results
 
