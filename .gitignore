@@ -4,5 +4,7 @@ node_modules/
 !.env.example
 coverage/
 dist/
+src/generated/
+*.dump
 .DS_Store
 *.log

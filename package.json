@@ -5,14 +5,21 @@
   "description": "SAGE LMS API backend",
   "main": "dist/server.js",
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "build": "npm run db:generate && tsc -p tsconfig.json",
+    "typecheck": "npm run db:generate && tsc --noEmit -p tsconfig.json",
     "start": "node dist/server.js",
     "dev": "tsx watch src/server.ts",
     "lint": "eslint .",
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "npm run build && jest --runInBand tests/unit",
-    "test:integration": "npm run build && mocha \"tests/integration/**/*.test.js\"",
+    "test:integration": "npm run build && npm run db:migrate:test && mocha \"tests/integration/**/*.test.js\"",
+    "db:generate": "prisma generate",
+    "db:check": "node scripts/check-databases.js",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:migrate:dev:apply": "prisma migrate deploy --config prisma.config.ts",
+    "db:migrate:test": "prisma migrate deploy --config prisma.test.config.ts",
+    "db:migrate:status": "prisma migrate status",
+    "db:seed": "npm run build && prisma db seed",
     "test:runtime": "node tests/runtime-smoke.js",
     "ci": "npm run lint && npm run typecheck && npm test && npm run test:runtime"
   },
@@ -20,9 +27,12 @@
     "node": ">=22 <25"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.10.0",
+    "@prisma/client": "^7.10.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
+    "pg": "^8.23.1",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
@@ -32,14 +42,21 @@
     "@types/jest": "^30.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^24.10.0",
+    "@types/pg": "^8.23.1",
     "@types/supertest": "^6.0.3",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "jest": "^30.2.0",
     "mocha": "^11.7.5",
+    "prisma": "^7.10.0",
     "supertest": "^7.1.4",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.48.1"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "@prisma/engines@7.10.1": true,
+    "prisma@7.10.1": true
   }
 }

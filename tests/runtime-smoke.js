@@ -37,7 +37,13 @@ async function waitForHealth(child, port) {
 async function main() {
   const port = await findAvailablePort();
   const server = spawn(process.execPath, [serverPath], {
-    env: { ...process.env, NODE_ENV: "test", PORT: String(port), CORS_ORIGINS: "http://localhost:3000" },
+    env: {
+      ...process.env,
+      NODE_ENV: "test",
+      PORT: String(port),
+      CORS_ORIGINS: "http://localhost:3000",
+      DATABASE_URL: "postgresql://sage_app:local-only@localhost:5432/sage_lms_dev?schema=public",
+    },
     stdio: "ignore",
   });
   const health = await waitForHealth(server, port);
@@ -59,7 +65,12 @@ async function main() {
   }
 
   const invalid = spawn(process.execPath, [serverPath], {
-    env: { ...process.env, NODE_ENV: "test", PORT: "invalid-secret-value" },
+    env: {
+      ...process.env,
+      NODE_ENV: "test",
+      PORT: "invalid-secret-value",
+      DATABASE_URL: "postgresql://sage_app:local-only@localhost:5432/sage_lms_dev?schema=public",
+    },
     stdio: ["ignore", "pipe", "pipe"],
   });
   let output = "";
