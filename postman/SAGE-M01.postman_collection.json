@@ -1,0 +1,56 @@
+{
+  "info": {
+    "name": "SAGE LMS M01 Foundation",
+    "description": "Health and unknown-route checks for the M01 backend foundation.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ],
+  "item": [
+    {
+      "name": "Health success",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/v1/health"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('returns 200 and the health payload', function () {",
+              "  pm.response.to.have.status(200);",
+              "  pm.expect(pm.response.json()).to.eql({ status: 'ok', service: 'sage-api', version: 'v1' });",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Unknown route 404",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": "{{baseUrl}}/api/v1/not-a-route"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('returns structured 404', function () {",
+              "  pm.response.to.have.status(404);",
+              "  pm.expect(pm.response.json()).to.eql({ error: { code: 'NOT_FOUND', message: 'Route not found.' } });",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
