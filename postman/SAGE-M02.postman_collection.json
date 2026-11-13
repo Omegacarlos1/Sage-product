@@ -1,0 +1,57 @@
+{
+  "info": {
+    "name": "SAGE LMS M02 PostgreSQL",
+    "description": "Database connectivity and controlled database-failure checks for M02.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" }
+  ],
+  "item": [
+    {
+      "name": "Database health success",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/v1/health/database"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('database responds', function () {",
+              "  pm.response.to.have.status(200);",
+              "  pm.expect(pm.response.json()).to.eql({ status: 'ok', service: 'sage-api', database: 'connected' });",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Database unavailable (run API with an unreachable local DB URL)",
+      "request": {
+        "method": "GET",
+        "header": [{ "key": "Accept", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/v1/health/database",
+        "description": "For this scenario, start a separate local API process using a syntactically valid but unreachable DATABASE_URL. Do not stop or alter a shared or production database."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('database error is safe and structured', function () {",
+              "  pm.response.to.have.status(503);",
+              "  pm.expect(pm.response.json()).to.eql({ error: { code: 'DATABASE_UNAVAILABLE', message: 'Database connection unavailable.' } });",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

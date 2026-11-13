@@ -35,7 +35,7 @@ Reviewed implementation, verified tests, documented APIs and Postman cases, mile
 
 ## Current status
 
-M01 backend foundation is implemented on `feature/M01-backend-foundation`; local lint, typecheck, Jest, Mocha/Supertest, and runtime checks pass. Awaiting review. M02 has not started.
+M01 is implemented and pushed. M02 schema/migrations are implemented on `feature/M02-postgres-schema`; `npm run ci` passes, migrations are applied to the local dev and test databases, and all three local database URLs pass `npm run db:check`. Awaiting review; M03 has not started.
 
 ## Git and GitHub Development Workflow
 

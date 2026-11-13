@@ -3,9 +3,11 @@ import { createServer } from "node:http";
 import { Server as SocketServer } from "socket.io";
 import { createApp } from "./app";
 import { type AppConfig, ConfigurationError, readConfig } from "./config/env";
+import { createDatabaseClient, checkDatabaseConnection } from "./services/database";
 
 export function createSageServer(config: AppConfig) {
-  const httpServer = createServer(createApp(config));
+  const database = createDatabaseClient(config.databaseUrl);
+  const httpServer = createServer(createApp(config, () => checkDatabaseConnection(database)));
   const io = new SocketServer(httpServer, {
     cors: { origin: config.corsOrigins.length > 0 ? config.corsOrigins : false },
   });
@@ -14,13 +16,17 @@ export function createSageServer(config: AppConfig) {
     console.info(JSON.stringify({ level: "info", message: "Socket connected", socketId: socket.id }));
   });
 
-  return { httpServer, io };
+  return { httpServer, io, database };
 }
 
-export function closeSageServer(io: SocketServer): Promise<void> {
-  return new Promise((resolve, reject) => {
+export async function closeSageServer(
+  io: SocketServer,
+  database?: { $disconnect: () => Promise<void> },
+): Promise<void> {
+  const closeSocketServer = new Promise<void>((resolve, reject) => {
     io.close((error?: Error) => error ? reject(error) : resolve());
   });
+  await Promise.all([closeSocketServer, database?.$disconnect() ?? Promise.resolve()]);
 }
 
 function start(): void {
@@ -34,7 +40,7 @@ function start(): void {
     return;
   }
 
-  const { httpServer, io } = createSageServer(config);
+  const { httpServer, io, database } = createSageServer(config);
 
   httpServer.listen(config.port, () => {
     console.info(JSON.stringify({ level: "info", message: "SAGE API listening", port: config.port }));
@@ -45,7 +51,7 @@ function start(): void {
     if (shuttingDown) return;
     shuttingDown = true;
     console.info(JSON.stringify({ level: "info", message: "Shutting down", signal }));
-    void closeSageServer(io).then(() => {
+    void closeSageServer(io, database).then(() => {
       process.exitCode = 0;
     }).catch(() => {
       process.exitCode = 1;

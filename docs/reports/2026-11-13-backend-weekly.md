@@ -2,44 +2,51 @@
 
 **Reporting period:** 2026-11-09 through 2026-11-13
 
-**Milestone:** M01 — Backend foundation
+**Milestone:** M02 — PostgreSQL schema, migrations and test database
 
-**Branch:** `feature/M01-backend-foundation`
+**Branch:** `feature/M02-postgres-schema`
 
-**PR:** Not opened; external PR creation was not separately authorized.
+**PR:** Not opened; separate external PR authorization was not provided.
 
-**Commits:** [`3d8b6a2`](https://github.com/Omegacarlos1/Sage-product/commit/3d8b6a2) (`feat: add M01 backend foundation`) and [`b5a5321`](https://github.com/Omegacarlos1/Sage-product/commit/b5a5321) (`docs: record M01 verification evidence`). Branch pushed to `origin/feature/M01-backend-foundation`.
+**Commits:** [`7a301d1`](https://github.com/Omegacarlos1/Sage-product/commit/7a301d1) (`feat: add M02 PostgreSQL schema and migrations`) and [`dc8c8a3`](https://github.com/Omegacarlos1/Sage-product/commit/dc8c8a3) (`docs: record M02 verification evidence`). Branch pushed to `origin/feature/M02-postgres-schema`.
 
-**Assigned scope:** Full SAGE LMS backend per PRD and milestone plan, with course/catalog/contact/newsletter as additional assigned responsibilities. This week's implementation is limited to M01.
+**Assigned scope:** Full SAGE LMS backend per PRD and milestone plan, with course/catalog/contact/newsletter as additional assigned responsibilities. This week's implementation is limited to M02.
 
 ## Verified completed
 
-- Added Express 5, strict TypeScript, Socket.IO initialization, env validation, CORS baseline, health endpoint, structured 404/error handling, lint/typecheck/test scripts, and GitHub Actions CI.
-- Added Postman collection with health and unknown-route requests; expected responses are documented. The collection itself has not been executed in Postman.
-- Code and test evidence is committed on `feature/M01-backend-foundation` and pushed to the configured GitHub remote.
+- Added Prisma 7.10.1 schema, 24 relational tables, initial migration, separate test Prisma config, safe database health API, database connection check, and idempotent roles/categories seed.
+- Applied the migration to local `sage_lms_dev` and `sage_lms_test`; test suite connected only to `sage_lms_test` and verified unique email and foreign-key constraints.
+- Added PostgreSQL service to CI and documented local setup, schema decisions, and backup/restore procedure.
+- Code and actual test results are committed on `feature/M02-postgres-schema` and pushed to the configured GitHub remote.
 
 ## In progress / blockers
 
-- M01 review is pending. M02 has not started.
-- `npm audit --omit=dev` reports 0 production vulnerabilities. Full `npm audit` reports 28 development dependency findings (4 low, 23 moderate, 1 high); available fixes require forceful version changes, so none were applied during M01.
-- No PR is open; creating one remains unauthorized. GitHub's [create-PR page](https://github.com/Omegacarlos1/Sage-product/pull/new/feature/M01-backend-foundation) is ready.
+- All three local databases connect. The initial migration was applied with `migrate deploy`; `npm run db:migrate:dev` now reports the development schema in sync.
+- Backup/restore is documented but no restore drill was run.
+- No PR is open; external PR creation was not separately authorized. GitHub's [create-PR page](https://github.com/Omegacarlos1/Sage-product/pull/new/feature/M02-postgres-schema) is ready.
+- Full npm audit reports 28 development-tool findings (4 low, 23 moderate, 1 high). Production audit reports 0 after compatible updates.
 
 ## Test results
 
 - `npm run lint`: pass, 0 errors.
-- `npm run typecheck`: pass, strict TypeScript, 0 errors.
-- `npm run test:unit`: Jest, 1 suite and 3 tests passed; 0 failed.
-- `npm run test:integration`: Mocha/Supertest, 4 passing; 0 failing.
-- `npm run test:runtime`: pass; process health, stop request, and safe invalid-configuration checks. The integration suite separately verifies clean HTTP/Socket.IO closure.
-- `npm run ci`: pass with all checks above.
+- `npm ci`: pass from the lockfile; 657 packages installed.
+- `npm run typecheck`: pass.
+- `npm run test:unit`: Jest 4 passed, 0 failed.
+- `npm run test:integration`: Mocha 9 passing, 0 failing; includes 3 actual PostgreSQL tests.
+- `npm run test:runtime`: pass.
+- `npm run ci`: pass.
+- `npm run db:migrate:dev:apply`: migration applied to `sage_lms_dev`.
+- `npm run db:migrate:test`: migration applied to `sage_lms_test`; no pending migrations on repeated run.
+- `npm run db:seed`: 3 roles and 3 categories seeded in dev.
+- `npm run db:check`: dev/test/shadow all connected.
+- `npm audit --omit=dev`: 0 vulnerabilities.
 
 ## Postman demonstration
 
-- Prepared `postman/SAGE-M01.postman_collection.json` for `GET /api/v1/health` and `GET /api/v1/not-a-route`.
-- No Postman application execution is claimed. Equivalent HTTP requests passed in integration tests.
+- Prepared `postman/SAGE-M02.postman_collection.json` for database-health `200` and safe database-unavailable `503`.
+- Postman itself was not run. Equivalent success/failure HTTP behavior passed in Mocha/Supertest.
 
 ## Next week's plan
 
-- Obtain human review/approval for M01.
-- After approval, begin M02 PostgreSQL and Prisma work on its own feature branch, using a separate PostgreSQL test database and documenting migration/backup decisions.
-- Review the development-tool audit findings without applying forceful version changes without a compatible fix decision.
+- Obtain human review/approval for M02.
+- After approval, begin M03 authentication and role permissions on its own feature branch.

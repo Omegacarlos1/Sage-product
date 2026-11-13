@@ -1,0 +1,481 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum RoleCode {
+  LEARNER
+  INSTRUCTOR
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  DELETED
+}
+
+enum InstructorVerificationStatus {
+  PENDING
+  VERIFIED
+  REJECTED
+}
+
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+  ALL_LEVELS
+}
+
+enum CourseStatus {
+  DRAFT
+  IN_REVIEW
+  PUBLISHED
+  ARCHIVED
+}
+
+enum LessonType {
+  VIDEO
+  AUDIO
+  ARTICLE
+  RESOURCE
+}
+
+enum EnrollmentStatus {
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}
+
+enum QuizQuestionType {
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  TRUE_FALSE
+  SHORT_ANSWER
+}
+
+enum QuizAttemptStatus {
+  IN_PROGRESS
+  SUBMITTED
+  EXPIRED
+}
+
+enum ContactMessageStatus {
+  NEW
+  IN_PROGRESS
+  CLOSED
+}
+
+enum NotificationType {
+  GENERAL
+  COURSE
+  PAYMENT
+  ASSESSMENT
+  CERTIFICATE
+}
+
+model User {
+  id                String               @id @default(uuid()) @db.Uuid
+  email             String               @unique @db.VarChar(320)
+  passwordHash      String?              @db.VarChar(255)
+  phoneNumber       String?              @unique @db.VarChar(32)
+  status            UserStatus           @default(ACTIVE)
+  createdAt         DateTime             @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime             @updatedAt @db.Timestamptz(3)
+  learnerProfile    LearnerProfile?
+  instructorProfile InstructorProfile?
+  roleAssignments   UserRoleAssignment[]
+  payments          Payment[]
+  reviews           Review[]
+  contactMessages   ContactMessage[]
+  notifications     Notification[]
+
+  @@index([status])
+  @@map("users")
+}
+
+model Role {
+  id          String               @id @default(uuid()) @db.Uuid
+  code        RoleCode             @unique
+  name        String               @db.VarChar(80)
+  assignments UserRoleAssignment[]
+
+  @@map("roles")
+}
+
+model UserRoleAssignment {
+  userId     String   @db.Uuid
+  roleId     String   @db.Uuid
+  assignedAt DateTime @default(now()) @db.Timestamptz(3)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       Role     @relation(fields: [roleId], references: [id], onDelete: Restrict)
+
+  @@id([userId, roleId])
+  @@index([roleId])
+  @@map("user_role_assignments")
+}
+
+model LearnerProfile {
+  userId                String                 @id @db.Uuid
+  displayName           String?                @db.VarChar(120)
+  avatarUrl             String?                @db.Text
+  biography             String?                @db.Text
+  location              String?                @db.VarChar(160)
+  occupation            String?                @db.VarChar(160)
+  education             String?                @db.Text
+  skills                String[]               @default([])
+  interests             String[]               @default([])
+  createdAt             DateTime               @default(now()) @db.Timestamptz(3)
+  updatedAt             DateTime               @updatedAt @db.Timestamptz(3)
+  user                  User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enrollments           Enrollment[]
+  quizAttempts          QuizAttempt[]
+  lessonProgress        LessonProgress[]
+  assignmentSubmissions AssignmentSubmission[]
+
+  @@map("learner_profiles")
+}
+
+model InstructorProfile {
+  userId             String                       @id @db.Uuid
+  displayName        String                       @db.VarChar(120)
+  headline           String?                      @db.VarChar(180)
+  biography          String?                      @db.Text
+  websiteUrl         String?                      @db.VarChar(2048)
+  verificationStatus InstructorVerificationStatus @default(PENDING)
+  createdAt          DateTime                     @default(now()) @db.Timestamptz(3)
+  updatedAt          DateTime                     @updatedAt @db.Timestamptz(3)
+  user               User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  courses            Course[]
+
+  @@index([verificationStatus])
+  @@map("instructor_profiles")
+}
+
+model Category {
+  id          String     @id @default(uuid()) @db.Uuid
+  name        String     @unique @db.VarChar(100)
+  slug        String     @unique @db.VarChar(120)
+  description String?    @db.Text
+  parentId    String?    @db.Uuid
+  createdAt   DateTime   @default(now()) @db.Timestamptz(3)
+  updatedAt   DateTime   @updatedAt @db.Timestamptz(3)
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children    Category[] @relation("CategoryTree")
+  courses     Course[]
+
+  @@index([parentId])
+  @@map("categories")
+}
+
+model Course {
+  id                   String            @id @default(uuid()) @db.Uuid
+  instructorId         String            @db.Uuid
+  categoryId           String            @db.Uuid
+  title                String            @db.VarChar(180)
+  slug                 String            @unique @db.VarChar(200)
+  description          String            @db.Text
+  level                CourseLevel       @default(ALL_LEVELS)
+  status               CourseStatus      @default(DRAFT)
+  price                Decimal           @default(0) @db.Decimal(10, 2)
+  currency             String            @default("USD") @db.Char(3)
+  durationMinutes      Int?
+  certificateAvailable Boolean           @default(true)
+  learningObjectives   String[]          @default([])
+  requirements         String[]          @default([])
+  publishedAt          DateTime?         @db.Timestamptz(3)
+  createdAt            DateTime          @default(now()) @db.Timestamptz(3)
+  updatedAt            DateTime          @updatedAt @db.Timestamptz(3)
+  instructor           InstructorProfile @relation(fields: [instructorId], references: [userId], onDelete: Restrict)
+  category             Category          @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  sections             CourseSection[]
+  enrollments          Enrollment[]
+  payments             Payment[]
+  quizzes              Quiz[]
+  assignments          Assignment[]
+  reviews              Review[]
+
+  @@index([categoryId, status])
+  @@index([instructorId, status])
+  @@index([status, publishedAt])
+  @@map("courses")
+}
+
+model CourseSection {
+  id         String   @id @default(uuid()) @db.Uuid
+  courseId   String   @db.Uuid
+  title      String   @db.VarChar(180)
+  summary    String?  @db.Text
+  orderIndex Int
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt  DateTime @updatedAt @db.Timestamptz(3)
+  course     Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons    Lesson[]
+
+  @@unique([courseId, orderIndex])
+  @@map("course_sections")
+}
+
+model Lesson {
+  id              String           @id @default(uuid()) @db.Uuid
+  sectionId       String           @db.Uuid
+  title           String           @db.VarChar(180)
+  description     String?          @db.Text
+  type            LessonType       @default(VIDEO)
+  resourceUrl     String?          @db.VarChar(2048)
+  durationSeconds Int?
+  orderIndex      Int
+  isPreview       Boolean          @default(false)
+  createdAt       DateTime         @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime         @updatedAt @db.Timestamptz(3)
+  section         CourseSection    @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  progress        LessonProgress[]
+  quizzes         Quiz[]
+  assignment      Assignment?
+
+  @@unique([sectionId, orderIndex])
+  @@map("lessons")
+}
+
+model Enrollment {
+  id          String           @id @default(uuid()) @db.Uuid
+  learnerId   String           @db.Uuid
+  courseId    String           @db.Uuid
+  status      EnrollmentStatus @default(ACTIVE)
+  enrolledAt  DateTime         @default(now()) @db.Timestamptz(3)
+  completedAt DateTime?        @db.Timestamptz(3)
+  learner     LearnerProfile   @relation(fields: [learnerId], references: [userId], onDelete: Restrict)
+  course      Course           @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  payment     Payment?
+  certificate Certificate?
+
+  @@unique([learnerId, courseId])
+  @@index([courseId, status])
+  @@map("enrollments")
+}
+
+model Payment {
+  id                String        @id @default(uuid()) @db.Uuid
+  userId            String        @db.Uuid
+  courseId          String        @db.Uuid
+  enrollmentId      String?       @unique @db.Uuid
+  amount            Decimal       @db.Decimal(10, 2)
+  currency          String        @db.Char(3)
+  status            PaymentStatus @default(PENDING)
+  provider          String?       @db.VarChar(80)
+  providerReference String?       @unique @db.VarChar(180)
+  idempotencyKey    String?       @unique @db.VarChar(180)
+  createdAt         DateTime      @default(now()) @db.Timestamptz(3)
+  updatedAt         DateTime      @updatedAt @db.Timestamptz(3)
+  user              User          @relation(fields: [userId], references: [id], onDelete: Restrict)
+  course            Course        @relation(fields: [courseId], references: [id], onDelete: Restrict)
+  enrollment        Enrollment?   @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+
+  @@index([userId, createdAt])
+  @@index([status, createdAt])
+  @@map("payments")
+}
+
+model Quiz {
+  id               String         @id @default(uuid()) @db.Uuid
+  courseId         String         @db.Uuid
+  lessonId         String?        @db.Uuid
+  title            String         @db.VarChar(180)
+  passingScore     Decimal        @default(70) @db.Decimal(5, 2)
+  attemptLimit     Int?
+  timeLimitSeconds Int?
+  createdAt        DateTime       @default(now()) @db.Timestamptz(3)
+  updatedAt        DateTime       @updatedAt @db.Timestamptz(3)
+  course           Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lesson           Lesson?        @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  questions        QuizQuestion[]
+  attempts         QuizAttempt[]
+
+  @@index([courseId])
+  @@map("quizzes")
+}
+
+model QuizQuestion {
+  id         String           @id @default(uuid()) @db.Uuid
+  quizId     String           @db.Uuid
+  prompt     String           @db.Text
+  type       QuizQuestionType @default(SINGLE_CHOICE)
+  points     Decimal          @default(1) @db.Decimal(7, 2)
+  orderIndex Int
+  createdAt  DateTime         @default(now()) @db.Timestamptz(3)
+  quiz       Quiz             @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  options    QuizOption[]
+  answers    QuizAnswer[]
+
+  @@unique([quizId, orderIndex])
+  @@map("quiz_questions")
+}
+
+model QuizOption {
+  id         String       @id @default(uuid()) @db.Uuid
+  questionId String       @db.Uuid
+  text       String       @db.Text
+  isCorrect  Boolean      @default(false)
+  orderIndex Int
+  question   QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answers    QuizAnswer[]
+
+  @@unique([questionId, orderIndex])
+  @@map("quiz_options")
+}
+
+model QuizAttempt {
+  id          String            @id @default(uuid()) @db.Uuid
+  quizId      String            @db.Uuid
+  learnerId   String            @db.Uuid
+  status      QuizAttemptStatus @default(IN_PROGRESS)
+  score       Decimal?          @db.Decimal(7, 2)
+  passed      Boolean?
+  startedAt   DateTime          @default(now()) @db.Timestamptz(3)
+  submittedAt DateTime?         @db.Timestamptz(3)
+  quiz        Quiz              @relation(fields: [quizId], references: [id], onDelete: Restrict)
+  learner     LearnerProfile    @relation(fields: [learnerId], references: [userId], onDelete: Restrict)
+  answers     QuizAnswer[]
+
+  @@index([learnerId, quizId, startedAt])
+  @@map("quiz_attempts")
+}
+
+model QuizAnswer {
+  id               String       @id @default(uuid()) @db.Uuid
+  attemptId        String       @db.Uuid
+  questionId       String       @db.Uuid
+  selectedOptionId String?      @db.Uuid
+  textAnswer       String?      @db.Text
+  attempt          QuizAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  question         QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Restrict)
+  selectedOption   QuizOption?  @relation(fields: [selectedOptionId], references: [id], onDelete: SetNull)
+
+  @@unique([attemptId, questionId])
+  @@map("quiz_answers")
+}
+
+model Assignment {
+  id           String                 @id @default(uuid()) @db.Uuid
+  courseId     String                 @db.Uuid
+  lessonId     String?                @unique @db.Uuid
+  title        String                 @db.VarChar(180)
+  instructions String                 @db.Text
+  dueAfterDays Int?
+  createdAt    DateTime               @default(now()) @db.Timestamptz(3)
+  course       Course                 @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lesson       Lesson?                @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  submissions  AssignmentSubmission[]
+
+  @@index([courseId])
+  @@map("assignments")
+}
+
+model AssignmentSubmission {
+  id           String         @id @default(uuid()) @db.Uuid
+  assignmentId String         @db.Uuid
+  learnerId    String         @db.Uuid
+  responseText String?        @db.Text
+  resourceUrl  String?        @db.VarChar(2048)
+  submittedAt  DateTime       @default(now()) @db.Timestamptz(3)
+  score        Decimal?       @db.Decimal(7, 2)
+  feedback     String?        @db.Text
+  assignment   Assignment     @relation(fields: [assignmentId], references: [id], onDelete: Cascade)
+  learner      LearnerProfile @relation(fields: [learnerId], references: [userId], onDelete: Restrict)
+
+  @@index([learnerId, assignmentId, submittedAt])
+  @@map("assignment_submissions")
+}
+
+model Certificate {
+  id               String     @id @default(uuid()) @db.Uuid
+  enrollmentId     String     @unique @db.Uuid
+  verificationCode String     @unique @default(uuid()) @db.Uuid
+  issuedAt         DateTime   @default(now()) @db.Timestamptz(3)
+  revokedAt        DateTime?  @db.Timestamptz(3)
+  enrollment       Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+
+  @@map("certificates")
+}
+
+model Review {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  courseId  String   @db.Uuid
+  rating    Int
+  comment   String?  @db.Text
+  createdAt DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Restrict)
+
+  @@unique([userId, courseId])
+  @@index([courseId, createdAt])
+  @@map("reviews")
+}
+
+model LessonProgress {
+  id                  String         @id @default(uuid()) @db.Uuid
+  learnerId           String         @db.Uuid
+  lessonId            String         @db.Uuid
+  completedAt         DateTime?      @db.Timestamptz(3)
+  lastPositionSeconds Int            @default(0)
+  updatedAt           DateTime       @updatedAt @db.Timestamptz(3)
+  learner             LearnerProfile @relation(fields: [learnerId], references: [userId], onDelete: Restrict)
+  lesson              Lesson         @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([learnerId, lessonId])
+  @@map("lesson_progress")
+}
+
+model ContactMessage {
+  id        String               @id @default(uuid()) @db.Uuid
+  senderId  String?              @db.Uuid
+  name      String               @db.VarChar(120)
+  email     String               @db.VarChar(320)
+  subject   String               @db.VarChar(180)
+  message   String               @db.Text
+  status    ContactMessageStatus @default(NEW)
+  createdAt DateTime             @default(now()) @db.Timestamptz(3)
+  sender    User?                @relation(fields: [senderId], references: [id], onDelete: SetNull)
+
+  @@index([status, createdAt])
+  @@map("contact_messages")
+}
+
+model Subscriber {
+  id             String    @id @default(uuid()) @db.Uuid
+  email          String    @unique @db.VarChar(320)
+  subscribedAt   DateTime  @default(now()) @db.Timestamptz(3)
+  unsubscribedAt DateTime? @db.Timestamptz(3)
+
+  @@map("subscribers")
+}
+
+model Notification {
+  id        String           @id @default(uuid()) @db.Uuid
+  userId    String           @db.Uuid
+  type      NotificationType @default(GENERAL)
+  title     String           @db.VarChar(180)
+  body      String?          @db.Text
+  payload   Json?
+  readAt    DateTime?        @db.Timestamptz(3)
+  createdAt DateTime         @default(now()) @db.Timestamptz(3)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt, createdAt])
+  @@map("notifications")
+}
