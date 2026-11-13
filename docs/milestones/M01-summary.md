@@ -4,6 +4,8 @@
 
 **Branch:** `feature/M01-backend-foundation`
 
+**Implementation commit:** `3d8b6a2` (`feat: add M01 backend foundation`)
+
 **Scope source:** M01 prompt, `AGENTS.md`, revised backend milestone plan, and original PRD. The PRD describes the full LMS; M01 establishes only the shared backend foundation.
 
 ## Objectives and outcome
@@ -78,7 +80,17 @@ All checks were run locally with Node `v24.19.0` and npm `11.17.0`:
 ## Blockers and PR status
 
 - No implementation blocker. No PR has been opened because the supplied instructions say to open a draft PR only when authorized; no separate authorization to create the external PR was provided.
-- Push/commit status is recorded in the handoff after the local commits are finalized.
+- The verified implementation is committed locally as `3d8b6a2`; publishing the branch is pending the required remote-write approval.
+
+### Ready-to-paste draft PR description
+
+**Title:** `feat: add M01 backend foundation`
+
+**Summary:** Add the Express and strict TypeScript server foundation, shared Socket.IO server, validated runtime configuration, CORS baseline, stable health endpoint, structured errors, npm scripts, linting, and GitHub Actions CI. Add Jest and Mocha/Supertest coverage, Postman examples, and M01/weekly documentation.
+
+**Verification:** `npm run ci` passed locally on Node 24.19.0. Jest: 3 passed. Mocha: 4 passing. Production dependency audit: 0 findings. The full audit reports development-only findings documented in the M01 summary.
+
+**Risks / follow-up:** No database/business APIs are included; they remain in later milestones. Review the reported development-tool advisories and coordinate schema decisions in M02. No live services or production systems were used.
 
 ## Ready-to-paste next prompt: M02
 
