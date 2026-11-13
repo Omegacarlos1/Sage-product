@@ -4,7 +4,9 @@
 
 **Branch:** `feature/M02-postgres-schema`
 
-**Baseline:** M01 branch commit `5c4c822` (`updated commit`, including the tracked `.gitignore`). M02 commit SHA will be added after the implementation commit.
+**Baseline:** M01 branch commit `5c4c822` (`updated commit`, including the tracked `.gitignore`).
+
+**Implementation commit:** `7a301d1` (`feat: add M02 PostgreSQL schema and migrations`).
 
 **Scope source:** `AGENTS.md`, the original PRD, revised backend milestone plan, M02 prompt, and M01 summary. Schema choices are proposals recorded in `docs/database/schema-decisions.md`.
 
@@ -99,7 +101,8 @@ All commands below ran on Node `v24.19.0`, npm `11.17.0`, and local PostgreSQL 1
 ## Blockers and PR status
 
 - No implementation blocker. Dev, test, and shadow DB connections are verified. The local backup/restore procedure is documented but no restore drill was run.
-- No external PR has been opened because separate authorization to create one was not provided. After branch publication, GitHub's PR creation page will be linked here.
+- M02 is committed locally as `7a301d1`; branch publication is pending the required remote-write step.
+- No external PR has been opened because separate authorization to create one was not provided.
 
 ### Ready-to-paste draft PR description
 
