@@ -8,7 +8,7 @@
 
 **PR:** Not opened; separate external PR authorization was not provided.
 
-**Commit:** [`7a301d1`](https://github.com/Omegacarlos1/Sage-product/commit/7a301d1) (`feat: add M02 PostgreSQL schema and migrations`); branch publication pending.
+**Commits:** [`7a301d1`](https://github.com/Omegacarlos1/Sage-product/commit/7a301d1) (`feat: add M02 PostgreSQL schema and migrations`) and [`dc8c8a3`](https://github.com/Omegacarlos1/Sage-product/commit/dc8c8a3) (`docs: record M02 verification evidence`). Branch pushed to `origin/feature/M02-postgres-schema`.
 
 **Assigned scope:** Full SAGE LMS backend per PRD and milestone plan, with course/catalog/contact/newsletter as additional assigned responsibilities. This week's implementation is limited to M02.
 
@@ -17,13 +17,13 @@
 - Added Prisma 7.10.1 schema, 24 relational tables, initial migration, separate test Prisma config, safe database health API, database connection check, and idempotent roles/categories seed.
 - Applied the migration to local `sage_lms_dev` and `sage_lms_test`; test suite connected only to `sage_lms_test` and verified unique email and foreign-key constraints.
 - Added PostgreSQL service to CI and documented local setup, schema decisions, and backup/restore procedure.
-- Code and actual test results are committed as `7a301d1` on `feature/M02-postgres-schema`.
+- Code and actual test results are committed on `feature/M02-postgres-schema` and pushed to the configured GitHub remote.
 
 ## In progress / blockers
 
 - All three local databases connect. The initial migration was applied with `migrate deploy`; `npm run db:migrate:dev` now reports the development schema in sync.
 - Backup/restore is documented but no restore drill was run.
-- No PR is open; external PR creation was not separately authorized.
+- No PR is open; external PR creation was not separately authorized. GitHub's [create-PR page](https://github.com/Omegacarlos1/Sage-product/pull/new/feature/M02-postgres-schema) is ready.
 - Full npm audit reports 28 development-tool findings (4 low, 23 moderate, 1 high). Production audit reports 0 after compatible updates.
 
 ## Test results

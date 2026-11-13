@@ -101,8 +101,9 @@ All commands below ran on Node `v24.19.0`, npm `11.17.0`, and local PostgreSQL 1
 ## Blockers and PR status
 
 - No implementation blocker. Dev, test, and shadow DB connections are verified. The local backup/restore procedure is documented but no restore drill was run.
-- M02 is committed locally as `7a301d1`; branch publication is pending the required remote-write step.
+- M02 is committed as `7a301d1` and its verification report as `dc8c8a3`. The feature branch was pushed to `origin` after local verification.
 - No external PR has been opened because separate authorization to create one was not provided.
+- GitHub's [create-PR page](https://github.com/Omegacarlos1/Sage-product/pull/new/feature/M02-postgres-schema) is ready.
 
 ### Ready-to-paste draft PR description
 
