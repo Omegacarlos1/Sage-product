@@ -7,7 +7,7 @@ import { createDatabaseClient, checkDatabaseConnection } from "./services/databa
 
 export function createSageServer(config: AppConfig) {
   const database = createDatabaseClient(config.databaseUrl);
-  const httpServer = createServer(createApp(config, () => checkDatabaseConnection(database)));
+  const httpServer = createServer(createApp(config, () => checkDatabaseConnection(database), database));
   const io = new SocketServer(httpServer, {
     cors: { origin: config.corsOrigins.length > 0 ? config.corsOrigins : false },
   });

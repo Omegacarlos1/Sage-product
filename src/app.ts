@@ -1,10 +1,12 @@
 import cors from "cors";
 import express, { type ErrorRequestHandler, type Request, type Response } from "express";
 import type { AppConfig } from "./config/env";
+import type { PrismaClient } from "./generated/prisma/client";
+import { authRouter } from "./routes/auth";
 
 export function createApp(config: AppConfig, checkDatabase: () => Promise<void> = async () => {
   throw new Error("Database health check is not configured.");
-}) {
+}, database?: PrismaClient) {
   const app = express();
 
   app.disable("x-powered-by");
@@ -26,6 +28,8 @@ export function createApp(config: AppConfig, checkDatabase: () => Promise<void> 
       });
     }
   });
+
+  if (database) app.use("/api/v1/auth", authRouter(database, config));
 
   app.use((_request: Request, response: Response) => {
     response.status(404).json({ error: { code: "NOT_FOUND", message: "Route not found." } });

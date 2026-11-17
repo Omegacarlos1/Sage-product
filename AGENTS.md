@@ -35,7 +35,7 @@ Reviewed implementation, verified tests, documented APIs and Postman cases, mile
 
 ## Current status
 
-M01 is implemented and pushed. M02 schema/migrations are implemented on `feature/M02-postgres-schema`; `npm run ci` passes, migrations are applied to the local dev and test databases, and all three local database URLs pass `npm run db:check`. Awaiting review; M03 has not started.
+M01 and M02 are implemented. M03 authentication and role permissions are implemented locally on `feature/M03-authentication`; the local `npm run ci` passed, including PostgreSQL-backed integration tests. M03 awaits review. Production password reset delivery and email verification need a team decision before activation. M04 has not started.
 
 ## Git and GitHub Development Workflow
 
