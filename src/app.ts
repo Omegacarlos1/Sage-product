@@ -3,6 +3,7 @@ import express, { type ErrorRequestHandler, type Request, type Response } from "
 import type { AppConfig } from "./config/env";
 import type { PrismaClient } from "./generated/prisma/client";
 import { authRouter } from "./routes/auth";
+import { profileRouter, instructorRouter } from "./routes/profiles";
 
 export function createApp(config: AppConfig, checkDatabase: () => Promise<void> = async () => {
   throw new Error("Database health check is not configured.");
@@ -29,7 +30,11 @@ export function createApp(config: AppConfig, checkDatabase: () => Promise<void> 
     }
   });
 
-  if (database) app.use("/api/v1/auth", authRouter(database, config));
+  if (database) {
+    app.use("/api/v1/auth", authRouter(database, config));
+    app.use("/api/v1/profile", profileRouter(database));
+    app.use("/api/v1/instructors", instructorRouter(database));
+  }
 
   app.use((_request: Request, response: Response) => {
     response.status(404).json({ error: { code: "NOT_FOUND", message: "Route not found." } });

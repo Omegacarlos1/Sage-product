@@ -17,3 +17,15 @@ Use `POST http://localhost:3000/api/v1/auth/signup` with `Content-Type: applicat
 ## In progress, blocked, next week
 
 M03 awaits review. Email verification, production reset delivery, and social providers need team decisions. Production reset is disabled until delivery is configured. Rate limiting is a future security task. Next week: review M03, decide the email delivery contract, then start M04 only after approval.
+
+## M04 update — 2026-11-17
+
+**Reporting period:** 2026-11-17. **Milestone:** M04 profiles. **Branch:** `feature/M04-profiles`. **PR:** [draft #4](https://github.com/Omegacarlos1/Sage-product/pull/4).
+
+**Verified complete:** Private learner read/edit, owner scoped instructor edit, safe public verified instructor detail and paginated listing. See [M04 summary](../milestones/M04-summary.md), [API contract](../api/M04-profiles.md), and [Postman collection](../../postman/SAGE-M04.postman_collection.json). No schema migration was needed. Implementation commit: [`19dd627`](https://github.com/Omegacarlos1/Sage-product/commit/19dd6273e8ff5c82c1064131dab5848205646bb3).
+
+**Actual tests:** Final `npm run ci` passed: lint 0 errors, typecheck passed, Jest 6 passed/0 failed/0 skipped, Mocha 17 passed/0 failed/0 skipped, runtime smoke passed. The first run failed in M04 test setup due to an incorrect Prisma role relation and was corrected. PostgreSQL `sage_lms_test` had no pending migrations.
+
+**Postman demonstration:** Get a bearer token from M03 login. Send `GET http://localhost:3000/api/v1/profile/me` with `Authorization: Bearer <accessToken>`; expect 200 and the caller's private profile. Send `PATCH` to the same URL with that header, `Content-Type: application/json`, and `{"displayName":"Ada Learner","location":"Lagos"}`; expect 200. Send unauthenticated `GET /api/v1/instructors/<verified instructor UUID>`; expect 200 with only public fields. Send `PATCH /api/v1/instructors/me` with a learner token and `{"headline":"Wrong owner"}`; expect 403. These are expected contracts, not live Postman results.
+
+**In progress, blocked, next week:** M04 awaits human review. Instructor provisioning and verification still require a trusted operator. Next week: review M03/M04 and, after approval, start M05 course creation. No M05 implementation has begun.
