@@ -20,9 +20,9 @@ M03 awaits review. Email verification, production reset delivery, and social pro
 
 ## M04 update — 2026-11-17
 
-**Reporting period:** 2026-11-17. **Milestone:** M04 profiles. **Branch:** `feature/M04-profiles`. **PR:** pending.
+**Reporting period:** 2026-11-17. **Milestone:** M04 profiles. **Branch:** `feature/M04-profiles`. **PR:** [draft #4](https://github.com/Omegacarlos1/Sage-product/pull/4).
 
-**Verified complete:** Private learner read/edit, owner scoped instructor edit, safe public verified instructor detail and paginated listing. See [M04 summary](../milestones/M04-summary.md), [API contract](../api/M04-profiles.md), and [Postman collection](../../postman/SAGE-M04.postman_collection.json). No schema migration was needed. Commit SHA will be added after commit.
+**Verified complete:** Private learner read/edit, owner scoped instructor edit, safe public verified instructor detail and paginated listing. See [M04 summary](../milestones/M04-summary.md), [API contract](../api/M04-profiles.md), and [Postman collection](../../postman/SAGE-M04.postman_collection.json). No schema migration was needed. Implementation commit: [`19dd627`](https://github.com/Omegacarlos1/Sage-product/commit/19dd6273e8ff5c82c1064131dab5848205646bb3).
 
 **Actual tests:** Final `npm run ci` passed: lint 0 errors, typecheck passed, Jest 6 passed/0 failed/0 skipped, Mocha 17 passed/0 failed/0 skipped, runtime smoke passed. The first run failed in M04 test setup due to an incorrect Prisma role relation and was corrected. PostgreSQL `sage_lms_test` had no pending migrations.
 

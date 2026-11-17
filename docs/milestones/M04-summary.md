@@ -1,6 +1,6 @@
 # M04 — User and instructor profiles
 
-**Status:** Implemented locally; awaiting review. **Branch:** `feature/M04-profiles`. **PR:** pending.
+**Status:** Implemented and pushed; awaiting review. **Branch:** `feature/M04-profiles`. **PR:** [draft #4](https://github.com/Omegacarlos1/Sage-product/pull/4). Implementation commit: `19dd627`.
 
 ## Objectives and implementation
 
