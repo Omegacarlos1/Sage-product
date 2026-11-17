@@ -1,0 +1,16 @@
+{
+  "info": { "name": "SAGE M04 Profiles", "_postman_id": "568f019a-0f16-42c1-b2e4-d882eb587561", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json", "description": "Expected M04 profile requests. Set accessToken and instructorId after login/provisioning." },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "accessToken", "value": "" },
+    { "key": "instructorId", "value": "" }
+  ],
+  "item": [
+    { "name": "Get my profile", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": "{{baseUrl}}/api/v1/profile/me" } },
+    { "name": "Update my profile", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"displayName\":\"Ada Learner\",\"location\":\"Lagos\"}" }, "url": "{{baseUrl}}/api/v1/profile/me" } },
+    { "name": "Public instructor detail", "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/v1/instructors/{{instructorId}}" } },
+    { "name": "List instructors", "request": { "method": "GET", "header": [], "url": "{{baseUrl}}/api/v1/instructors?page=1&limit=20" } },
+    { "name": "Update instructor profile", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"headline\":\"Teacher\"}" }, "url": "{{baseUrl}}/api/v1/instructors/me" } },
+    { "name": "Forbidden instructor update with learner token", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"headline\":\"Wrong owner\"}" }, "url": "{{baseUrl}}/api/v1/instructors/me" } }
+  ]
+}
