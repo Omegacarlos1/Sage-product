@@ -1,0 +1,14 @@
+{
+  "info": { "name": "SAGE M03 Authentication", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [{ "key": "baseUrl", "value": "http://localhost:3000" }, { "key": "accessToken", "value": "" }, { "key": "refreshToken", "value": "" }],
+  "item": [
+    { "name": "Signup", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/api/v1/auth/signup", "body": { "mode": "raw", "raw": "{\"email\":\"learner@example.test\",\"password\":\"correct horse battery staple\"}" } } },
+    { "name": "Login", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/api/v1/auth/login", "body": { "mode": "raw", "raw": "{\"email\":\"learner@example.test\",\"password\":\"correct horse battery staple\"}" } } },
+    { "name": "Invalid credentials", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/api/v1/auth/login", "body": { "mode": "raw", "raw": "{\"email\":\"learner@example.test\",\"password\":\"wrong\"}" } } },
+    { "name": "Protected route", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": "{{baseUrl}}/api/v1/auth/me" } },
+    { "name": "Admin permission check", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": "{{baseUrl}}/api/v1/auth/admin-check" } },
+    { "name": "Refresh", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/api/v1/auth/refresh", "body": { "mode": "raw", "raw": "{\"refreshToken\":\"{{refreshToken}}\"}" } } },
+    { "name": "Logout", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }], "url": "{{baseUrl}}/api/v1/auth/logout" } },
+    { "name": "Reset request (local only)", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/api/v1/auth/password-reset/request", "body": { "mode": "raw", "raw": "{\"email\":\"learner@example.test\"}" } } }
+  ]
+}
