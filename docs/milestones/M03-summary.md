@@ -1,6 +1,6 @@
 # M03 — Authentication and role permissions
 
-**Status:** Implemented locally; awaiting review. **Branch:** `feature/M03-authentication`. **PR:** pending.
+**Status:** Implemented and pushed; awaiting review. **Branch:** `feature/M03-authentication`. **PR:** [draft #3](https://github.com/Omegacarlos1/Sage-product/pull/3). Implementation commit: `a2df98a`; PR description commit: `79bd456`.
 
 ## Objectives and implementation
 

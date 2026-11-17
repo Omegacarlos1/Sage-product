@@ -1,10 +1,10 @@
 # SAGE LMS backend weekly update — 2026-11-17
 
-**Reporting period:** 2026-11-16 to 2026-11-17. **Milestone:** M03 authentication. **Branch:** `feature/M03-authentication`. **PR:** pending.
+**Reporting period:** 2026-11-16 to 2026-11-17. **Milestone:** M03 authentication. **Branch:** `feature/M03-authentication`. **PR:** [draft #3](https://github.com/Omegacarlos1/Sage-product/pull/3).
 
 ## Verified complete
 
-M03 signup, login, refresh rotation, logout, protected identity and admin permission check, and local password reset flow are implemented. PostgreSQL migration adds session and reset-token tables. See [M03 summary](../milestones/M03-summary.md), [API contract](../api/M03-authentication.md), and [Postman collection](../../postman/SAGE-M03.postman_collection.json). Commit SHA and PR link will be added after publishing.
+M03 signup, login, refresh rotation, logout, protected identity and admin permission check, and local password reset flow are implemented. PostgreSQL migration adds session and reset-token tables. See [M03 summary](../milestones/M03-summary.md), [API contract](../api/M03-authentication.md), and [Postman collection](../../postman/SAGE-M03.postman_collection.json). Implementation commit: [`a2df98a`](https://github.com/Omegacarlos1/Sage-product/commit/a2df98ab4e2ad0e71ae2a5f0d4bd82e3e2fa00ab).
 
 ## Actual tests
 
