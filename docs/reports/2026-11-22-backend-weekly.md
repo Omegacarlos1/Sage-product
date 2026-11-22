@@ -20,7 +20,7 @@ M05 is approved by the user; PR #5 remains an open, mergeable draft. GitHub conf
 
 ## M06 update — 2026-11-22
 
-**Milestone:** M06 public catalog, contact and newsletter. **Branch:** `feature/M06-public-catalog-contact-newsletter`. **PR:** pending. M05 PR #5 merged into `main` at 21:51 UTC on 2026-11-22, after the original M05 report above was written. The M06 diff against current `main` contains only M06 files.
+**Milestone:** M06 public catalog, contact and newsletter. **Branch:** `feature/M06-public-catalog-contact-newsletter`. **PR:** [draft #6](https://github.com/Omegacarlos1/Sage-product/pull/6). M05 PR #5 merged into `main` at 21:51 UTC on 2026-11-22, after the original M05 report above was written. The M06 diff against current `main` contains only M06 files. Implementation commits: `b88c21f`, `9089e2e`.
 
 **Verified complete:** Published course search/filter/pagination and slug detail; contact validation and per-process abuse limit; normalized newsletter duplicate handling using PostgreSQL uniqueness; three fictional seed courses. See [M06 summary](../milestones/M06-summary.md), [API contract](../api/M06-public.md), [Postman collection](../../postman/SAGE-M06.postman_collection.json), and branch commit after push.
 

@@ -1,6 +1,6 @@
 # M06 — Public catalog, contact and newsletter
 
-**Status:** Implemented for review on `feature/M06-public-catalog-contact-newsletter`; not approved or merged. **PR:** pending. M05 PR #5 merged into `main` on 2026-11-22 at 21:51 UTC.
+**Status:** Implemented for review on `feature/M06-public-catalog-contact-newsletter`; not approved or merged. **PR:** [draft #6](https://github.com/Omegacarlos1/Sage-product/pull/6). M05 PR #5 merged into `main` on 2026-11-22 at 21:51 UTC.
 
 ## Objectives and implementation
 
