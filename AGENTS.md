@@ -35,7 +35,7 @@ Reviewed implementation, verified tests, documented APIs and Postman cases, mile
 
 ## Current status
 
-M01 and M02 are implemented. M03 authentication and role permissions and M04 profiles were merged into `main` on 2026-11-17 (PRs #3 and #4). Production password reset delivery and email verification need a team decision before activation. M05 instructor course creation is implemented on `feature/M05-instructor-course-creation`; `npm run ci` passed with PostgreSQL-backed integration tests and the user approved M05 after manual testing on 2026-11-22. PR #5 is an open, mergeable draft. M06 is implemented on `feature/M06-public-catalog-contact-newsletter` and awaits review. Local CI passed with 6 Jest and 23 Mocha tests; development seed passed twice. Frontend contract confirmation and scheduling contact retention remain open.
+M01 and M02 are implemented. M03 authentication and role permissions and M04 profiles were merged into `main` on 2026-11-17 (PRs #3 and #4). Production password reset delivery and email verification need a team decision before activation. M05 instructor course creation passed PostgreSQL-backed CI, was approved after manual testing, and PR #5 merged into `main` on 2026-11-22. M06 is implemented on `feature/M06-public-catalog-contact-newsletter` and awaits review. Local CI passed with 6 Jest and 23 Mocha tests; development seed passed twice. Frontend contract confirmation and scheduling contact retention remain open.
 
 ## Git and GitHub Development Workflow
 
