@@ -1,0 +1,19 @@
+{
+  "info": { "name": "SAGE M05 Course Authoring", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api/v1" },
+    { "key": "instructorToken", "value": "" },
+    { "key": "otherInstructorToken", "value": "" },
+    { "key": "adminToken", "value": "" },
+    { "key": "categoryId", "value": "" },
+    { "key": "courseId", "value": "" }
+  ],
+  "item": [
+    { "name": "Create category", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{instructorToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"name\":\"Digital Skills\",\"slug\":\"digital-skills\"}" }, "url": "{{baseUrl}}/categories" } },
+    { "name": "Create draft", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{instructorToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"categoryId\":\"{{categoryId}}\",\"title\":\"Digital Skills 101\",\"slug\":\"digital-skills-101\",\"description\":\"A fictional beginner course\",\"price\":50,\"discountPrice\":40,\"currency\":\"USD\"}" }, "url": "{{baseUrl}}/courses" } },
+    { "name": "Replace curriculum", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{instructorToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"sections\":[{\"title\":\"Basics\",\"lessons\":[{\"title\":\"Welcome\",\"type\":\"ARTICLE\",\"isPreview\":true}]}]}" }, "url": "{{baseUrl}}/courses/{{courseId}}/curriculum" } },
+    { "name": "Submit course", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{instructorToken}}" }], "url": "{{baseUrl}}/courses/{{courseId}}/submit" } },
+    { "name": "Unauthorized update", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{otherInstructorToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"title\":\"Changed by another user\"}" }, "url": "{{baseUrl}}/courses/{{courseId}}" } },
+    { "name": "Admin approval", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/courses/{{courseId}}/approve" } }
+  ]
+}
