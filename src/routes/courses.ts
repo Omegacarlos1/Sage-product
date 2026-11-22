@@ -85,8 +85,32 @@ export function categoryRouter(db: PrismaClient) {
 
 export function courseRouter(db: PrismaClient) {
   const router = Router();
-  router.get("/", async (_req, res, next) => { try { res.json({ courses: await db.course.findMany({ where: { status: "PUBLISHED" }, select: { id: true, title: true, slug: true, price: true, discountPrice: true, currency: true, categoryId: true, instructorId: true }, orderBy: { createdAt: "desc" }, take: 50 }) }); } catch (e) { next(e); } });
-  router.get("/:id", async (req, res, next) => { try { const course = await db.course.findFirst({ where: { id: String(req.params.id), status: "PUBLISHED" }, include: courseInclude }); if (!course) { fail(res, 404, "NOT_FOUND"); return; } res.json({ course: { ...course, sections: course.sections.map((section) => ({ ...section, lessons: section.lessons.map(({ resourceUrl: _resourceUrl, ...lesson }) => lesson) })) } }); } catch (e) { next(e); } });
+  router.get("/", async (req, res, next) => {
+    const { search, category, level } = req.query;
+    const page = Number(req.query.page ?? 1), limit = Number(req.query.limit ?? 20);
+    if (Object.keys(req.query).some((key) => !["search", "category", "level", "page", "limit"].includes(key)) ||
+      !Number.isSafeInteger(page) || page < 1 || !Number.isSafeInteger(limit) || limit < 1 || limit > 50 || (page - 1) * limit > 100000 ||
+      (search !== undefined && (typeof search !== "string" || !search.trim() || search.length > 100)) ||
+      (category !== undefined && (typeof category !== "string" || !slug.test(category))) ||
+      (level !== undefined && (typeof level !== "string" || !["BEGINNER", "INTERMEDIATE", "ADVANCED", "ALL_LEVELS"].includes(level)))) { fail(res, 400, "VALIDATION_ERROR"); return; }
+    try {
+      const where: Prisma.CourseWhereInput = { status: "PUBLISHED", instructor: { user: { status: "ACTIVE" } } };
+      if (category) where.category = { slug: category as string };
+      if (level) where.level = level as Prisma.EnumCourseLevelFilter["equals"];
+      if (search) where.OR = [
+        { title: { contains: search.trim(), mode: "insensitive" } },
+        { description: { contains: search.trim(), mode: "insensitive" } },
+        { instructor: { displayName: { contains: search.trim(), mode: "insensitive" } } },
+        { category: { name: { contains: search.trim(), mode: "insensitive" } } },
+      ];
+      const [courses, total] = await db.$transaction([
+        db.course.findMany({ where, select: { id: true, title: true, slug: true, description: true, level: true, price: true, discountPrice: true, currency: true, durationMinutes: true, publishedAt: true, category: { select: { id: true, name: true, slug: true } }, instructor: { select: { userId: true, displayName: true, headline: true } } }, orderBy: [{ publishedAt: "desc" }, { id: "asc" }], skip: (page - 1) * limit, take: limit }),
+        db.course.count({ where }),
+      ]);
+      res.json({ courses, page, limit, total });
+    } catch (e) { next(e); }
+  });
+  router.get("/:id", async (req, res, next) => { try { const id = String(req.params.id); const course = await db.course.findFirst({ where: { status: "PUBLISHED", instructor: { user: { status: "ACTIVE" } }, OR: [{ id: uuid.test(id) ? id : undefined }, { slug: id }] }, include: { ...courseInclude, category: { select: { id: true, name: true, slug: true } }, instructor: { select: { userId: true, displayName: true, headline: true, biography: true, websiteUrl: true } } } }); if (!course) { fail(res, 404, "NOT_FOUND"); return; } res.json({ course: { ...course, sections: course.sections.map((section) => ({ ...section, lessons: section.lessons.map(({ resourceUrl: _resourceUrl, ...lesson }) => lesson) })) } }); } catch (e) { next(e); } });
   router.use(authMiddleware(db));
   router.get("/mine/list", requireRole("INSTRUCTOR"), async (req, res, next) => { try { res.json({ courses: await db.course.findMany({ where: { instructorId: req.auth!.userId }, orderBy: { createdAt: "desc" } }) }); } catch (e) { next(e); } });
   router.get("/:id/manage", requireRole("INSTRUCTOR", "ADMIN"), async (req, res, next) => { try { const course = await db.course.findUnique({ where: { id: String(req.params.id) }, include: courseInclude }); if (!course) { fail(res, 404, "NOT_FOUND"); return; } if (course.instructorId !== req.auth!.userId && !req.auth!.roles.includes("ADMIN")) { fail(res, 403, "FORBIDDEN"); return; } res.json({ course }); } catch (e) { next(e); } });
