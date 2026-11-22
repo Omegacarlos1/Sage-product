@@ -35,7 +35,7 @@ Reviewed implementation, verified tests, documented APIs and Postman cases, mile
 
 ## Current status
 
-M01 and M02 are implemented. M03 authentication and role permissions are implemented locally on `feature/M03-authentication`; the local `npm run ci` passed, including PostgreSQL-backed integration tests. M03 awaits review. Production password reset delivery and email verification need a team decision before activation. M04 profiles are implemented locally on `feature/M04-profiles`; `npm run ci` passed with PostgreSQL-backed integration tests. M04 awaits review. M05 instructor course creation is implemented locally on `feature/M05-instructor-course-creation`; `npm run ci` passed with PostgreSQL-backed integration tests. M05 awaits review. M06 has not started.
+M01 and M02 are implemented. M03 authentication and role permissions are implemented locally on `feature/M03-authentication`; the local `npm run ci` passed, including PostgreSQL-backed integration tests. M03 awaits review. Production password reset delivery and email verification need a team decision before activation. M04 profiles are implemented locally on `feature/M04-profiles`; `npm run ci` passed with PostgreSQL-backed integration tests. M04 awaits review. M05 instructor course creation is implemented locally on `feature/M05-instructor-course-creation`; `npm run ci` passed with PostgreSQL-backed integration tests and the user approved M05 after manual testing on 2026-11-22. PR #5 remains a draft because M03/M04 are unmerged. M06 has not started.
 
 ## Git and GitHub Development Workflow
 

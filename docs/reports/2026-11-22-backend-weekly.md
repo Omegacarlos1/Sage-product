@@ -8,7 +8,7 @@ Instructor-owned category CRUD, draft course CRUD, free/paid/discounted price va
 
 ## Actual tests
 
-Final `npm run ci` passed: lint 0 errors, typecheck passed, Jest 6 passed/0 failed/0 skipped across 2 suites, Mocha 20 passed/0 failed/0 skipped, runtime smoke passed. M05 migration applied to local `sage_lms_test` on the first run; the final run found no pending migrations. Postman collection was prepared, not run in Postman.
+Final `npm run ci` passed: lint 0 errors, typecheck passed, Jest 6 passed/0 failed/0 skipped across 2 suites, Mocha 20 passed/0 failed/0 skipped, runtime smoke passed. M05 migration applied to local `sage_lms_test` on the first run; the final run found no pending migrations. The user reported manual Postman testing and approved M05 on 2026-11-22; individual Postman outcomes and counts were not supplied.
 
 ## Postman demonstration
 
@@ -16,4 +16,4 @@ Use M03 login to obtain instructor and admin bearer tokens. `POST http://localho
 
 ## In progress, blocked and next week
 
-M05 awaits review. M04 also remains awaiting review. Confirm API shapes with frontend and decide category ownership and review queue behavior. Next week: review M05; begin M06 after approval. M06 covers public catalog filtering, fictional seed data, contact and newsletter APIs.
+M05 is approved by the user; PR #5 remains draft because it includes unmerged M03/M04 work. M04 remains awaiting review. Confirm API shapes with frontend and decide category ownership and review queue behavior. Next week: coordinate prior milestone reviews and plan M06 public catalog filtering, fictional seed data, contact and newsletter APIs.
