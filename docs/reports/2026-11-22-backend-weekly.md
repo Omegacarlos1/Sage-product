@@ -1,10 +1,10 @@
 # SAGE LMS backend weekly update — 2026-11-22
 
-**Reporting period:** 2026-11-18 to 2026-11-22. **Milestone:** M05 instructor course creation. **Branch:** `feature/M05-instructor-course-creation`. **PR:** Pending draft PR.
+**Reporting period:** 2026-11-18 to 2026-11-22. **Milestone:** M05 instructor course creation. **Branch:** `feature/M05-instructor-course-creation`. **PR:** [draft #5](https://github.com/Omegacarlos1/Sage-product/pull/5).
 
 ## Verified complete
 
-Instructor-owned category CRUD, draft course CRUD, free/paid/discounted price validation, curriculum replacement, submission for review, admin approval boundary, owner checks and published-only public visibility. See [M05 summary](../milestones/M05-summary.md), [API contract](../api/M05-courses.md), migration and [Postman collection](../../postman/SAGE-M05.postman_collection.json). Commit SHA pending.
+Instructor-owned category CRUD, draft course CRUD, free/paid/discounted price validation, curriculum replacement, submission for review, admin approval boundary, owner checks and published-only public visibility. See [M05 summary](../milestones/M05-summary.md), [API contract](../api/M05-courses.md), migration and [Postman collection](../../postman/SAGE-M05.postman_collection.json). Implementation commit: [`24db402`](https://github.com/Omegacarlos1/Sage-product/commit/24db402bc1d5326135ef6c07044459787a24be8a).
 
 ## Actual tests
 

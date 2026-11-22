@@ -1,6 +1,6 @@
 # M05 — Instructor course creation
 
-**Status:** Implemented locally; awaiting review. **Branch:** `feature/M05-instructor-course-creation`. **PR:** Pending push and draft PR.
+**Status:** Implemented and pushed; awaiting review. **Branch:** `feature/M05-instructor-course-creation`. **PR:** [draft #5](https://github.com/Omegacarlos1/Sage-product/pull/5). Implementation commit: `24db402`.
 
 ## Objectives and implementation
 
@@ -24,6 +24,6 @@ Input validation rejects unknown fields, invalid prices, duplicate slugs and inv
 
 ## PR description and next prompt
 
-Draft PR description: Add category and draft course authoring, discounted pricing, curriculum management and admin approval boundary. Test: `npm run ci` passed against local PostgreSQL. Risks: category hierarchy cycles and concurrent status changes need review; public catalog is minimal until M06. Do not merge without review.
+Draft PR description: Add category and draft course authoring, discounted pricing, curriculum management and admin approval boundary. Test: `npm run ci` passed against local PostgreSQL. Risks: category hierarchy cycles and concurrent status changes need review; public catalog is minimal until M06. PR #5 targets `main` and includes unmerged M03/M04 work; it must await those reviews. Do not merge without review.
 
 > Work on SAGE LMS backend as a junior developer. Execute **M06: Public course catalog, contact and newsletter** only after M05 approval. Implement published course list and detail, keyword/category/level filters and pagination, reproducible fictional seed data, validated and rate-limited contact submission, and normalized newsletter subscriptions with a database unique constraint and concurrency-safe duplicate handling. Confirm API contracts with frontend. Run lint, typecheck, Jest and Mocha against local PostgreSQL. Document exact Postman requests and expected responses, update API docs, weekly report and `docs/milestones/M06-summary.md`, push a feature branch and prepare a draft PR. Stop for review without merging.
