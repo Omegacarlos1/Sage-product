@@ -16,4 +16,4 @@ Use M03 login to obtain instructor and admin bearer tokens. `POST http://localho
 
 ## In progress, blocked and next week
 
-M05 is approved by the user; PR #5 remains draft because it includes unmerged M03/M04 work. M04 remains awaiting review. Confirm API shapes with frontend and decide category ownership and review queue behavior. Next week: coordinate prior milestone reviews and plan M06 public catalog filtering, fictional seed data, contact and newsletter APIs.
+M05 is approved by the user; PR #5 remains an open, mergeable draft. GitHub confirms M03 PR #3 and M04 PR #4 were merged into `main` on 2026-11-17. Confirm API shapes with frontend and decide category ownership and review queue behavior. Next week: complete M05 PR review and plan M06 public catalog filtering, fictional seed data, contact and newsletter APIs.
