@@ -1,6 +1,6 @@
 # M07 — Media uploads and lesson access
 
-**Status:** Implemented, awaiting review and storage provider decision. **Branch:** `feature/M07-media-lesson-access`, based on approved M06 branch. **PR:** [Draft #7](https://github.com/Omegacarlos1/Sage-product/pull/7) targeting `main`. M06 PR #6 merged before draft creation.
+**Status:** Approved by the user on 2026-11-23; production storage decision remains open. **Branch:** `feature/M07-media-lesson-access`, based on approved M06 branch. **PR:** [Open, mergeable draft #7](https://github.com/Omegacarlos1/Sage-product/pull/7) targeting `main`; not merged. M06 PR #6 merged before draft creation.
 
 ## Objectives and implementation
 
@@ -12,11 +12,11 @@ Changed `prisma/schema.prisma`, `src/app.ts`, `src/config/env.ts`, `src/routes/c
 
 ## API and Postman
 
-See [M07 API contract](../api/M07-media.md) and [M07 Postman collection](../../postman/SAGE-M07.postman_collection.json) for exact requests and expected success/error examples. Postman itself was not run. Equivalent HTTP behavior was tested with Supertest. Endpoint shapes are proposed pending frontend confirmation.
+See [M07 API contract](../api/M07-media.md) and [M07 Postman collection](../../postman/SAGE-M07.postman_collection.json) for exact requests and expected success/error examples. The assistant did not run Postman. The user's shared Postman screenshots showed a `500` before the development migration was applied, then `409 INVALID_STATUS` for a lesson outside a draft course, and `403 FORBIDDEN` for an expired signed download URL. No complete manual success log was supplied. The user approved M07 on 2026-11-23. Equivalent success and error HTTP behavior was tested with Supertest. Endpoint shapes are proposed pending frontend confirmation.
 
 ## Actual verification
 
-`npm run ci` on 2026-11-23: lint passed with 0 errors; typecheck passed; Jest 2 suites, 6 passed, 0 failed, 0 skipped; Mocha 26 passed, 0 failed, 0 skipped against local PostgreSQL `sage_lms_test`; runtime smoke passed. The M07 migration applied to the local test database. Postman collection JSON parsed successfully.
+`npm run ci` on 2026-11-23: lint passed with 0 errors; typecheck passed; Jest 2 suites, 6 passed, 0 failed, 0 skipped; Mocha 26 passed, 0 failed, 0 skipped against local PostgreSQL `sage_lms_test`; runtime smoke passed. The M07 migration applied to the local test database. During manual testing, `npm run db:migrate:dev:apply` applied the same migration to `sage_lms_dev`; `npm run db:migrate:status` then reported the development schema up to date. Postman collection JSON parsed successfully.
 
 ## Not implemented, risks and learning notes
 
@@ -24,6 +24,6 @@ No production storage adapter was selected by the team, so this milestone cannot
 
 ## PR and next prompt
 
-Draft PR description: Add private media metadata, signed local upload/download flow, lesson authorization and M07 API/Postman coverage. Tests: `npm run ci` with 6 Jest and 26 Mocha passes. Risks: local adapter is not production storage and no scanning/transcoding. PR #7 targets `main` and is awaiting review. Do not merge before approval.
+Draft PR description: Add private media metadata, signed local upload/download flow, lesson authorization and M07 API/Postman coverage. Tests: `npm run ci` with 6 Jest and 26 Mocha passes. Risks: local adapter is not production storage and no scanning/transcoding. PR #7 targets `main`; the user approved the milestone, but the draft PR has not been merged. Production deployment remains blocked pending a storage decision.
 
 > Work on SAGE LMS backend as a junior developer, following the PRD and `SAGE_Revised_Backend_Milestones.docx`. Execute **M08: Enrollments and entitlements** only after M07 approval. Implement free enrollment, purchased course access checks, duplicate enrollment prevention and a learner course list. Coordinate paid entitlement with the payment milestone; never grant access on an unverified client payment. Verify with lint, typecheck, Jest, PostgreSQL backed Mocha tests and exact Postman requests and responses. Update API docs, weekly report and `docs/milestones/M08-summary.md`, push a feature branch and prepare a draft PR. Stop for review; do not auto merge.
