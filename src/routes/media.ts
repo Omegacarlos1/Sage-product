@@ -2,6 +2,7 @@ import { Router } from "express";
 import type { PrismaClient } from "../generated/prisma/client";
 import { authMiddleware } from "./auth";
 import { ALLOWED_TYPES, LocalMediaStorage } from "../services/media-storage";
+import { hasLessonEntitlement } from "../services/entitlements";
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const fail = (res: import("express").Response, status: number, code: string) => res.status(status).json({ error: { code, message: code.replaceAll("_", " ").toLowerCase() + "." } });
@@ -45,7 +46,7 @@ export function mediaRouter(db: PrismaClient, storage: LocalMediaStorage) {
       if (!lesson) { fail(res, 404, "NOT_FOUND"); return; }
       const course = lesson.section.course;
       const owner = course.instructorId === req.auth!.userId || req.auth!.roles.includes("ADMIN");
-      const enrolled = !owner && course.status === "PUBLISHED" && await db.enrollment.count({ where: { courseId: course.id, learnerId: req.auth!.userId, status: "ACTIVE", ...(Number(course.price) > 0 ? { payment: { is: { status: "SUCCEEDED" as const } } } : {}) } }) > 0;
+      const enrolled = !owner && await hasLessonEntitlement(db, course, req.auth!.userId);
       if (!owner && !enrolled) { fail(res, 403, "FORBIDDEN"); return; }
       if (!lesson.media || lesson.media.status !== "READY") { fail(res, 404, "MEDIA_NOT_READY"); return; }
       const expires = Date.now() + 60_000;

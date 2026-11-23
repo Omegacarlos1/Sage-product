@@ -1,0 +1,15 @@
+{
+  "info": { "name": "SAGE M08 enrollments and entitlements", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api/v1" },
+    { "key": "freeCourseId", "value": "replace-with-published-free-course-uuid" },
+    { "key": "paidCourseId", "value": "replace-with-published-paid-course-uuid" },
+    { "key": "learnerToken", "value": "replace-with-access-token" }
+  ],
+  "item": [
+    { "name": "Free enrollment - expected 201", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/courses/{{freeCourseId}}/enroll", "body": { "mode": "raw", "raw": "{}", "options": { "raw": { "language": "json" } } } } },
+    { "name": "Duplicate free enrollment - expected 409 after first request", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/courses/{{freeCourseId}}/enroll", "body": { "mode": "raw", "raw": "{}", "options": { "raw": { "language": "json" } } } } },
+    { "name": "Paid locked - expected 403", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/courses/{{paidCourseId}}/enroll", "body": { "mode": "raw", "raw": "{}", "options": { "raw": { "language": "json" } } } } },
+    { "name": "My courses - expected 200", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Accept", "value": "application/json" }], "url": "{{baseUrl}}/learners/me/courses" } }
+  ]
+}
