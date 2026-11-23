@@ -1,0 +1,15 @@
+{
+  "info": { "name": "SAGE M06 Public APIs", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [{ "key": "baseUrl", "value": "http://localhost:3000/api/v1" }],
+  "item": [
+    { "name": "Course list", "request": { "method": "GET", "url": "{{baseUrl}}/courses?page=1&limit=10" } },
+    { "name": "Course search and filters", "request": { "method": "GET", "url": "{{baseUrl}}/courses?search=web&category=technology&level=BEGINNER&page=1&limit=10" } },
+    { "name": "Course detail", "request": { "method": "GET", "url": "{{baseUrl}}/courses/sample-web-development" } },
+    { "name": "Categories", "request": { "method": "GET", "url": "{{baseUrl}}/categories" } },
+    { "name": "Invalid pagination", "request": { "method": "GET", "url": "{{baseUrl}}/courses?page=0" } },
+    { "name": "Contact valid", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"name\":\"Ada\",\"email\":\"ada@example.com\",\"subject\":\"Course question\",\"message\":\"Please contact me.\"}" }, "url": "{{baseUrl}}/contact" } },
+    { "name": "Contact invalid", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"email\":\"invalid\"}" }, "url": "{{baseUrl}}/contact" } },
+    { "name": "Newsletter first and duplicate (run twice)", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"email\":\"Ada@Example.com\"}" }, "url": "{{baseUrl}}/newsletter/subscribe" } },
+    { "name": "Newsletter invalid", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"email\":\"invalid\"}" }, "url": "{{baseUrl}}/newsletter/subscribe" } }
+  ]
+}

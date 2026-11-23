@@ -42,7 +42,19 @@ async function seed() {
       create: category,
     });
   }
-  process.stdout.write(`${roles.length} roles and ${categories.length} categories seeded in sage_lms_dev.\n`);
+  const instructor = await database.user.upsert({ where: { email: "amara.okafor@example.invalid" }, update: {}, create: { email: "amara.okafor@example.invalid", instructorProfile: { create: { displayName: "Amara Okafor", headline: "Fictional software educator", verificationStatus: "VERIFIED" } } } });
+  await database.instructorProfile.upsert({ where: { userId: instructor.id }, update: { displayName: "Amara Okafor", verificationStatus: "VERIFIED" }, create: { userId: instructor.id, displayName: "Amara Okafor", verificationStatus: "VERIFIED" } });
+  const samples = [
+    { title: "Introduction to Web Development", slug: "sample-web-development", category: "technology", level: "BEGINNER", description: "A fictional beginner course covering HTML, CSS and JavaScript." },
+    { title: "Practical Business Planning", slug: "sample-business-planning", category: "business", level: "INTERMEDIATE", description: "A fictional course about business plans and market research." },
+    { title: "Design Fundamentals", slug: "sample-design-fundamentals", category: "creative-skills", level: "ALL_LEVELS", description: "A fictional introduction to visual design principles." },
+  ];
+  for (const sample of samples) {
+    const category = await database.category.findUniqueOrThrow({ where: { slug: sample.category } });
+    const data = { title: sample.title, description: sample.description, level: sample.level, categoryId: category.id, instructorId: instructor.id, status: "PUBLISHED", publishedAt: new Date("2026-11-22T00:00:00.000Z") };
+    await database.course.upsert({ where: { slug: sample.slug }, update: data, create: { ...data, slug: sample.slug } });
+  }
+  process.stdout.write(`${roles.length} roles, ${categories.length} categories and ${samples.length} fictional courses seeded in sage_lms_dev.\n`);
 }
 
 seed()
