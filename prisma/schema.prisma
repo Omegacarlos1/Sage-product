@@ -278,11 +278,27 @@ model Lesson {
   updatedAt       DateTime         @updatedAt @db.Timestamptz(3)
   section         CourseSection    @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   progress        LessonProgress[]
+  media           LessonMedia?
   quizzes         Quiz[]
   assignment      Assignment?
 
   @@unique([sectionId, orderIndex])
   @@map("lessons")
+}
+
+model LessonMedia {
+  id           String   @id @default(uuid()) @db.Uuid
+  lessonId     String   @unique @db.Uuid
+  storageKey   String   @unique @db.VarChar(160)
+  fileName     String   @db.VarChar(255)
+  contentType  String   @db.VarChar(100)
+  sizeBytes    Int
+  status       String   @default("PENDING") @db.VarChar(20)
+  createdAt    DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt    DateTime @updatedAt @db.Timestamptz(3)
+  lesson       Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@map("lesson_media")
 }
 
 model Enrollment {

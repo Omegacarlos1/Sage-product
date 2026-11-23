@@ -3,6 +3,8 @@ export type AppConfig = {
   port: number;
   corsOrigins: string[];
   databaseUrl: string;
+  mediaRoot?: string;
+  mediaSigningSecret?: string;
 };
 
 export class ConfigurationError extends Error {
@@ -51,5 +53,8 @@ export function readConfig(env: NodeJS.ProcessEnv): AppConfig {
     throw new ConfigurationError("DATABASE_URL must be a valid PostgreSQL connection URL.");
   }
 
-  return { nodeEnv, port, corsOrigins, databaseUrl };
+  if (nodeEnv === "production" && (!env.MEDIA_ROOT || !env.MEDIA_SIGNING_SECRET || env.MEDIA_SIGNING_SECRET.length < 32)) {
+    throw new ConfigurationError("MEDIA_ROOT and a MEDIA_SIGNING_SECRET of at least 32 characters are required in production.");
+  }
+  return { nodeEnv, port, corsOrigins, databaseUrl, mediaRoot: env.MEDIA_ROOT, mediaSigningSecret: env.MEDIA_SIGNING_SECRET };
 }

@@ -8,3 +8,4 @@ src/generated/
 *.dump
 .DS_Store
 *.log
+.media-private/
