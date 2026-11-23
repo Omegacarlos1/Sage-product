@@ -15,3 +15,13 @@ The [Postman collection](../../postman/SAGE-M06.postman_collection.json) defines
 ## In progress, blockers, risks and next week
 
 Frontend contract confirmation remains open. The contact retention command needs an operations schedule, and the per-process rate limiter needs a shared store before multiple replicas. Next week: team review of PR #6 and the proposed API contract. Begin M07 only after the milestone workflow permits it; do not merge or deploy without separate approval.
+
+## M07 update on 2026-11-23
+
+**Branch:** `feature/M07-media-lesson-access`, based on approved M06. **PR:** [Draft #7](https://github.com/Omegacarlos1/Sage-product/pull/7) targets `main`; M06 PR #6 merged before draft creation. M07 added private media storage, signed upload/download URLs, metadata and a PostgreSQL migration, validation, and lesson access authorization. Evidence: commit [`15df980`](https://github.com/Omegacarlos1/Sage-product/commit/15df980), [M07 summary](../milestones/M07-summary.md), [API contract](../api/M07-media.md), and [Postman collection](../../postman/SAGE-M07.postman_collection.json). The local M07 migration was applied to `sage_lms_test`; no production migration or deployment occurred.
+
+The final `npm run ci` passed lint with 0 errors, typecheck, Jest 6 passed/0 failed/0 skipped, Mocha 26 passed/0 failed/0 skipped against local PostgreSQL, and runtime smoke. Postman itself was not run for M07. Demonstration requests: instructor `POST /api/v1/lessons/{id}/media/upload-request` with JSON `{"fileName":"intro.mp4","contentType":"video/mp4","sizeBytes":12}` expects `201`; unenrolled learner `GET /api/v1/lessons/{id}/access` expects `403`; eligible enrolled learner after upload and publication expects `200` playback metadata.
+
+Production storage adapter selection and frontend contract confirmation remain open. Local files require durable storage and backup; uploads currently buffer in memory. Next week: review M07, choose production storage, then start M08 only after M07 approval.
+
+**Approval update:** The user approved M07 on 2026-11-23. PR #7 remains an open draft and has not been merged. During manual testing, `npm run db:migrate:dev:apply` applied the M07 migration to local `sage_lms_dev`, and `npm run db:migrate:status` confirmed it was up to date. Shared Postman screenshots showed a pre-migration `500`, a `409` on a non-draft lesson, and a `403` from an expired download URL; no complete manual success log was supplied. M08 is now eligible to start on a separate branch when requested.

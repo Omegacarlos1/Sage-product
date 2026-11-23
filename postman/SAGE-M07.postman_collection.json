@@ -1,0 +1,15 @@
+{
+  "info": { "name": "SAGE M07 media and lesson access", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api/v1" },
+    { "key": "lessonId", "value": "replace-with-lesson-uuid" },
+    { "key": "instructorToken", "value": "replace-with-access-token" },
+    { "key": "learnerToken", "value": "replace-with-access-token" }
+  ],
+  "item": [
+    { "name": "Request upload — expected 201", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{instructorToken}}" }, { "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/lessons/{{lessonId}}/media/upload-request", "body": { "mode": "raw", "raw": "{\"fileName\":\"intro.mp4\",\"contentType\":\"video/mp4\",\"sizeBytes\":12}" } } },
+    { "name": "Forbidden lesson access — expected 403 for unenrolled learner", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Accept", "value": "application/json" }], "url": "{{baseUrl}}/lessons/{{lessonId}}/access" } },
+    { "name": "Allowed playback metadata — expected 200 for eligible learner", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Accept", "value": "application/json" }], "url": "{{baseUrl}}/lessons/{{lessonId}}/access" } },
+    { "name": "Oversize upload request — expected 400", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{instructorToken}}" }, { "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/lessons/{{lessonId}}/media/upload-request", "body": { "mode": "raw", "raw": "{\"fileName\":\"intro.mp4\",\"contentType\":\"video/mp4\",\"sizeBytes\":104857601}" } } }
+  ]
+}
