@@ -1,6 +1,6 @@
 # M07 — Media uploads and lesson access
 
-**Status:** Implemented locally, awaiting review and storage provider decision. **Branch:** `feature/M07-media-lesson-access`, based on approved M06 branch because PR #6 is still open. **PR:** Not yet opened.
+**Status:** Implemented, awaiting review and storage provider decision. **Branch:** `feature/M07-media-lesson-access`, based on approved M06 branch. **PR:** [Draft #7](https://github.com/Omegacarlos1/Sage-product/pull/7) targeting `main`. M06 PR #6 merged before draft creation.
 
 ## Objectives and implementation
 
@@ -24,6 +24,6 @@ No production storage adapter was selected by the team, so this milestone cannot
 
 ## PR and next prompt
 
-Draft PR description: Add private media metadata, signed local upload/download flow, lesson authorization and M07 API/Postman coverage. Tests: `npm run ci` with 6 Jest and 26 Mocha passes. Risks: local adapter is not production storage, no scanning/transcoding, M06 must merge before targeting `main`. Do not merge before review.
+Draft PR description: Add private media metadata, signed local upload/download flow, lesson authorization and M07 API/Postman coverage. Tests: `npm run ci` with 6 Jest and 26 Mocha passes. Risks: local adapter is not production storage and no scanning/transcoding. PR #7 targets `main` and is awaiting review. Do not merge before approval.
 
 > Work on SAGE LMS backend as a junior developer, following the PRD and `SAGE_Revised_Backend_Milestones.docx`. Execute **M08: Enrollments and entitlements** only after M07 approval. Implement free enrollment, purchased course access checks, duplicate enrollment prevention and a learner course list. Coordinate paid entitlement with the payment milestone; never grant access on an unverified client payment. Verify with lint, typecheck, Jest, PostgreSQL backed Mocha tests and exact Postman requests and responses. Update API docs, weekly report and `docs/milestones/M08-summary.md`, push a feature branch and prepare a draft PR. Stop for review; do not auto merge.
