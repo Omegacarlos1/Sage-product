@@ -1,6 +1,6 @@
 # M08 — Enrollments and entitlements
 
-**Status:** Implemented on `feature/M08-enrollments-entitlements`; awaiting review. **PR:** Pending creation.
+**Status:** Implemented on `feature/M08-enrollments-entitlements`; awaiting review. **PR:** [Draft #8](https://github.com/Omegacarlos1/Sage-product/pull/8), open and unmerged. Initial implementation commit: `c790780`.
 
 ## Objectives and implementation
 
@@ -26,6 +26,6 @@ Enrollment identity comes from the bearer session, never request body. The learn
 
 ## PR and next prompt
 
-Draft PR description: Add free enrollment, duplicate protection, learner course list, and shared paid lesson entitlement. Tests: `npm run ci` passed with 6 Jest and 29 Mocha tests. Risks: payment settlement is M09; signed URLs have a brief revocation delay. Do not merge without review.
+Draft PR #8 description: Add free enrollment, duplicate protection, learner course list, and shared paid lesson entitlement. Tests: `npm run ci` passed with 6 Jest and 29 Mocha tests. Risks: payment settlement is M09; signed URLs have a brief revocation delay. Do not merge without review.
 
 > Work on the SAGE LMS backend as a junior developer, following the PRD and `SAGE_Revised_Backend_Milestones.docx`. Execute **M09: Payment gateway and transactions** only after M08 approval and team confirmation of the provider. Implement checkout initialization, payment intent and transaction records, signed webhook verification, idempotent settlement, and enrollment only after verified success. Never treat a client callback as proof of payment. Test tampered and repeated webhooks, failed payment access, checkout, and transaction history. Run lint, typecheck, Jest, PostgreSQL backed Mocha tests; update API docs, Postman cases, weekly report and `docs/milestones/M09-summary.md`. Push a feature branch and prepare a draft PR. Stop for review; do not auto merge.
