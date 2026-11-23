@@ -7,6 +7,7 @@ import { profileRouter, instructorRouter } from "./routes/profiles";
 import { categoryRouter, courseRouter } from "./routes/courses";
 import { publicSubmissionsRouter } from "./routes/public-submissions";
 import { mediaRouter } from "./routes/media";
+import { enrollmentRouter } from "./routes/enrollments";
 import { LocalMediaStorage } from "./services/media-storage";
 import { randomBytes } from "node:crypto";
 import path from "node:path";
@@ -38,6 +39,7 @@ export function createApp(config: AppConfig, checkDatabase: () => Promise<void> 
   });
 
   if (database) {
+    app.use("/api/v1", enrollmentRouter(database));
     app.use("/api/v1", mediaRouter(database, new LocalMediaStorage(config.mediaRoot ?? path.resolve(".media-private"), config.mediaSigningSecret ?? randomBytes(32).toString("hex"))));
     app.use("/api/v1", publicSubmissionsRouter(database));
     app.use("/api/v1/auth", authRouter(database, config));

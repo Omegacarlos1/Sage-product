@@ -37,7 +37,7 @@ Reviewed implementation, verified tests, documented APIs and Postman cases, mile
 
 M01 and M02 are implemented. M03 authentication and role permissions and M04 profiles were merged into `main` on 2026-11-17 (PRs #3 and #4). Production password reset delivery and email verification need a team decision before activation. M05 instructor course creation passed PostgreSQL-backed CI, was approved after manual testing, and PR #5 merged into `main` on 2026-11-22. M06 was approved by the user on 2026-11-23 and PR #6 merged into `main` that day. Frontend contract confirmation and scheduling contact retention remain open.
 
-M07 was approved by the user on 2026-11-23. It is implemented on `feature/M07-media-lesson-access`; draft PR #7 targets `main` and remains open, unmerged. Local PostgreSQL verification and the unresolved production storage decision are tracked in `docs/milestones/M07-summary.md`. M08 has not started.
+M07 was approved by the user on 2026-11-23. It is implemented on `feature/M07-media-lesson-access`; draft PR #7 targets `main` and remains open, unmerged. Local PostgreSQL verification and the unresolved production storage decision are tracked in `docs/milestones/M07-summary.md`. The user approved M08 on 2026-11-23. It is implemented on `feature/M08-enrollments-entitlements`; draft PR #8 targets `main` and remains unmerged. M09 has not started.
 
 ## Git and GitHub Development Workflow
 
