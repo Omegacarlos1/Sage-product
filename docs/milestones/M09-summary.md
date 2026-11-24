@@ -34,6 +34,10 @@ Manual test follow-up on 2026-11-24: the user's checkout returned `502 PAYMENT_P
 
 Follow-up verification: final `npm run ci` passed lint with 0 errors, typecheck, Jest 3 suites with 7 passed/0 failed/0 skipped, Mocha 33 passed/0 failed/0 skipped against `sage_lms_test`, and runtime smoke. An initial run after adding the new integration case had 1 Mocha failure because the test still expected the second learner's transaction history to be empty; the second learner now correctly has their own failed payment, so the assertion was corrected and the full suite passed. The earlier GitHub CI links above cover the initial M09 implementation; follow-up CI is pending its branch push.
 
+Manual webhook follow-up: Paystack independently verified a test payment as successful while the local row remained `PENDING`. A harmless legacy signed `ping` from the local server received `200`, confirming the backend can verify `x-paystack-signature`. A local helper, `npm run payments:sign-test-webhook -- <reference>`, now prints the exact body and legacy signature for manual Postman entry without exposing the key or sending a request. This removes Postman script/body transformation from the diagnostic path. The user's visible test key should be rotated before reuse.
+
+Helper verification: `npm run ci` passed lint, typecheck, Jest 7/7, Mocha 33/33 against local PostgreSQL, and runtime smoke. The helper was run with a dummy `sk_test_` key and a dummy reference; it printed the expected one-line body and 128-character HMAC header without making a network request.
+
 ## PR and next prompt
 
 Commit [`5b24543`](https://github.com/Omegacarlos1/Sage-product/commit/5b24543) was pushed to `origin/feature/M09-paystack-payments`. [Draft PR #9](https://github.com/Omegacarlos1/Sage-product/pull/9) targets `main` and is open for review. Its description records changes, tests, risks and remaining issues. No merge or M10 implementation is authorized here.

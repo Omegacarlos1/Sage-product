@@ -21,6 +21,7 @@
     "db:migrate:status": "prisma migrate status",
     "db:seed": "npm run build && prisma db seed",
     "contact:prune": "npm run build && node scripts/prune-contact.js",
+    "payments:sign-test-webhook": "node scripts/sign-paystack-test-webhook.js",
     "test:runtime": "node tests/runtime-smoke.js",
     "ci": "npm run lint && npm run typecheck && npm test && npm run test:runtime"
   },

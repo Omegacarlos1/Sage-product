@@ -41,6 +41,8 @@ A signed `charge.success` with a known reference triggers a server to server Pay
 
 The Postman collection contains an **invalid signature** request that can run without credentials and an optional **local signed simulation** that requires the signing secret in a private Postman environment and a seeded pending payment. It does not claim a live Paystack delivery.
 
+For a manual test without a webhook signing secret, run `npm run payments:sign-test-webhook -- <checkout-reference>` with a `sk_test_` key in local `.env`. Copy its one-line `Body` text into a new Postman raw JSON request and its `x-paystack-signature` value into that header. Remove any `Paystack-Signature` header and disable pre-request scripts. The helper sends no request and prints no key. The backend still asks Paystack to verify the reference; a fabricated unpaid reference does not grant access.
+
 ## Transaction history
 
 `GET /learners/me/transactions` with `Authorization: Bearer <learner-access-token>` returns the caller's 50 latest payment records, newest first:
