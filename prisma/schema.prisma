@@ -274,6 +274,7 @@ model Lesson {
   durationSeconds Int?
   orderIndex      Int
   isPreview       Boolean          @default(false)
+  isRequired      Boolean          @default(true)
   createdAt       DateTime         @default(now()) @db.Timestamptz(3)
   updatedAt       DateTime         @updatedAt @db.Timestamptz(3)
   section         CourseSection    @relation(fields: [sectionId], references: [id], onDelete: Cascade)
@@ -308,6 +309,7 @@ model Enrollment {
   status      EnrollmentStatus @default(ACTIVE)
   enrolledAt  DateTime         @default(now()) @db.Timestamptz(3)
   completedAt DateTime?        @db.Timestamptz(3)
+  resumeLessonId String?       @db.Uuid
   learner     LearnerProfile   @relation(fields: [learnerId], references: [userId], onDelete: Restrict)
   course      Course           @relation(fields: [courseId], references: [id], onDelete: Restrict)
   payment     Payment?
@@ -486,6 +488,8 @@ model LessonProgress {
   lessonId            String         @db.Uuid
   completedAt         DateTime?      @db.Timestamptz(3)
   lastPositionSeconds Int            @default(0)
+  bookmarked          Boolean        @default(false)
+  note                String?        @db.VarChar(5000)
   updatedAt           DateTime       @updatedAt @db.Timestamptz(3)
   learner             LearnerProfile @relation(fields: [learnerId], references: [userId], onDelete: Restrict)
   lesson              Lesson         @relation(fields: [lessonId], references: [id], onDelete: Cascade)

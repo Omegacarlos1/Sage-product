@@ -26,4 +26,12 @@ Manual webhook follow-up: Paystack verified the latest test payment as successfu
 
 After the helper addition, `npm run ci` passed lint and typecheck, Jest 7 passed, Mocha 33 passed, and runtime smoke. A dummy-key helper run produced the body and 128-character signature as expected.
 
+## M10 update — 2026-11-24
+
+**Reporting period:** 2026-11-24. **Milestone:** M10 learning progress. **Branch:** `feature/M10-learning-progress`. **PR:** pending draft creation. M09 was approved and [PR #9](https://github.com/Omegacarlos1/Sage-product/pull/9) merged; M10 is implemented and awaits review. Evidence: [M10 summary](../milestones/M10-summary.md), [API contract](../api/M10-learning-progress.md), [Postman collection](../../postman/SAGE-M10.postman_collection.json), `tests/integration/progress-m10.test.js`. Commit SHA will be recorded after commit.
+
+Verified completed: learner owned completion, bookmarks, notes, position and resume endpoints; instructor required lesson flag; dynamic required lesson aggregate; local test PostgreSQL migration. No production migration or deployment. `npm run ci` passed lint (0 errors), typecheck, Jest 7 passed/0 failed/0 skipped, Mocha 37 passed/0 failed/0 skipped against `sage_lms_test`, and runtime smoke. Two earlier failing runs found route scope and UUID validation errors, both fixed before the passing run. Postman requests are supplied but were not run manually; expected responses are documented, not live results.
+
+In progress: draft PR and human review. Risks and decisions: confirm frontend contract; `resumeLessonId` is route validated but has no database foreign key; concurrent note and position edits use last writer wins. Next week: review M10, then begin M11 only after approval. Prior Paystack, media storage and contact retention decisions remain open.
+
 Sandbox credentials and dashboard webhook registration remain for a real Paystack test mode delivery. Frontend contract confirmation, M07 production media storage and contact retention scheduling remain open. Concurrent independent checkouts for one course can result in a duplicate charge, which needs operational reconciliation; refund handling belongs to later finance scope. Next: human review of M09 and its draft PR, then M10 only after approval. No live payments, production migration, deployment or merge occurred.
