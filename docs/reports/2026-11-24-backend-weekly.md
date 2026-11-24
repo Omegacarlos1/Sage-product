@@ -1,8 +1,8 @@
 # SAGE LMS backend weekly update — 2026-11-24
 
-**Reporting period:** 2026-11-23 to 2026-11-24. **Milestone:** M09 Paystack payments. **Branch:** `feature/M09-paystack-payments`. **PR:** [Draft #9](https://github.com/Omegacarlos1/Sage-product/pull/9) targets `main`; no merge.
+**Reporting period:** 2026-11-23 to 2026-11-24. **Milestone:** M09 Paystack payments. **Branch:** `feature/M09-paystack-payments`. **PR:** [#9](https://github.com/Omegacarlos1/Sage-product/pull/9) merged into `main` on 2026-11-24; merge commit `6234d20`.
 
-**Approval update:** The user approved M09 on 2026-11-24. PR #9 had a mergeable head and passing Backend CI at approval; use the linked PR for its subsequent status. M10 has not started. A manual signed webhook success result was not supplied, so the recorded payment settlement evidence remains automated tests and read-only verification of one Paystack test-mode transaction.
+**Approval update:** The user approved M09 on 2026-11-24. PR #9 passed both final Backend CI jobs and merged into `main` that day. M10 has not started. A manual signed webhook success result was not supplied, so the recorded payment settlement evidence remains automated tests and read-only verification of one Paystack test-mode transaction.
 
 ## Verified complete and in progress
 
