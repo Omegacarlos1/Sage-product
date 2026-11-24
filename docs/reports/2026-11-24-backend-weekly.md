@@ -1,5 +1,13 @@
 # SAGE LMS backend weekly update — 2026-11-24
 
+## M11 update — 2026-11-24
+
+**Reporting period:** 2026-11-24. **Milestone:** M11 quizzes and assessments. **Branch:** `feature/M11-quizzes-assessments`. **PR:** pending. The local `origin/main` ref contains M10 merge commit `898ccdf`; M11 was created from it. Evidence: [M11 summary](../milestones/M11-summary.md), [API contract](../api/M11-quizzes.md), [Postman collection](../../postman/SAGE-M11.postman_collection.json), `tests/integration/quizzes-m11.test.js`, and migration `20261124150000_m11_quizzes`.
+
+Verified complete: draft quiz authoring, enrolled learner read/start/submit/result, private answer keys before submission, exact-set scoring and pass thresholds, attempt limits, open/close windows, and PostgreSQL serialization of starts. In progress: human review and PR. No production migration, deployment, or merge. Final `npm run ci` passed: lint 0 errors; typecheck passed; Jest 7 passed/0 failed/0 skipped in 3 suites; Mocha 40 passed/0 failed/0 skipped against `sage_lms_test`; runtime smoke passed. The M11 test migration applied locally. Earlier failing runs and fixes are recorded in the summary.
+
+Postman demonstration: `POST /api/v1/quizzes/{quizId}/attempts` with learner bearer token and `{}` expects `201`; `POST /api/v1/quiz-attempts/{attemptId}/submit` with question/option IDs expects `200` with score and answer key; `GET /api/v1/quiz-attempts/{attemptId}/result` expects saved `200`; a new start after reaching limit expects `409 ATTEMPT_LIMIT_REACHED`. These are expected responses, not manual live results. Risks: direct database edits could alter quiz configuration during an attempt; short-answer grading is not enabled; frontend contract confirmation remains open. Next week: review M11, then begin M12 only after approval.
+
 **Reporting period:** 2026-11-23 to 2026-11-24. **Milestone:** M09 Paystack payments. **Branch:** `feature/M09-paystack-payments`. **PR:** [#9](https://github.com/Omegacarlos1/Sage-product/pull/9) merged into `main` on 2026-11-24; merge commit `6234d20`.
 
 **Approval update:** The user approved M09 on 2026-11-24. PR #9 passed both final Backend CI jobs and merged into `main` that day. M10 has not started. A manual signed webhook success result was not supplied, so the recorded payment settlement evidence remains automated tests and read-only verification of one Paystack test-mode transaction.
