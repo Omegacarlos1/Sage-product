@@ -5,6 +5,8 @@ export type AppConfig = {
   databaseUrl: string;
   mediaRoot?: string;
   mediaSigningSecret?: string;
+  paystackSecretKey?: string;
+  paystackWebhookSecret?: string;
 };
 
 export class ConfigurationError extends Error {
@@ -56,5 +58,13 @@ export function readConfig(env: NodeJS.ProcessEnv): AppConfig {
   if (nodeEnv === "production" && (!env.MEDIA_ROOT || !env.MEDIA_SIGNING_SECRET || env.MEDIA_SIGNING_SECRET.length < 32)) {
     throw new ConfigurationError("MEDIA_ROOT and a MEDIA_SIGNING_SECRET of at least 32 characters are required in production.");
   }
-  return { nodeEnv, port, corsOrigins, databaseUrl, mediaRoot: env.MEDIA_ROOT, mediaSigningSecret: env.MEDIA_SIGNING_SECRET };
+  if (env.PAYSTACK_SECRET_KEY && !/^sk_(test|live)_[A-Za-z0-9]+$/.test(env.PAYSTACK_SECRET_KEY)) {
+    throw new ConfigurationError("PAYSTACK_SECRET_KEY must be a Paystack secret key.");
+  }
+  if (nodeEnv === "production" && env.PAYSTACK_SECRET_KEY && !env.PAYSTACK_WEBHOOK_SECRET) {
+    throw new ConfigurationError("PAYSTACK_WEBHOOK_SECRET is required with Paystack in production.");
+  }
+  return { nodeEnv, port, corsOrigins, databaseUrl, mediaRoot: env.MEDIA_ROOT, mediaSigningSecret: env.MEDIA_SIGNING_SECRET,
+    ...(env.PAYSTACK_SECRET_KEY ? { paystackSecretKey: env.PAYSTACK_SECRET_KEY } : {}),
+    ...(env.PAYSTACK_WEBHOOK_SECRET ? { paystackWebhookSecret: env.PAYSTACK_WEBHOOK_SECRET } : {}) };
 }
