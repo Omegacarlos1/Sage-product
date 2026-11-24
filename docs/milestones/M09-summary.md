@@ -22,6 +22,8 @@ Proposed endpoints: `POST /api/v1/courses/:id/checkout`, `POST /api/v1/payments/
 
 Final `npm run ci` passed: lint 0 errors; TypeScript typecheck passed; Jest 2 suites with 6 passed/0 failed/0 skipped; Mocha 32 passed/0 failed/0 skipped against local PostgreSQL `sage_lms_test`; runtime smoke passed. `npm run db:migrate:test` found no pending migrations on the final run, after the first run applied M09. `npm run db:migrate:dev:apply` applied the migration to `sage_lms_dev`. `node -e "JSON.parse(...)"` confirmed the Postman collection is valid JSON; `git diff --check` reported no whitespace errors. Tests cover checkout idempotency, cross user key conflict, bad signature, failed status, wrong amount, replay, own transaction history and denied access before settlement.
 
+GitHub Backend CI `verify` passed on both the [push run](https://github.com/Omegacarlos1/Sage-product/actions/runs/45369535886/job/138359903611) and [PR run](https://github.com/Omegacarlos1/Sage-product/actions/runs/45369543600/job/138359933960) for the M09 implementation. Those checks did not contact Paystack.
+
 ## Security, blockers and learning notes
 
 The checkout amount comes from the stored course; the bearer session supplies identity. The client never supplies a payment result. The webhook validates raw signed bytes, then independently verifies with Paystack before one atomic settlement. Secrets are configuration values and `.env.example` placeholders only; neither raw webhook bodies nor credentials are logged. Local signed requests cannot establish a real payment because the server also calls Paystack verification.

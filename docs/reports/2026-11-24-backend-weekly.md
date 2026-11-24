@@ -10,6 +10,8 @@ The user confirmed Paystack and NGN. M09 implementation is ready for review: NGN
 
 Final `npm run ci` passed: lint 0 errors; typecheck passed; Jest 6 passed, 0 failed, 0 skipped in 2 suites; Mocha 32 passed, 0 failed, 0 skipped against `sage_lms_test`; runtime smoke passed. `npm run db:migrate:dev:apply` applied M09 migration locally; the final test migration check found no pending migrations. No live or Paystack sandbox requests were sent and Postman was not run manually.
 
+GitHub Backend CI `verify` passed on the [push run](https://github.com/Omegacarlos1/Sage-product/actions/runs/45369535886/job/138359903611) and [PR run](https://github.com/Omegacarlos1/Sage-product/actions/runs/45369543600/job/138359933960).
+
 Postman demonstration: `POST /api/v1/courses/{paidNgnCourseId}/checkout` with a learner bearer token, `Idempotency-Key`, and `{}` expects `201` with a Paystack checkout URL when configured; without a key it expects `503`. An invalid `POST /api/v1/payments/paystack/webhook` signature expects `401`. A properly signed local simulation requires private signing credentials and a Paystack verified transaction; it cannot itself prove payment. `GET /api/v1/learners/me/transactions` expects `200` with only the caller's records. Exact examples are in the API contract.
 
 ## Blockers, risks and next week
