@@ -5,6 +5,7 @@ const request = require("supertest");
 const { createApp } = require("../../dist/app");
 const { createDatabaseClient } = require("../../dist/services/database");
 const { issueSession } = require("../../dist/services/auth");
+const { PaystackInvalidEmailError } = require("../../dist/services/paystack");
 
 const url = process.env.TEST_DATABASE_URL;
 if (!url || new URL(url).pathname !== "/sage_lms_test" || !["localhost", "127.0.0.1"].includes(new URL(url).hostname)) throw new Error("M09 requires local sage_lms_test.");
@@ -56,6 +57,17 @@ describe("M09 Paystack payments", function () {
     assert.equal(second.body.payment.id, first.body.payment.id);
     await request(app).post(route()).set("Authorization", `Bearer ${otherToken}`).set("Idempotency-Key", "m09-test-key").send({}).expect(409);
   });
+  it("returns a useful error when Paystack rejects the learner email", async function () {
+    const initialize = gateway.initialize;
+    gateway.initialize = async () => { throw new PaystackInvalidEmailError(); };
+    try {
+      const response = await request(app).post(route()).set("Authorization", `Bearer ${otherToken}`).set("Idempotency-Key", "m09-invalid-email-key").send({}).expect(422);
+      assert.equal(response.body.error.code, "PAYMENT_EMAIL_INVALID");
+      const payment = await db.payment.findUniqueOrThrow({ where: { idempotencyKey: "m09-invalid-email-key" } });
+      assert.equal(payment.status, "FAILED");
+      assert.equal(await db.enrollment.count({ where: { learnerId: other.id, courseId: course.id } }), 0);
+    } finally { gateway.initialize = initialize; }
+  });
   it("rejects tampering and cannot grant access on an unsuccessful verification", async function () {
     const payment = await db.payment.findUniqueOrThrow({ where: { idempotencyKey: "m09-test-key" } });
     const event = { event: "charge.success", data: { reference: payment.providerReference } };
@@ -79,7 +91,9 @@ describe("M09 Paystack payments", function () {
     assert.equal(mine.body.transactions[0].status, "SUCCEEDED");
     assert.equal(mine.body.transactions[0].reference, payment.providerReference);
     const theirs = await request(app).get("/api/v1/learners/me/transactions").set("Authorization", `Bearer ${otherToken}`).expect(200);
-    assert.deepEqual(theirs.body.transactions, []);
+    assert.equal(theirs.body.transactions.length, 1);
+    assert.equal(theirs.body.transactions[0].status, "FAILED");
+    assert.notEqual(theirs.body.transactions[0].reference, payment.providerReference);
     await request(app).get(`/api/v1/lessons/${lesson.id}/access`).set("Authorization", `Bearer ${otherToken}`).expect(403);
   });
 });

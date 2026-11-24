@@ -4,7 +4,7 @@ import type { PrismaClient } from "../generated/prisma/client";
 import type { AppConfig } from "../config/env";
 import { authMiddleware, requireRole } from "./auth";
 import { isFreeCourse } from "../services/entitlements";
-import { PaystackGateway, type PaymentGateway, validPaystackSignature } from "../services/paystack";
+import { PaystackGateway, PaystackInvalidEmailError, type PaymentGateway, validPaystackSignature } from "../services/paystack";
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const error = (res: express.Response, status: number, code: string) => res.status(status).json({ error: { code, message: code.replaceAll("_", " ").toLowerCase() + "." } });
@@ -66,8 +66,9 @@ export function paymentRouter(db: PrismaClient, config: AppConfig, gateway: Paym
         const initialized = await gateway.initialize({ email: user.email, amount: amount * 100, reference });
         const updated = await db.payment.update({ where: { id: payment.id }, data: { checkoutUrl: initialized.authorizationUrl } });
         res.status(201).json({ payment: view(updated) });
-      } catch {
+      } catch (cause) {
         await db.payment.updateMany({ where: { id: payment.id, status: "PENDING" }, data: { status: "FAILED" } });
+        if (cause instanceof PaystackInvalidEmailError) { error(res, 422, "PAYMENT_EMAIL_INVALID"); return; }
         error(res, 502, "PAYMENT_PROVIDER_ERROR");
       }
     } catch (cause) {

@@ -16,4 +16,8 @@ Postman demonstration: `POST /api/v1/courses/{paidNgnCourseId}/checkout` with a 
 
 ## Blockers, risks and next week
 
+Manual checkout follow-up: a local test returned `502` because Paystack rejected the learner's `example.test` email with HTTP 400. A read-only verification request authenticated the test key; one test-mode checkout initialization reproduced the validation response without charging a card. The API now gives `422 PAYMENT_EMAIL_INVALID` for this known error. Final tests for this follow-up are recorded in the M09 summary.
+
+Follow-up `npm run ci` passed lint and typecheck, Jest 7 passed/0 failed/0 skipped, Mocha 33 passed/0 failed/0 skipped, and runtime smoke. The first follow-up run had one integration assertion failure caused by a new failed payment in the second learner's own history; the assertion was corrected before the passing rerun.
+
 Sandbox credentials and dashboard webhook registration remain for a real Paystack test mode delivery. Frontend contract confirmation, M07 production media storage and contact retention scheduling remain open. Concurrent independent checkouts for one course can result in a duplicate charge, which needs operational reconciliation; refund handling belongs to later finance scope. Next: human review of M09 and its draft PR, then M10 only after approval. No live payments, production migration, deployment or merge occurred.

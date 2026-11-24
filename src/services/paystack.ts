@@ -6,6 +6,10 @@ export interface PaymentGateway {
   verify(reference: string): Promise<VerifiedTransaction>;
 }
 
+export class PaystackInvalidEmailError extends Error {
+  constructor() { super("Paystack rejected the learner email address."); }
+}
+
 export class PaystackGateway implements PaymentGateway {
   constructor(private readonly secretKey: string) {}
 
@@ -16,7 +20,14 @@ export class PaystackGateway implements PaymentGateway {
       ...(body ? { body: JSON.stringify(body) } : {}),
       signal: AbortSignal.timeout(10000),
     });
-    if (!response.ok) throw new Error("Paystack request failed");
+    if (!response.ok) {
+      // Expose only this known, actionable validation case. Never log the provider body or API key.
+      if (response.status === 400) {
+        const failure: unknown = await response.json().catch(() => null);
+        if (failure && typeof failure === "object" && "message" in failure && typeof failure.message === "string" && /email.*valid email/i.test(failure.message)) throw new PaystackInvalidEmailError();
+      }
+      throw new Error("Paystack request failed");
+    }
     const result: unknown = await response.json();
     if (!result || typeof result !== "object" || !("status" in result) || result.status !== true || !("data" in result)) throw new Error("Invalid Paystack response");
     return result.data;
