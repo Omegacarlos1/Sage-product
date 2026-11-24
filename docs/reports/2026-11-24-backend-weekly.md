@@ -2,7 +2,7 @@
 
 ## M11 update — 2026-11-24
 
-**Reporting period:** 2026-11-24. **Milestone:** M11 quizzes and assessments. **Branch:** `feature/M11-quizzes-assessments`. **PR:** pending. The local `origin/main` ref contains M10 merge commit `898ccdf`; M11 was created from it. Evidence: [M11 summary](../milestones/M11-summary.md), [API contract](../api/M11-quizzes.md), [Postman collection](../../postman/SAGE-M11.postman_collection.json), `tests/integration/quizzes-m11.test.js`, and migration `20261124150000_m11_quizzes`.
+**Reporting period:** 2026-11-24. **Milestone:** M11 quizzes and assessments. **Branch:** `feature/M11-quizzes-assessments`. **PR:** [draft #13](https://github.com/Omegacarlos1/Sage-product/pull/13), open and unmerged. The local `origin/main` ref contains M10 merge commit `898ccdf`; M11 was created from it. Evidence: implementation commit [`26a874e`](https://github.com/Omegacarlos1/Sage-product/commit/26a874e), [M11 summary](../milestones/M11-summary.md), [API contract](../api/M11-quizzes.md), [Postman collection](../../postman/SAGE-M11.postman_collection.json), `tests/integration/quizzes-m11.test.js`, and migration `20261124150000_m11_quizzes`.
 
 Verified complete: draft quiz authoring, enrolled learner read/start/submit/result, private answer keys before submission, exact-set scoring and pass thresholds, attempt limits, open/close windows, and PostgreSQL serialization of starts. In progress: human review and PR. No production migration, deployment, or merge. Final `npm run ci` passed: lint 0 errors; typecheck passed; Jest 7 passed/0 failed/0 skipped in 3 suites; Mocha 40 passed/0 failed/0 skipped against `sage_lms_test`; runtime smoke passed. The M11 test migration applied locally. Earlier failing runs and fixes are recorded in the summary.
 

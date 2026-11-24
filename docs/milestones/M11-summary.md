@@ -24,6 +24,6 @@ The quiz configuration is frozen through the public API, but direct database wri
 
 ## PR and next prompt
 
-PR status: not yet opened at report creation. M11 needs review and human approval before merge. No M12 work has started.
+[Draft PR #13](https://github.com/Omegacarlos1/Sage-product/pull/13) targets `main` and remains open, unmerged. Implementation commit: `26a874e`; PR description commit: `4f010f4`. M11 needs review and human approval before merge. No M12 work has started.
 
 > Read `AGENTS.md`, the original PRD, `SAGE_Revised_Backend_Milestones.docx`, and `docs/milestones/M11-summary.md`; inspect branch, working tree, and schema. After M11 approval, work only on **M12: Certificates and verification** on `feature/M12-certificates-verification`. Define issuance eligibility using required lesson progress and assessment results, generate verifiable certificates with unique identifiers, provide learner download and public verification without leaking private data, and test authorization, repeat issuance, and eligibility edge cases against PostgreSQL. Update API docs and exact Postman scenarios, run lint/typecheck/Jest/Mocha, write the M12 summary and weekly report, push a reviewable draft PR, and stop for approval without merging.

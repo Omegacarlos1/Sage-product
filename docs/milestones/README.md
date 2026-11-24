@@ -12,6 +12,6 @@
 | M08 | Enrollments and entitlements | User approved; draft PR #8 open, unmerged | `feature/M08-enrollments-entitlements` | [M08 summary](M08-summary.md) |
 | M09 | Paystack payments | Approved; PR #9 merged | `feature/M09-paystack-payments` | [M09 summary](M09-summary.md) |
 | M10 | Learning progress | Merged into local `origin/main` ref (`898ccdf`) | `feature/M10-learning-progress` | [M10 summary](M10-summary.md) |
-| M11 | Quizzes and assessments | Implemented; awaiting review | `feature/M11-quizzes-assessments` | [M11 summary](M11-summary.md) |
+| M11 | Quizzes and assessments | Implemented; [draft PR #13](https://github.com/Omegacarlos1/Sage-product/pull/13) open | `feature/M11-quizzes-assessments` | [M11 summary](M11-summary.md) |
 
 Later milestones remain as defined in `SAGE_Revised_Backend_Milestones.docx` and `SAGE_Codex_Milestone_Prompts.md`.
