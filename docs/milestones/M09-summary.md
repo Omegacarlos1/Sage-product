@@ -1,6 +1,6 @@
 # M09 — Paystack payment gateway and transactions
 
-**Status:** Implemented for review on `feature/M09-paystack-payments` on 2026-11-24. The user confirmed Paystack and NGN. [Draft PR #9](https://github.com/Omegacarlos1/Sage-product/pull/9) targets `main`; no live charge, production migration or deployment occurred. GitHub confirms M08 PR #8 merged on 2026-11-23.
+**Status:** The user approved M09 on 2026-11-24. Implemented on `feature/M09-paystack-payments`; [PR #9](https://github.com/Omegacarlos1/Sage-product/pull/9) targets `main` and passed Backend CI. No live charge, production migration or deployment occurred. GitHub confirms M08 PR #8 merged on 2026-11-23.
 
 ## Objectives and implementation
 
@@ -40,6 +40,6 @@ Helper verification: `npm run ci` passed lint, typecheck, Jest 7/7, Mocha 33/33 
 
 ## PR and next prompt
 
-Commit [`5b24543`](https://github.com/Omegacarlos1/Sage-product/commit/5b24543) was pushed to `origin/feature/M09-paystack-payments`. [Draft PR #9](https://github.com/Omegacarlos1/Sage-product/pull/9) targets `main` and is open for review. Its description records changes, tests, risks and remaining issues. No merge or M10 implementation is authorized here.
+Commits [`5b24543`](https://github.com/Omegacarlos1/Sage-product/commit/5b24543), `4711d04` and `7646617` were pushed to `origin/feature/M09-paystack-payments`. [PR #9](https://github.com/Omegacarlos1/Sage-product/pull/9) targets `main`; at approval it was an open draft with passing Backend CI and a mergeable head. The user approved M09 on 2026-11-24. The PR page is the source of truth for its subsequent merge status. M10 implementation has not started.
 
 > Read `AGENTS.md`, the original PRD, `SAGE_Revised_Backend_Milestones.docx`, and `docs/milestones/M09-summary.md`; inspect the branch and schema. After M09 approval, work only on **M10: Learning progress** on `feature/M10-learning-progress`. Track lesson completion, bookmarks, notes and resume point; compute course completion from instructor requirements and enforce active enrollment and paid entitlement. Ensure other users cannot edit progress, repeated completion is idempotent, and aggregate progress is consistent. Add exact Postman requests and responses, API documentation, PostgreSQL backed Mocha tests, Jest as appropriate, and run lint, typecheck and the full CI suite. Update `docs/milestones/M10-summary.md`, the weekly report, tracker and AGENTS.md; push and prepare a draft PR. Stop for review; do not auto merge.
