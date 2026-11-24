@@ -1,6 +1,6 @@
 # M09 — Paystack payment gateway and transactions
 
-**Status:** Implemented for review on `feature/M09-paystack-payments` on 2026-11-24. The user confirmed Paystack and NGN. No live charge, production migration or deployment occurred. M08 draft PR #8 remains open and unmerged.
+**Status:** Implemented for review on `feature/M09-paystack-payments` on 2026-11-24. The user confirmed Paystack and NGN. [Draft PR #9](https://github.com/Omegacarlos1/Sage-product/pull/9) targets `main`; no live charge, production migration or deployment occurred. GitHub confirms M08 PR #8 merged on 2026-11-23.
 
 ## Objectives and implementation
 
@@ -30,6 +30,6 @@ Sandbox keys, a dashboard webhook signing secret, public webhook registration, a
 
 ## PR and next prompt
 
-PR status and link will be recorded after branch push and draft PR preparation. No merge or M10 implementation is authorized here.
+Commit [`5b24543`](https://github.com/Omegacarlos1/Sage-product/commit/5b24543) was pushed to `origin/feature/M09-paystack-payments`. [Draft PR #9](https://github.com/Omegacarlos1/Sage-product/pull/9) targets `main` and is open for review. Its description records changes, tests, risks and remaining issues. No merge or M10 implementation is authorized here.
 
 > Read `AGENTS.md`, the original PRD, `SAGE_Revised_Backend_Milestones.docx`, and `docs/milestones/M09-summary.md`; inspect the branch and schema. After M09 approval, work only on **M10: Learning progress** on `feature/M10-learning-progress`. Track lesson completion, bookmarks, notes and resume point; compute course completion from instructor requirements and enforce active enrollment and paid entitlement. Ensure other users cannot edit progress, repeated completion is idempotent, and aggregate progress is consistent. Add exact Postman requests and responses, API documentation, PostgreSQL backed Mocha tests, Jest as appropriate, and run lint, typecheck and the full CI suite. Update `docs/milestones/M10-summary.md`, the weekly report, tracker and AGENTS.md; push and prepare a draft PR. Stop for review; do not auto merge.

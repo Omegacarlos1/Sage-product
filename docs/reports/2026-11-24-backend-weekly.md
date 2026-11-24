@@ -1,10 +1,10 @@
 # SAGE LMS backend weekly update — 2026-11-24
 
-**Reporting period:** 2026-11-23 to 2026-11-24. **Milestone:** M09 Paystack payments. **Branch:** `feature/M09-paystack-payments`. **PR:** Pending draft creation; no merge.
+**Reporting period:** 2026-11-23 to 2026-11-24. **Milestone:** M09 Paystack payments. **Branch:** `feature/M09-paystack-payments`. **PR:** [Draft #9](https://github.com/Omegacarlos1/Sage-product/pull/9) targets `main`; no merge.
 
 ## Verified complete and in progress
 
-The user confirmed Paystack and NGN. M09 implementation is ready for review: NGN checkout initialization, local payment records, signed webhook validation, server verification, atomic idempotent settlement/enrollment and own transaction history. Evidence: [M09 summary](../milestones/M09-summary.md), [API contract](../api/M09-payments.md), [Postman collection](../../postman/SAGE-M09.postman_collection.json), and `tests/integration/payments-m09.test.js`. The migration applied to local development and test PostgreSQL. Final commit SHA and PR link will be added after push.
+The user confirmed Paystack and NGN. M09 implementation is ready for review: NGN checkout initialization, local payment records, signed webhook validation, server verification, atomic idempotent settlement/enrollment and own transaction history. Evidence: commit [`5b24543`](https://github.com/Omegacarlos1/Sage-product/commit/5b24543), [draft PR #9](https://github.com/Omegacarlos1/Sage-product/pull/9), [M09 summary](../milestones/M09-summary.md), [API contract](../api/M09-payments.md), [Postman collection](../../postman/SAGE-M09.postman_collection.json), and `tests/integration/payments-m09.test.js`. The migration applied to local development and test PostgreSQL. GitHub confirms M08 PR #8 merged on 2026-11-23.
 
 ## Actual tests and Postman demonstration
 
