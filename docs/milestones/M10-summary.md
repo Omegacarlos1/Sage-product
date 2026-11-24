@@ -24,6 +24,6 @@ Identity comes from the bearer session, and every route checks active enrollment
 
 ## PR and next prompt
 
-Draft PR status and commit SHA: pending GitHub push. Review is required before merge. Do not start M11 before M10 approval.
+[Draft PR #11](https://github.com/Omegacarlos1/Sage-product/pull/11) targets `main` and remains open, unmerged. Implementation commit: [`e08aa59`](https://github.com/Omegacarlos1/Sage-product/commit/e08aa59ce6c98ed4561cd1f3153345ae4c095e53). Review is required before merge. Do not start M11 before M10 approval.
 
 > Read `AGENTS.md`, the original PRD, `SAGE_Revised_Backend_Milestones.docx`, and `docs/milestones/M10-summary.md`; inspect branch and schema. After M10 approval, work only on **M11: Quizzes and assessments** on `feature/M11-quizzes-assessments`. Implement quiz, question and option management, attempt limits, time windows, deterministic scoring and pass thresholds. Never expose correct answers before submission. Enforce learner entitlements and instructor ownership; test attempts, timing, scoring and unauthorized access against PostgreSQL. Update API docs and exact Postman scenarios, run lint/typecheck/Jest/Mocha, write the M11 summary and weekly report, push a reviewable draft PR, and stop for approval without merging.
