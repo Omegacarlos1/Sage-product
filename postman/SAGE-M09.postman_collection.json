@@ -1,0 +1,25 @@
+{
+  "info": { "name": "SAGE M09 Paystack payments", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api/v1" },
+    { "key": "paidCourseId", "value": "replace-with-published-ngn-course-uuid" },
+    { "key": "learnerToken", "value": "" },
+    { "key": "idempotencyKey", "value": "m09-postman-attempt-001" },
+    { "key": "paymentReference", "value": "replace-with-checkout-reference" },
+    { "key": "paystackWebhookSecret", "value": "" }
+  ],
+  "item": [
+    { "name": "Checkout - expected 201 or 503 if unconfigured", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Idempotency-Key", "value": "{{idempotencyKey}}" }, { "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/courses/{{paidCourseId}}/checkout", "body": { "mode": "raw", "raw": "{}", "options": { "raw": { "language": "json" } } } } },
+    { "name": "Invalid webhook - expected 401", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "Paystack-Signature", "value": "t=1,v1=whk_local:invalid" }], "url": "{{baseUrl}}/payments/paystack/webhook", "body": { "mode": "raw", "raw": "{\"event\":\"charge.success\",\"data\":{\"reference\":\"{{paymentReference}}\"}}", "options": { "raw": { "language": "json" } } } } },
+    { "name": "Signed webhook simulation - local only", "event": [{ "listen": "prerequest", "script": { "type": "text/javascript", "exec": [
+      "const secret = pm.environment.get('paystackWebhookSecret');",
+      "if (!secret) throw new Error('Set paystackWebhookSecret privately in the environment');",
+      "const raw = pm.variables.replaceIn(pm.request.body.raw);",
+      "pm.request.body.update(raw);",
+      "const t = Math.floor(Date.now() / 1000);",
+      "const digest = CryptoJS.HmacSHA512(t + '.' + raw, secret).toString(CryptoJS.enc.Hex);",
+      "pm.request.headers.upsert({key: 'Paystack-Signature', value: `t=${t},v1=whk_local:${digest}`});"
+    ] } }], "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/payments/paystack/webhook", "body": { "mode": "raw", "raw": "{\"event\":\"charge.success\",\"data\":{\"reference\":\"{{paymentReference}}\"}}", "options": { "raw": { "language": "json" } } } } },
+    { "name": "Transaction history - expected 200", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Accept", "value": "application/json" }], "url": "{{baseUrl}}/learners/me/transactions" } }
+  ]
+}

@@ -155,6 +155,8 @@ The rest of the milestones implement the *full PRD* and may be shared with other
 
 ### M10 — Learning progress
 
+**M09 handoff:** Paystack and NGN were confirmed on 2026-11-24. See `docs/milestones/M09-summary.md` for implementation and review status. Start M10 only after M09 approval.
+
 **Copy into Codex:**
 
 > Work on the SAGE LMS backend as a junior developer, following the project requirements and existing coding standards. Execute **Milestone M10: Learning progress** only.

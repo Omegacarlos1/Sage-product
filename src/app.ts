@@ -8,18 +8,22 @@ import { categoryRouter, courseRouter } from "./routes/courses";
 import { publicSubmissionsRouter } from "./routes/public-submissions";
 import { mediaRouter } from "./routes/media";
 import { enrollmentRouter } from "./routes/enrollments";
+import { paymentRouter } from "./routes/payments";
+import type { PaymentGateway } from "./services/paystack";
 import { LocalMediaStorage } from "./services/media-storage";
 import { randomBytes } from "node:crypto";
 import path from "node:path";
 
 export function createApp(config: AppConfig, checkDatabase: () => Promise<void> = async () => {
   throw new Error("Database health check is not configured.");
-}, database?: PrismaClient) {
+}, database?: PrismaClient, paymentGateway?: PaymentGateway) {
   const app = express();
 
   app.disable("x-powered-by");
   app.use(cors({ origin: config.corsOrigins.length > 0 ? config.corsOrigins : false }));
+  app.use("/api/v1/payments/paystack/webhook", express.raw({ type: "application/json", limit: "100kb" }));
   app.use(express.json({ limit: "100kb" }));
+  if (database) app.use("/api/v1", paymentRouter(database, config, paymentGateway));
   app.use("/api/v1/media/:key/upload", express.raw({ type: ["video/mp4", "audio/mpeg", "application/pdf"], limit: "100mb" }));
 
   app.get("/api/v1/health", (_request: Request, response: Response) => {

@@ -1,0 +1,2 @@
+ALTER TABLE "courses" ALTER COLUMN "currency" SET DEFAULT 'NGN';
+ALTER TABLE "payments" ADD COLUMN "checkoutUrl" VARCHAR(500), ADD COLUMN "settledAt" TIMESTAMPTZ(3);
