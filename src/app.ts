@@ -9,6 +9,7 @@ import { publicSubmissionsRouter } from "./routes/public-submissions";
 import { mediaRouter } from "./routes/media";
 import { enrollmentRouter } from "./routes/enrollments";
 import { paymentRouter } from "./routes/payments";
+import { progressRouter } from "./routes/progress";
 import type { PaymentGateway } from "./services/paystack";
 import { LocalMediaStorage } from "./services/media-storage";
 import { randomBytes } from "node:crypto";
@@ -44,6 +45,7 @@ export function createApp(config: AppConfig, checkDatabase: () => Promise<void> 
 
   if (database) {
     app.use("/api/v1", enrollmentRouter(database));
+    app.use("/api/v1", progressRouter(database));
     app.use("/api/v1", mediaRouter(database, new LocalMediaStorage(config.mediaRoot ?? path.resolve(".media-private"), config.mediaSigningSecret ?? randomBytes(32).toString("hex"))));
     app.use("/api/v1", publicSubmissionsRouter(database));
     app.use("/api/v1/auth", authRouter(database, config));

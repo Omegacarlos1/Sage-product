@@ -1,0 +1,10 @@
+{
+  "info": { "name": "SAGE M10 Learning Progress", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [{ "key": "baseUrl", "value": "http://localhost:3000/api/v1" }, { "key": "learnerToken", "value": "" }, { "key": "courseId", "value": "" }, { "key": "lessonId", "value": "" }],
+  "item": [
+    { "name": "Mark complete", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/lessons/{{lessonId}}/progress", "body": { "mode": "raw", "raw": "{\"completed\":true,\"bookmarked\":true,\"note\":\"Review this example\",\"lastPositionSeconds\":30}" } } },
+    { "name": "Get aggregate progress", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }], "url": "{{baseUrl}}/courses/{{courseId}}/progress" } },
+    { "name": "Set resume point", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Content-Type", "value": "application/json" }], "url": "{{baseUrl}}/courses/{{courseId}}/resume", "body": { "mode": "raw", "raw": "{\"lessonId\":\"{{lessonId}}\"}" } } },
+    { "name": "Unauthorized progress", "request": { "method": "GET", "url": "{{baseUrl}}/courses/{{courseId}}/progress" } }
+  ]
+}
