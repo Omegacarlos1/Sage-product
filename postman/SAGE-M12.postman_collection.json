@@ -1,0 +1,17 @@
+{
+  "info": { "name": "SAGE M12 certificates", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "learnerToken", "value": "" },
+    { "key": "courseId", "value": "" },
+    { "key": "certificateId", "value": "" },
+    { "key": "verificationCode", "value": "" },
+    { "key": "invalidCode", "value": "00000000-0000-4000-8000-000000000000" }
+  ],
+  "item": [
+    { "name": "Issue eligible certificate", "request": { "method": "POST", "url": "{{baseUrl}}/api/v1/courses/{{courseId}}/certificate", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" } }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('201 issued', function () { pm.response.to.have.status(201); pm.collectionVariables.set('certificateId', pm.response.json().certificate.id); pm.collectionVariables.set('verificationCode', pm.response.json().certificate.verificationCode); });"] } }] },
+    { "name": "Verify certificate", "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/certificates/verify/{{verificationCode}}" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('200 public safe record', function () { pm.response.to.have.status(200); pm.expect(pm.response.json().certificate.valid).to.eql(true); pm.expect(pm.response.text()).not.to.include('learnerId'); pm.expect(pm.response.text()).not.to.include('email'); });"] } }] },
+    { "name": "Invalid certificate", "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/certificates/verify/{{invalidCode}}" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('404 unknown code', function () { pm.response.to.have.status(404); pm.expect(pm.response.json().error.code).to.eql('NOT_FOUND'); });"] } }] },
+    { "name": "Retrieve own certificate", "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/certificates/{{certificateId}}", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }] } }
+  ]
+}
