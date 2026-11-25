@@ -39,6 +39,8 @@ M01 and M02 are implemented. M03 authentication and role permissions and M04 pro
 
 M07 was approved by the user on 2026-11-23. It is implemented on `feature/M07-media-lesson-access`; draft PR #7 targets `main` and remains open, unmerged. Local PostgreSQL verification and the unresolved production storage decision are tracked in `docs/milestones/M07-summary.md`. The user approved M08 on 2026-11-23, and GitHub confirms PR #8 merged into `main` that day. M09 uses Paystack and NGN, was approved by the user on 2026-11-24, and [PR #9](https://github.com/Omegacarlos1/Sage-product/pull/9) merged into `main` that day after Backend CI passed. See `docs/milestones/M09-summary.md`. M10 merged at `898ccdf`; M11 was approved and [PR #13](https://github.com/Omegacarlos1/Sage-product/pull/13) merged at `3e390c1` on 2026-11-25. M12 certificates are implemented on `feature/M12-certificates-verification` and await review. See `docs/milestones/M12-summary.md`. Do not start M13 before M12 approval.
 
+M13 was requested directly by the user on 2026-11-25 despite M12 still awaiting review. It is implemented on `feature/M13-reviews-ratings` based on M12 and awaits human review. See `docs/milestones/M13-summary.md`. Do not start M14 before M13 approval.
+
 ## Git and GitHub Development Workflow
 
 All backend development must follow a milestone-based Git workflow.
