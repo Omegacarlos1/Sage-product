@@ -1,6 +1,6 @@
 # M14 — Refunds, instructor sales and payouts
 
-**Status:** Implemented on `feature/M14-refunds-earnings-payouts`; awaiting human review. Based on `origin/main` at `1e1e69f`, which merged approved M13 PR #16. No deployment, live refund, transfer, or merge.
+**Status:** Implemented on `feature/M14-refunds-earnings-payouts`; [draft PR #18](https://github.com/Omegacarlos1/Sage-product/pull/18) awaits human review. Based on `origin/main` at `1e1e69f`, which merged approved M13 PR #16. No deployment, live refund, transfer, or merge.
 
 ## Objectives and implemented work
 
@@ -24,7 +24,7 @@ Added `src/routes/finance.ts`, `tests/integration/finance-m14.test.js`, [API con
 
 ## Learning notes and PR
 
-The database unique constraint protects duplicate refund requests, including concurrent calls. A per instructor transaction lock makes the payout hold check atomic against other payout requests. Gross sales alone cannot establish an instructor entitlement without a finance policy or settlement records. PR status/link: draft PR to be added after push; do not merge before human approval.
+The database unique constraint protects duplicate refund requests, including concurrent calls. A per instructor transaction lock makes the payout hold check atomic against other payout requests. Gross sales alone cannot establish an instructor entitlement without a finance policy or settlement records. Implementation commit: `9d920ff`. PR status/link: [draft PR #18](https://github.com/Omegacarlos1/Sage-product/pull/18); do not merge before human approval.
 
 ## Ready-to-paste M15 prompt
 
