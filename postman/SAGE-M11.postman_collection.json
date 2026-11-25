@@ -1,0 +1,19 @@
+{
+  "info": { "name": "SAGE M11 quizzes", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "learnerToken", "value": "" },
+    { "key": "quizId", "value": "" },
+    { "key": "attemptId", "value": "" },
+    { "key": "questionId", "value": "" },
+    { "key": "optionId", "value": "" }
+  ],
+  "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{learnerToken}}", "type": "string" }] },
+  "item": [
+    { "name": "Read quiz without answers", "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/quizzes/{{quizId}}" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('200 and no answer key', function () { pm.response.to.have.status(200); pm.expect(pm.response.text()).not.to.include('isCorrect'); pm.expect(pm.response.text()).not.to.include('correctOptionIds'); });"] } }] },
+    { "name": "Start quiz", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": "{{baseUrl}}/api/v1/quizzes/{{quizId}}/attempts" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('201 with safe quiz', function () { pm.response.to.have.status(201); pm.expect(pm.response.text()).not.to.include('isCorrect'); pm.collectionVariables.set('attemptId', pm.response.json().attempt.id); });"] } }] },
+    { "name": "Submit answers", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"answers\":[{\"questionId\":\"{{questionId}}\",\"optionIds\":[\"{{optionId}}\"]}]}" }, "url": "{{baseUrl}}/api/v1/quiz-attempts/{{attemptId}}/submit" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('200 scored result', function () { pm.response.to.have.status(200); pm.expect(pm.response.json().result.score).to.be.a('number'); });"] } }] },
+    { "name": "View result", "request": { "method": "GET", "url": "{{baseUrl}}/api/v1/quiz-attempts/{{attemptId}}/result" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('200 saved result', function () { pm.response.to.have.status(200); pm.expect(pm.response.json().result.attemptId).to.eql(pm.collectionVariables.get('attemptId')); });"] } }] },
+    { "name": "Attempt limit", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": "{{baseUrl}}/api/v1/quizzes/{{quizId}}/attempts" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('409 limit reached', function () { pm.response.to.have.status(409); pm.expect(pm.response.json().error.code).to.eql('ATTEMPT_LIMIT_REACHED'); });"] } }] }
+  ]
+}

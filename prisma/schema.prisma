@@ -352,6 +352,8 @@ model Quiz {
   passingScore     Decimal        @default(70) @db.Decimal(5, 2)
   attemptLimit     Int?
   timeLimitSeconds Int?
+  opensAt          DateTime?      @db.Timestamptz(3)
+  closesAt         DateTime?      @db.Timestamptz(3)
   createdAt        DateTime       @default(now()) @db.Timestamptz(3)
   updatedAt        DateTime       @updatedAt @db.Timestamptz(3)
   course           Course         @relation(fields: [courseId], references: [id], onDelete: Cascade)
@@ -414,6 +416,7 @@ model QuizAnswer {
   attemptId        String       @db.Uuid
   questionId       String       @db.Uuid
   selectedOptionId String?      @db.Uuid
+  selectedOptionIds String[]     @default([]) @db.Uuid
   textAnswer       String?      @db.Text
   attempt          QuizAttempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
   question         QuizQuestion @relation(fields: [questionId], references: [id], onDelete: Restrict)
