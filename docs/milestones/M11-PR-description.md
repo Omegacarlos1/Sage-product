@@ -11,6 +11,6 @@
 
 ## Risks and remaining decisions
 
-Direct database edits to a published quiz could change scoring content during an attempt; the API has no quiz editing route. Short-answer grading is deferred pending deterministic rules. Development and production databases have not been migrated. Frontend contract confirmation remains open.
+Direct database edits to a published quiz could change scoring content during an attempt; the API has no quiz editing route. Short-answer grading is deferred pending deterministic rules. Local development PostgreSQL was migrated on 2026-11-25 to resolve a manual Postman `500`; production has not been migrated. Frontend contract confirmation remains open.
 
 Review [M11 summary](M11-summary.md) and [API contract](../api/M11-quizzes.md). Please keep this PR as a draft until human review and milestone approval.
