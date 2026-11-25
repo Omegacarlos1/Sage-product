@@ -1,6 +1,6 @@
 # M13 — Reviews and ratings
 
-**Status:** Implemented on `feature/M13-reviews-ratings`; awaiting review. This branch is based on open M12 work, so its PR must target the M12 branch until M12 is approved and merged. No merge or deployment.
+**Status:** Implemented on `feature/M13-reviews-ratings`; awaiting review. M12 PR #15 merged into `main` after M13 implementation began; M13 targets `main`. No merge or deployment.
 
 ## Objectives and implementation
 
@@ -24,7 +24,7 @@ Added `src/routes/reviews.ts`, `tests/integration/reviews-m13.test.js`, [API con
 
 ## Learning notes and PR
 
-Database constraints protect concurrent duplicate and out-of-range writes; application validation gives clearer errors. A repeatable-read snapshot keeps the list and aggregate aligned during concurrent moderation. PR status/link: pending branch push and draft PR creation; GitHub API access from the local shell is currently blocked by network sandboxing. Do not merge without human approval.
+Database constraints protect concurrent duplicate and out-of-range writes; application validation gives clearer errors. A repeatable-read snapshot keeps the list and aggregate aligned during concurrent moderation. PR status/link: branch pushed; draft PR creation pending. Do not merge without human approval.
 
 ## Ready-to-paste M14 prompt
 

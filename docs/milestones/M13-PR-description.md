@@ -14,4 +14,4 @@
 
 ## Risks and decisions
 
-This is stacked on M12 while draft PR #15 remains open; review M12 first. Confirm whether refunds should hide existing reviews, whether course completion is required, and the moderation appeal process. No production migration, deployment, or merge performed.
+M12 PR #15 has merged into `main`. Confirm whether refunds should hide existing reviews, whether course completion is required, and the moderation appeal process. No production migration, deployment, or merge performed.

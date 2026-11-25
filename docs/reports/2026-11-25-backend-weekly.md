@@ -2,7 +2,7 @@
 
 ## M13 update — 2026-11-25
 
-**Reporting period:** 2026-11-25. **Milestone:** M13 reviews and ratings. **Branch:** `feature/M13-reviews-ratings`, based on open M12 branch. **PR:** pending. Evidence: [M13 summary](../milestones/M13-summary.md), [API contract](../api/M13-reviews.md), [Postman collection](../../postman/SAGE-M13.postman_collection.json), migration `20261125120000_m13_review_moderation`, and `tests/integration/reviews-m13.test.js`.
+**Reporting period:** 2026-11-25. **Milestone:** M13 reviews and ratings. **Branch:** `feature/M13-reviews-ratings`. **PR:** pending. M12 PR #15 merged into `main` after M13 implementation began. Evidence: implementation commit `7e85203`, documentation commit `74e05e4`, [M13 summary](../milestones/M13-summary.md), [API contract](../api/M13-reviews.md), [Postman collection](../../postman/SAGE-M13.postman_collection.json), migration `20261125120000_m13_review_moderation`, and `tests/integration/reviews-m13.test.js`.
 
 Verified completed: learner eligibility and one-review enforcement, edit policy, rating validation, paginated public listing, visible-review aggregate, and admin hide/restore. Local PostgreSQL test migration applied. Final `npm run ci` passed lint, typecheck, Jest 7/0/0, Mocha 45/0/0, and runtime smoke. An earlier full run had 44 Mocha passes and one M03 password-reset timeout; `npm run test:integration` rerun passed 45/0/0. Postman requests are prepared but not manually run. In progress: review and draft PR. Blocked decisions: refund effects on existing reviews and moderation appeals. Next week: obtain M12 and M13 reviews, confirm policies, and only after M13 approval plan M14.
 
