@@ -1,5 +1,11 @@
 # SAGE LMS backend weekly update — 2026-11-25
 
+## M13 update — 2026-11-25
+
+**Reporting period:** 2026-11-25. **Milestone:** M13 reviews and ratings. **Branch:** `feature/M13-reviews-ratings`. **PR:** [draft #16](https://github.com/Omegacarlos1/Sage-product/pull/16), open. M12 PR #15 merged into `main` after M13 implementation began. Evidence: implementation commit `7e85203`, documentation commit `74e05e4`, [M13 summary](../milestones/M13-summary.md), [API contract](../api/M13-reviews.md), [Postman collection](../../postman/SAGE-M13.postman_collection.json), migration `20261125120000_m13_review_moderation`, and `tests/integration/reviews-m13.test.js`.
+
+Verified completed: learner eligibility and one-review enforcement, edit policy, rating validation, paginated public listing, visible-review aggregate, and admin hide/restore. Local PostgreSQL test migration applied. Final `npm run ci` passed lint, typecheck, Jest 7/0/0, Mocha 45/0/0, and runtime smoke. An earlier full run had 44 Mocha passes and one M03 password-reset timeout; `npm run test:integration` rerun passed 45/0/0. Postman requests are prepared but not manually run. In progress: review and draft PR. Blocked decisions: refund effects on existing reviews and moderation appeals. Next week: obtain M12 and M13 reviews, confirm policies, and only after M13 approval plan M14.
+
 **Reporting period:** 2026-11-25. **Milestone:** M11 quizzes and assessments. **Branch:** `feature/M11-quizzes-assessments`. **PR:** [#13](https://github.com/Omegacarlos1/Sage-product/pull/13), approved and merged into `main` at [`3e390c1`](https://github.com/Omegacarlos1/Sage-product/commit/3e390c1b3527ff4a4d7c86d200c51baa680bd37f). Both Backend CI `verify` checks passed. Evidence: [M11 summary](../milestones/M11-summary.md), [API contract](../api/M11-quizzes.md), and migration `20261124150000_m11_quizzes`.
 
 Verified completed: diagnosed a manual Postman `POST /api/v1/courses/{courseId}/quizzes` response of `500` as a pending M11 migration on local `sage_lms_dev`. `npm run db:migrate:status` listed the migration as pending. `npm run db:migrate:dev:apply` applied it successfully; a repeat `npm run db:migrate:status` reported the schema up to date. No application code changed and no production migration occurred. The request has not yet been rerun by the agent; the user can retry it in Postman.

@@ -1,0 +1,11 @@
+{
+  "info": { "name": "SAGE M13 reviews", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [{ "key": "baseUrl", "value": "http://localhost:3000/api/v1" }, { "key": "courseId", "value": "<course-uuid>" }, { "key": "reviewId", "value": "<review-uuid>" }, { "key": "learnerToken", "value": "<learner-token>" }, { "key": "adminToken", "value": "<admin-token>" }],
+  "item": [
+    { "name": "Create review", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{learnerToken}}" }], "body": { "mode": "raw", "raw": "{\"rating\":4,\"comment\":\"Clear lessons\"}" }, "url": "{{baseUrl}}/courses/{{courseId}}/reviews" } },
+    { "name": "Edit review", "request": { "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{learnerToken}}" }], "body": { "mode": "raw", "raw": "{\"rating\":5,\"comment\":\"Excellent\"}" }, "url": "{{baseUrl}}/courses/{{courseId}}/reviews/mine" } },
+    { "name": "Invalid rating", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{learnerToken}}" }], "body": { "mode": "raw", "raw": "{\"rating\":6}" }, "url": "{{baseUrl}}/courses/{{courseId}}/reviews" } },
+    { "name": "List reviews", "request": { "method": "GET", "url": "{{baseUrl}}/courses/{{courseId}}/reviews?page=1&limit=20" } },
+    { "name": "Hide review", "request": { "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{adminToken}}" }], "body": { "mode": "raw", "raw": "{\"hidden\":true,\"reason\":\"Spam\"}" }, "url": "{{baseUrl}}/reviews/{{reviewId}}/moderation" } }
+  ]
+}

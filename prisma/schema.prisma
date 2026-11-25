@@ -477,6 +477,8 @@ model Review {
   comment   String?  @db.Text
   createdAt DateTime @default(now()) @db.Timestamptz(3)
   updatedAt DateTime @updatedAt @db.Timestamptz(3)
+  hiddenAt  DateTime? @db.Timestamptz(3)
+  moderationReason String? @db.VarChar(500)
   user      User     @relation(fields: [userId], references: [id], onDelete: Restrict)
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Restrict)
 
