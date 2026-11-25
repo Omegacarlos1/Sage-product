@@ -1,6 +1,6 @@
 # M13 — Reviews and ratings
 
-**Status:** Implemented on `feature/M13-reviews-ratings`; awaiting review. M12 PR #15 merged into `main` after M13 implementation began; M13 targets `main`. No merge or deployment.
+**Status:** Approved by the user on 2026-11-25; PR #16 merged into `main` at `1e1e69f` on 2026-11-25. No deployment.
 
 ## Objectives and implementation
 

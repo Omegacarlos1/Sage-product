@@ -60,6 +60,11 @@ enum PaymentStatus {
   REFUNDED
 }
 
+enum FinanceRequestStatus {
+  PENDING_REVIEW
+  REJECTED
+}
+
 enum QuizQuestionType {
   SINGLE_CHOICE
   MULTIPLE_CHOICE
@@ -99,6 +104,9 @@ model User {
   instructorProfile InstructorProfile?
   roleAssignments   UserRoleAssignment[]
   payments          Payment[]
+  refundRequests    RefundRequest[] @relation("RefundRequester")
+  payoutRequests    PayoutRequest[] @relation("PayoutInstructor")
+  financeActions    FinanceAudit[] @relation("FinanceActor")
   reviews           Review[]
   contactMessages   ContactMessage[]
   notifications     Notification[]
@@ -338,10 +346,60 @@ model Payment {
   user              User          @relation(fields: [userId], references: [id], onDelete: Restrict)
   course            Course        @relation(fields: [courseId], references: [id], onDelete: Restrict)
   enrollment        Enrollment?   @relation(fields: [enrollmentId], references: [id], onDelete: Restrict)
+  refundRequest     RefundRequest?
 
   @@index([userId, createdAt])
   @@index([status, createdAt])
   @@map("payments")
+}
+
+model RefundRequest {
+  id              String @id @default(uuid()) @db.Uuid
+  paymentId       String @unique @db.Uuid
+  requesterId     String @db.Uuid
+  idempotencyKey  String @unique @db.VarChar(180)
+  status          FinanceRequestStatus @default(PENDING_REVIEW)
+  reason          String @db.VarChar(500)
+  createdAt       DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime @updatedAt @db.Timestamptz(3)
+  payment         Payment @relation(fields: [paymentId], references: [id], onDelete: Restrict)
+  requester       User @relation("RefundRequester", fields: [requesterId], references: [id], onDelete: Restrict)
+  audit           FinanceAudit[]
+
+  @@index([requesterId, createdAt])
+  @@map("refund_requests")
+}
+
+model PayoutRequest {
+  id              String @id @default(uuid()) @db.Uuid
+  instructorId    String @db.Uuid
+  idempotencyKey  String @unique @db.VarChar(180)
+  amount          Decimal @db.Decimal(10, 2)
+  currency        String @default("NGN") @db.Char(3)
+  status          FinanceRequestStatus @default(PENDING_REVIEW)
+  createdAt       DateTime @default(now()) @db.Timestamptz(3)
+  updatedAt       DateTime @updatedAt @db.Timestamptz(3)
+  instructor      User @relation("PayoutInstructor", fields: [instructorId], references: [id], onDelete: Restrict)
+  audit           FinanceAudit[]
+
+  @@index([instructorId, createdAt])
+  @@map("payout_requests")
+}
+
+model FinanceAudit {
+  id              String @id @default(uuid()) @db.Uuid
+  actorId         String @db.Uuid
+  action          String @db.VarChar(60)
+  refundRequestId String? @db.Uuid
+  payoutRequestId String? @db.Uuid
+  createdAt       DateTime @default(now()) @db.Timestamptz(3)
+  actor           User @relation("FinanceActor", fields: [actorId], references: [id], onDelete: Restrict)
+  refundRequest   RefundRequest? @relation(fields: [refundRequestId], references: [id], onDelete: Restrict)
+  payoutRequest   PayoutRequest? @relation(fields: [payoutRequestId], references: [id], onDelete: Restrict)
+
+  @@index([refundRequestId, createdAt])
+  @@index([payoutRequestId, createdAt])
+  @@map("finance_audit")
 }
 
 model Quiz {

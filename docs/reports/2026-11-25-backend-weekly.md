@@ -1,5 +1,13 @@
 # SAGE LMS backend weekly update — 2026-11-25
 
+## M14 update — 2026-11-25
+
+**Reporting period:** 2026-11-25. **Milestone:** M14 refunds, instructor sales and payouts. **Branch:** `feature/M14-refunds-earnings-payouts`. **PR:** draft PR pending branch push; no merge. M13 was approved and PR #16 merged into `main` at `1e1e69f`. Evidence: [M14 summary](../milestones/M14-summary.md), [API contract](../api/M14-finance.md), [Postman collection](../../postman/SAGE-M14.postman_collection.json), migration `20261125180000_m14_finance_requests`, and `tests/integration/finance-m14.test.js`. Implementation commit SHA will be recorded after commit.
+
+**Verified completed:** NGN sales dashboard, provisional balance with pending request holds, idempotent refund and payout requests, owner only status lists, admin rejection, and actor audit records. Local PostgreSQL `sage_lms_test` migration applied. `npm run ci` passed: lint 0 errors, TypeScript pass, Jest 3 suites/7 tests passed/0 failed/0 skipped, Mocha 48 passed/0 failed/0 skipped, and runtime smoke pass. Targeted M14 Mocha passed 3/0/0. Postman scenarios are prepared with exact requests and expected responses; Postman itself was not run.
+
+**In progress / blocked:** Human review and finance decisions. Refund eligibility, fees, taxes, instructor share, reserve, payout provider and approval process need team agreement. The sales figure is gross provisional, not cash reconciliation or a payable entitlement. No live refund or transfer occurs. Risk: a refund requested after a payout request may leave aggregate holds greater than gross until policy resolves the conflict; no transfer can be made through this API. **Next week:** obtain M14 review and finance decisions; after approval begin M15 on its own branch.
+
 ## M13 update — 2026-11-25
 
 **Reporting period:** 2026-11-25. **Milestone:** M13 reviews and ratings. **Branch:** `feature/M13-reviews-ratings`. **PR:** [draft #16](https://github.com/Omegacarlos1/Sage-product/pull/16), open. M12 PR #15 merged into `main` after M13 implementation began. Evidence: implementation commit `7e85203`, documentation commit `74e05e4`, [M13 summary](../milestones/M13-summary.md), [API contract](../api/M13-reviews.md), [Postman collection](../../postman/SAGE-M13.postman_collection.json), migration `20261125120000_m13_review_moderation`, and `tests/integration/reviews-m13.test.js`.
