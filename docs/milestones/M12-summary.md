@@ -24,6 +24,6 @@ Added `src/routes/certificates.ts`, `tests/integration/certificates-m12.test.js`
 
 ## PR and next prompt
 
-Draft PR pending commit and push. Await human review; do not merge.
+[Draft PR #15](https://github.com/Omegacarlos1/Sage-product/pull/15) targets `main`. Implementation commit `aa51409`; PR description commit `8cdfc92`. Await human review; do not merge.
 
 > Read `AGENTS.md`, the original PRD, `SAGE_Revised_Backend_Milestones.docx`, and `docs/milestones/M12-summary.md`; inspect branch, working tree, schema, and existing APIs. After M12 approval, work only on **M13: Reviews and ratings** on `feature/M13-reviews-ratings`. Define eligible reviewer and moderation rules with the team, implement one review per learner/course with rating validation and safe public listing, test authorization and duplicates against PostgreSQL, update API docs and exact Postman cases, run lint/typecheck/Jest/Mocha, write the M13 summary and weekly report, push a reviewable draft PR, and stop for approval without merging.
