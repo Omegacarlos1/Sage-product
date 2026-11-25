@@ -1,6 +1,6 @@
 # M13 — Reviews and ratings
 
-**Status:** Implemented on `feature/M13-reviews-ratings`; awaiting review. M12 PR #15 merged into `main` after M13 implementation began; M13 targets `main`. No merge or deployment.
+**Status:** Approved by the user on 2026-11-25; PR #16 merged into `main` at `1e1e69f` on 2026-11-25. No deployment.
 
 ## Objectives and implementation
 
@@ -24,7 +24,7 @@ Added `src/routes/reviews.ts`, `tests/integration/reviews-m13.test.js`, [API con
 
 ## Learning notes and PR
 
-Database constraints protect concurrent duplicate and out-of-range writes; application validation gives clearer errors. A repeatable-read snapshot keeps the list and aggregate aligned during concurrent moderation. PR status/link: [draft PR #16](https://github.com/Omegacarlos1/Sage-product/pull/16) targets `main` and awaits review. Do not merge without human approval.
+Database constraints protect concurrent duplicate and out-of-range writes; application validation gives clearer errors. A repeatable-read snapshot keeps the list and aggregate aligned during concurrent moderation. PR status/link: [PR #16](https://github.com/Omegacarlos1/Sage-product/pull/16) passed both Backend CI `verify` checks, was approved by the user, and merged at `1e1e69f`. No M14 work has started.
 
 ## Ready-to-paste M14 prompt
 
