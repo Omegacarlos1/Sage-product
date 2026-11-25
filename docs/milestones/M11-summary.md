@@ -1,6 +1,6 @@
 # M11 — Quizzes and assessments
 
-**Status:** Implemented on `feature/M11-quizzes-assessments` for human review. M10's merge commit `898ccdf` is present in the local `origin/main` ref; this M11 branch was created from that ref. No production migration, deployment, live payments, or merge occurred.
+**Status:** Approved by the user on 2026-11-25 and merged into `main` through [PR #13](https://github.com/Omegacarlos1/Sage-product/pull/13), merge commit `3e390c1`. M10's merge commit `898ccdf` was the base. No production migration, deployment, or live payments occurred.
 
 ## Objectives and implementation
 
@@ -28,6 +28,6 @@ The user's `POST /api/v1/courses/{courseId}/quizzes` body was valid, but the loc
 
 ## PR and next prompt
 
-[Draft PR #13](https://github.com/Omegacarlos1/Sage-product/pull/13) targets `main` and remains open, unmerged. Implementation commit: `26a874e`; PR description commit: `4f010f4`. M11 needs review and human approval before merge. No M12 work has started.
+[PR #13](https://github.com/Omegacarlos1/Sage-product/pull/13) merged into `main` on 2026-11-25 after user approval and two successful Backend CI `verify` jobs ([push run](https://github.com/Omegacarlos1/Sage-product/actions/runs/45601743652/job/139162131341), [PR run](https://github.com/Omegacarlos1/Sage-product/actions/runs/45601731850/job/139162090416)). Merge commit: [`3e390c1`](https://github.com/Omegacarlos1/Sage-product/commit/3e390c1b3527ff4a4d7c86d200c51baa680bd37f). Implementation commit: `26a874e`. M12 has not started.
 
 > Read `AGENTS.md`, the original PRD, `SAGE_Revised_Backend_Milestones.docx`, and `docs/milestones/M11-summary.md`; inspect branch, working tree, and schema. After M11 approval, work only on **M12: Certificates and verification** on `feature/M12-certificates-verification`. Define issuance eligibility using required lesson progress and assessment results, generate verifiable certificates with unique identifiers, provide learner download and public verification without leaking private data, and test authorization, repeat issuance, and eligibility edge cases against PostgreSQL. Update API docs and exact Postman scenarios, run lint/typecheck/Jest/Mocha, write the M12 summary and weekly report, push a reviewable draft PR, and stop for approval without merging.
