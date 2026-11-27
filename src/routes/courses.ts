@@ -2,6 +2,7 @@ import { Router, type Response } from "express";
 import { Prisma } from "../generated/prisma/client";
 import type { PrismaClient } from "../generated/prisma/client";
 import { authMiddleware, requireRole } from "./auth";
+import { createNotification, publishNotification, type NotificationPublisher, noPublisher } from "../services/notifications";
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const slug = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -83,7 +84,7 @@ export function categoryRouter(db: PrismaClient) {
   return router;
 }
 
-export function courseRouter(db: PrismaClient) {
+export function courseRouter(db: PrismaClient, publish: NotificationPublisher = noPublisher) {
   const router = Router();
   router.get("/", async (req, res, next) => {
     const { search, category, level } = req.query;
@@ -165,9 +166,11 @@ export function courseRouter(db: PrismaClient) {
         const changed = await tx.course.updateMany({ where: { id, status: "IN_REVIEW" }, data: { status: "PUBLISHED", publishedAt: new Date() } });
         if (!changed.count) return false;
         await tx.adminAudit.create({ data: { actorId: req.auth!.userId, action: "COURSE_APPROVED", targetType: "COURSE", targetId: id, oldValue: "IN_REVIEW", newValue: "PUBLISHED" } });
-        return true;
+        const course = await tx.course.findUniqueOrThrow({ where: { id }, select: { instructorId: true } });
+        return createNotification(tx, course.instructorId, "COURSE", "Course approved", { event: "COURSE_APPROVED", courseId: id });
       });
       if (!result) { fail(res, 409, "INVALID_STATUS"); return; }
+      publishNotification(publish, result);
       res.json({ course: await db.course.findUnique({ where: { id } }) });
     } catch (e) { next(e); }
   });

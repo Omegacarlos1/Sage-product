@@ -1,6 +1,7 @@
 import { Router, type Response } from "express";
 import { Prisma, type PrismaClient } from "../generated/prisma/client";
 import { authMiddleware, requireRole } from "./auth";
+import { createNotification, publishNotification, type NotificationPublisher, noPublisher } from "../services/notifications";
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const fail = (res: Response, status: number, code: string) => res.status(status).json({ error: { code, message: code.replaceAll("_", " ").toLowerCase() + "." } });
@@ -10,7 +11,7 @@ const pageArgs = (query: Record<string, unknown>) => {
 };
 const bodyStatus = (body: unknown, allowed: string[]) => body !== null && typeof body === "object" && !Array.isArray(body) && Object.keys(body).length === 1 && "status" in body && typeof body.status === "string" && allowed.includes(body.status) ? body.status : null;
 
-export function adminRouter(db: PrismaClient) {
+export function adminRouter(db: PrismaClient, publish: NotificationPublisher = noPublisher) {
   const router = Router();
   router.use(authMiddleware(db), requireRole("ADMIN"));
 
@@ -89,14 +90,15 @@ export function adminRouter(db: PrismaClient) {
 
   async function decideCourse(id: string, actorId: string, decision: "approve" | "reject") {
     return db.$transaction(async (tx) => {
-      const current = await tx.course.findUnique({ where: { id }, select: { status: true } });
+      const current = await tx.course.findUnique({ where: { id }, select: { status: true, instructorId: true } });
       if (!current) return "NOT_FOUND" as const;
       if (current.status !== "IN_REVIEW") return "INVALID_STATUS" as const;
       const status = decision === "approve" ? "PUBLISHED" : "REJECTED";
       const changed = await tx.course.updateMany({ where: { id, status: "IN_REVIEW" }, data: { status, ...(status === "PUBLISHED" ? { publishedAt: new Date() } : {}) } });
       if (!changed.count) return "INVALID_STATUS" as const;
       await tx.adminAudit.create({ data: { actorId, action: decision === "approve" ? "COURSE_APPROVED" : "COURSE_REJECTED", targetType: "COURSE", targetId: id, oldValue: "IN_REVIEW", newValue: status } });
-      return { id, status };
+      const notification = await createNotification(tx, current.instructorId, "COURSE", decision === "approve" ? "Course approved" : "Course rejected", { event: decision === "approve" ? "COURSE_APPROVED" : "COURSE_REJECTED", courseId: id });
+      return { id, status, notification };
     }, { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted });
   }
   for (const decision of ["approve", "reject"] as const) router.post(`/courses/:id/${decision}`, async (req, res, next) => {
@@ -105,7 +107,8 @@ export function adminRouter(db: PrismaClient) {
     try {
       const result = await decideCourse(id, req.auth!.userId, decision);
       if (typeof result === "string") { fail(res, result === "NOT_FOUND" ? 404 : 409, result); return; }
-      res.json({ course: result });
+      publishNotification(publish, result.notification);
+      res.json({ course: { id: result.id, status: result.status } });
     } catch (error) { next(error); }
   });
 

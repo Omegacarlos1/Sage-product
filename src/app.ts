@@ -19,17 +19,18 @@ import type { PaymentGateway } from "./services/paystack";
 import { LocalMediaStorage } from "./services/media-storage";
 import { randomBytes } from "node:crypto";
 import path from "node:path";
+import { notificationRouter, type NotificationPublisher, noPublisher } from "./services/notifications";
 
 export function createApp(config: AppConfig, checkDatabase: () => Promise<void> = async () => {
   throw new Error("Database health check is not configured.");
-}, database?: PrismaClient, paymentGateway?: PaymentGateway) {
+}, database?: PrismaClient, paymentGateway?: PaymentGateway, publish: NotificationPublisher = noPublisher) {
   const app = express();
 
   app.disable("x-powered-by");
   app.use(cors({ origin: config.corsOrigins.length > 0 ? config.corsOrigins : false }));
   app.use("/api/v1/payments/paystack/webhook", express.raw({ type: "application/json", limit: "100kb" }));
   app.use(express.json({ limit: "100kb" }));
-  if (database) app.use("/api/v1", paymentRouter(database, config, paymentGateway));
+  if (database) app.use("/api/v1", paymentRouter(database, config, paymentGateway, publish));
   app.use("/api/v1/media/:key/upload", express.raw({ type: ["video/mp4", "audio/mpeg", "application/pdf"], limit: "100mb" }));
 
   app.get("/api/v1/health", (_request: Request, response: Response) => {
@@ -49,20 +50,21 @@ export function createApp(config: AppConfig, checkDatabase: () => Promise<void> 
   });
 
   if (database) {
-    app.use("/api/v1", enrollmentRouter(database));
+    app.use("/api/v1/notifications", notificationRouter(database));
+    app.use("/api/v1", enrollmentRouter(database, publish));
     app.use("/api/v1", progressRouter(database));
-    app.use("/api/v1", quizRouter(database));
-    app.use("/api/v1", certificateRouter(database));
+    app.use("/api/v1", quizRouter(database, publish));
+    app.use("/api/v1", certificateRouter(database, publish));
     app.use("/api/v1", reviewRouter(database));
     app.use("/api/v1", financeRouter(database));
-    app.use("/api/v1/admin", adminRouter(database));
+    app.use("/api/v1/admin", adminRouter(database, publish));
     app.use("/api/v1", mediaRouter(database, new LocalMediaStorage(config.mediaRoot ?? path.resolve(".media-private"), config.mediaSigningSecret ?? randomBytes(32).toString("hex"))));
     app.use("/api/v1", publicSubmissionsRouter(database));
     app.use("/api/v1/auth", authRouter(database, config));
     app.use("/api/v1/profile", profileRouter(database));
     app.use("/api/v1/instructors", instructorRouter(database));
     app.use("/api/v1/categories", categoryRouter(database));
-    app.use("/api/v1/courses", courseRouter(database));
+    app.use("/api/v1/courses", courseRouter(database, publish));
   }
 
   app.use((_request: Request, response: Response) => {

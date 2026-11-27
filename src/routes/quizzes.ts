@@ -1,6 +1,7 @@
 import { Router, type Response } from "express";
 import type { PrismaClient } from "../generated/prisma/client";
 import { authMiddleware, requireRole } from "./auth";
+import { createNotification, publishNotification, type NotificationPublisher, noPublisher } from "../services/notifications";
 import { hasLessonEntitlement } from "../services/entitlements";
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
@@ -34,7 +35,7 @@ const publicQuiz = (quiz: { id: string; courseId: string; title: string; passing
 
 const questionInclude = { questions: { orderBy: { orderIndex: "asc" as const }, include: { options: { orderBy: { orderIndex: "asc" as const } } } }, course: true };
 
-export function quizRouter(db: PrismaClient) {
+export function quizRouter(db: PrismaClient, publish: NotificationPublisher = noPublisher) {
   const router = Router();
   router.use("/courses/:courseId/quizzes", authMiddleware(db));
   router.use("/quizzes", authMiddleware(db));
@@ -106,11 +107,12 @@ export function quizRouter(db: PrismaClient) {
       const passed = score >= Number(attempt.quiz.passingScore);
       const result = await db.$transaction(async (tx) => {
         const updated = await tx.quizAttempt.updateMany({ where: { id: attempt.id, status: "IN_PROGRESS" }, data: { status: "SUBMITTED", score, passed, submittedAt: now } });
-        if (!updated.count) return false;
+        if (!updated.count) return null;
         await tx.quizAnswer.createMany({ data: submitted.map((a) => ({ attemptId: attempt.id, questionId: a.questionId, selectedOptionIds: a.optionIds })) });
-        return true;
+        return createNotification(tx, req.auth!.userId, "ASSESSMENT", "Quiz result available", { event: "QUIZ_RESULT", attemptId: attempt.id });
       });
       if (!result) { fail(res, 409, "ATTEMPT_CLOSED"); return; }
+      publishNotification(publish, result);
       res.json({ result: { attemptId: attempt.id, score, passed, earnedPoints: earned, possiblePoints: possible, submittedAt: now, answers: attempt.quiz.questions.map((q) => ({ questionId: q.id, correctOptionIds: q.options.filter((o) => o.isCorrect).map((o) => o.id), selectedOptionIds: byQuestion.get(q.id) })) } });
     } catch (error) { next(error); }
   });
