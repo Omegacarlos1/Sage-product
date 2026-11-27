@@ -16,6 +16,6 @@
 | M12 | Certificates and verification | [PR #15](https://github.com/Omegacarlos1/Sage-product/pull/15) merged | `feature/M12-certificates-verification` | [M12 summary](M12-summary.md) |
 | M13 | Reviews and ratings | Approved; [PR #16](https://github.com/Omegacarlos1/Sage-product/pull/16) merged | `feature/M13-reviews-ratings` | [M13 summary](M13-summary.md) |
 | M14 | Refunds, instructor sales and payouts | Approved; [PR #18](https://github.com/Omegacarlos1/Sage-product/pull/18) merged into `main` | `feature/M14-refunds-earnings-payouts` | [M14 summary](M14-summary.md) |
-| M15 | Admin management and approvals | Implemented; awaiting review | `feature/M15-admin-management` | [M15 summary](M15-summary.md) |
+| M15 | Admin management and approvals | [Draft PR #20](https://github.com/Omegacarlos1/Sage-product/pull/20); awaiting review | `feature/M15-admin-management` | [M15 summary](M15-summary.md) |
 
 Later milestones remain as defined in `SAGE_Revised_Backend_Milestones.docx` and `SAGE_Codex_Milestone_Prompts.md`.

@@ -1,6 +1,6 @@
 # M15 — Admin management and approvals
 
-**Status:** Implemented on `feature/M15-admin-management`; awaiting human review and approval. M14 PR #18 was verified merged before M15 began. No merge or deployment was performed.
+**Status:** Implemented on `feature/M15-admin-management`; [draft PR #20](https://github.com/Omegacarlos1/Sage-product/pull/20) awaits human review and approval. M14 PR #18 was verified merged before M15 began. No merge or deployment was performed.
 
 ## Objectives and implemented work
 
@@ -24,7 +24,7 @@ Exact methods, URLs, headers, request bodies, success and error examples are in 
 
 ## Learning notes and PR
 
-An application transaction ensures an audit insert fails or succeeds with the state transition; the database trigger enforces append only behavior even if another code path attempts mutation. Basic payment totals are gross successful NGN records, not settled revenue. Draft PR status/link: pending creation. Human approval remains required before merge.
+An application transaction ensures an audit insert fails or succeeds with the state transition; the database trigger enforces append only behavior even if another code path attempts mutation. Basic payment totals are gross successful NGN records, not settled revenue. Implementation commit: `db6f298`. Draft PR: [#20](https://github.com/Omegacarlos1/Sage-product/pull/20). Human approval remains required before merge.
 
 ## Ready-to-paste M16 prompt
 
