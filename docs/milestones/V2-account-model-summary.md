@@ -1,6 +1,6 @@
 # V2 account model: separate learner and instructor accounts
 
-**Status:** Implemented on `feature/V2-separate-accounts` for review on 2026-11-27. No production migration or deployment. This follows the linked business document's later decision for separate accounts with optional, consent-based linking.
+**Status:** Implemented on `feature/V2-separate-accounts` for review on 2026-11-27; [draft PR #27](https://github.com/Omegacarlos1/Sage-product/pull/27) is open. No production migration or deployment. This follows the linked business document's later decision for separate accounts with optional, consent-based linking.
 
 ## Objectives and implementation
 
@@ -24,4 +24,4 @@ Both sessions authenticate independently; no access token is passed between acco
 
 ## PR and next prompt
 
-PR status: reviewable draft PR to be created after commit and push. Human approval required before merge. Next prompt: review the V2 account model contract and existing combined-account inventory. Decide the migration policy for legacy users, including verified second email, password setup, explicit consent, ownership transfer of courses and enrollments, session revocation and rollback. Implement only the approved conversion on a separate branch with PostgreSQL migration rehearsal and tests. Do not run a production migration, deploy or merge without explicit approval.
+PR status: [draft #27](https://github.com/Omegacarlos1/Sage-product/pull/27), implementation commit `1ea900e`. Human approval required before merge. Next prompt: review the V2 account model contract and existing combined-account inventory. Decide the migration policy for legacy users, including verified second email, password setup, explicit consent, ownership transfer of courses and enrollments, session revocation and rollback. Implement only the approved conversion on a separate branch with PostgreSQL migration rehearsal and tests. Do not run a production migration, deploy or merge without explicit approval.
