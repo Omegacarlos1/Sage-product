@@ -65,6 +65,26 @@ export function authRouter(database: PrismaClient, config: AppConfig) {
     }
   });
 
+  router.post("/instructor/signup", rateLimit("instructor-signup", 10), async (request, response, next) => {
+    try {
+      const { email, password, displayName, ...extra } = request.body ?? {};
+      if (Object.keys(extra).length || !emailValid(email) || !passwordValid(password) ||
+        typeof displayName !== "string" || !displayName.trim() || displayName.trim().length > 120) {
+        error(response, 400, "VALIDATION_ERROR", "Provide a valid email, password and instructor display name."); return;
+      }
+      const user = await database.user.create({ data: {
+        email: email.trim().toLowerCase(), passwordHash: await hashPassword(password),
+        instructorProfile: { create: { displayName: displayName.trim() } },
+      } });
+      response.status(201).json({ user: { id: user.id, email: user.email, roles: [], instructorStatus: "PENDING" } });
+    } catch (caught) {
+      if (typeof caught === "object" && caught !== null && "code" in caught && caught.code === "P2002") {
+        error(response, 409, "EMAIL_IN_USE", "Email is already registered."); return;
+      }
+      next(caught);
+    }
+  });
+
   router.post("/login", rateLimit("auth-login", 20), async (request, response, next) => {
     try {
       const { email, password } = request.body ?? {};

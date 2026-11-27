@@ -1,6 +1,6 @@
 import { Router, type Response } from "express";
 import type { PrismaClient } from "../generated/prisma/client";
-import { authMiddleware, requireRole } from "./auth";
+import { authMiddleware } from "./auth";
 
 declare module "express-serve-static-core" {
   interface Request { auth?: { userId: string; roles: string[]; accessTokenHash: string } }
@@ -91,8 +91,10 @@ export function instructorRouter(database: PrismaClient) {
       response.json({ instructor });
     } catch (caught) { next(caught); }
   });
-  router.patch("/me", authMiddleware(database), requireRole("INSTRUCTOR"), async (request, response, next) => {
+  router.patch("/me", authMiddleware(database), async (request, response, next) => {
     try {
+      const owned = await database.instructorProfile.findUnique({ where: { userId: request.auth!.userId }, select: { userId: true } });
+      if (!owned) { fail(response, 403, "FORBIDDEN", "Instructor profile required."); return; }
       const data = validate(request.body, "instructor");
       if (!data) { fail(response, 400, "VALIDATION_ERROR", "Invalid instructor profile fields."); return; }
       const result = await database.instructorProfile.updateMany({ where: { userId: request.auth!.userId }, data });
