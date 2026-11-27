@@ -23,6 +23,7 @@
     "contact:prune": "npm run build && node scripts/prune-contact.js",
     "payments:sign-test-webhook": "node scripts/sign-paystack-test-webhook.js",
     "test:runtime": "node tests/runtime-smoke.js",
+    "smoke:production": "node scripts/production-smoke.js",
     "test:load-smoke": "npm run build && node tests/load-smoke.js",
     "ci": "npm run lint && npm run typecheck && npm test && npm run test:runtime"
   },

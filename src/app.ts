@@ -51,6 +51,17 @@ export function createApp(config: AppConfig, checkDatabase: () => Promise<void> 
     }
   });
 
+  // Readiness is dependency-aware; keep the legacy database health route for existing clients.
+  app.get("/api/v1/ready", async (_request: Request, response: Response) => {
+    try {
+      await checkDatabase();
+      response.status(200).json({ status: "ready", service: "sage-api" });
+    } catch {
+      console.warn(JSON.stringify({ level: "warn", message: "Readiness check failed" }));
+      response.status(503).json({ error: { code: "NOT_READY", message: "Service is not ready." } });
+    }
+  });
+
   if (database) {
     app.use("/api/v1/notifications", notificationRouter(database));
     app.use("/api/v1", enrollmentRouter(database, publish));

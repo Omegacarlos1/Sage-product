@@ -21,6 +21,18 @@ describe("API health and HTTP foundation", () => {
       .expect({ status: "ok", service: "sage-api", version: "v1" });
   });
 
+  it("reports readiness based on database connectivity without leaking details", async () => {
+    await request(app).get("/api/v1/ready").expect(200)
+      .expect({ status: "ready", service: "sage-api" });
+    const failed = createApp(appConfig, async () => { throw new Error("password=secret"); });
+    const originalWarn = console.warn;
+    console.warn = () => {};
+    try {
+      await request(failed).get("/api/v1/ready").expect(503)
+        .expect({ error: { code: "NOT_READY", message: "Service is not ready." } });
+    } finally { console.warn = originalWarn; }
+  });
+
   it("reports that the database is unavailable without leaking connection details", async () => {
     const failedDatabaseApp = createApp(appConfig, async () => {
       throw new Error("password=do-not-return-this");
