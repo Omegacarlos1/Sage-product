@@ -1,0 +1,17 @@
+{
+  "info": { "name": "SAGE M14 finance requests", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api/v1" },
+    { "key": "paymentId", "value": "<successful-payment-uuid>" },
+    { "key": "payoutRequestId", "value": "<payout-request-uuid>" },
+    { "key": "learnerToken", "value": "<learner-access-token>" },
+    { "key": "instructorToken", "value": "<instructor-access-token>" }
+  ],
+  "item": [
+    { "name": "Sales dashboard", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{instructorToken}}" }], "url": "{{baseUrl}}/instructors/me/sales" } },
+    { "name": "Refund request", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Idempotency-Key", "value": "refund-20261125-001" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"reason\":\"I cannot take this course\"}" }, "url": "{{baseUrl}}/payments/{{paymentId}}/refund-requests" } },
+    { "name": "Payout request", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{instructorToken}}" }, { "key": "Idempotency-Key", "value": "payout-20261125-001" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"amount\":\"500.00\"}" }, "url": "{{baseUrl}}/instructors/me/payout-requests" } },
+    { "name": "Payout status", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{instructorToken}}" }], "url": "{{baseUrl}}/instructors/me/payout-requests" } },
+    { "name": "Forbidden admin action", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": "{{baseUrl}}/admin/payout-requests/{{payoutRequestId}}/reject" } }
+  ]
+}

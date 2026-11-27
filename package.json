@@ -60,5 +60,8 @@
     "esbuild@0.28.2": true,
     "@prisma/engines@7.10.1": true,
     "prisma@7.10.1": true
+  },
+  "jest": {
+    "modulePathIgnorePatterns": ["<rootDir>/.worktrees/"]
   }
 }
