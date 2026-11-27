@@ -1,0 +1,10 @@
+{
+  "info": { "name": "SAGE M18 read-only production smoke", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [{ "key": "baseUrl", "value": "https://replace-with-approved-host.example" }],
+  "item": [
+    { "name": "Liveness", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{baseUrl}}/api/v1/health" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('200 liveness', () => pm.response.to.have.status(200));", "pm.test('service is healthy', () => pm.expect(pm.response.json()).to.include({status: 'ok', service: 'sage-api'}));"] } }] },
+    { "name": "Readiness", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{baseUrl}}/api/v1/ready" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('200 readiness', () => pm.response.to.have.status(200));", "pm.test('service is ready', () => pm.expect(pm.response.json()).to.include({status: 'ready', service: 'sage-api'}));"] } }] },
+    { "name": "Database health", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{baseUrl}}/api/v1/health/database" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('200 database health', () => pm.response.to.have.status(200));", "pm.test('database connected', () => pm.expect(pm.response.json().database).to.eql('connected'));"] } }] },
+    { "name": "Public categories", "request": { "method": "GET", "header": [{ "key": "Accept", "value": "application/json" }], "url": "{{baseUrl}}/api/v1/categories" }, "event": [{ "listen": "test", "script": { "exec": ["pm.test('200 categories', () => pm.response.to.have.status(200));", "pm.test('JSON response', () => pm.response.to.be.json);"] } }] }
+  ]
+}
