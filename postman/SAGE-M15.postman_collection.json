@@ -1,0 +1,24 @@
+{
+  "info": { "name": "SAGE M15 Admin management", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api/v1" },
+    { "key": "adminToken", "value": "" },
+    { "key": "learnerToken", "value": "" },
+    { "key": "courseId", "value": "" },
+    { "key": "userId", "value": "" },
+    { "key": "instructorId", "value": "" }
+  ],
+  "item": [
+    { "name": "Approve course", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": "{{baseUrl}}/admin/courses/{{courseId}}/approve" } },
+    { "name": "Reject course", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{}" }, "url": "{{baseUrl}}/admin/courses/{{courseId}}/reject" } },
+    { "name": "Suspend user", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"status\":\"SUSPENDED\"}" }, "url": "{{baseUrl}}/admin/users/{{userId}}/status" } },
+    { "name": "Verify instructor", "request": { "method": "PATCH", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"status\":\"VERIFIED\"}" }, "url": "{{baseUrl}}/admin/instructors/{{instructorId}}/verification" } },
+    { "name": "List users", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/admin/users?page=1&limit=20" } },
+    { "name": "List instructors", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/admin/instructors?page=1&limit=20" } },
+    { "name": "Review queue", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/admin/courses/review?page=1&limit=20" } },
+    { "name": "Transactions", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/admin/transactions?page=1&limit=20" } },
+    { "name": "Analytics", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/admin/analytics" } },
+    { "name": "Audit", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }], "url": "{{baseUrl}}/admin/audit?page=1&limit=20" } },
+    { "name": "Learner forbidden", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }], "url": "{{baseUrl}}/admin/analytics" } }
+  ]
+}

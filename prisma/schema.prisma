@@ -36,6 +36,7 @@ enum CourseLevel {
 enum CourseStatus {
   DRAFT
   IN_REVIEW
+  REJECTED
   PUBLISHED
   ARCHIVED
 }
@@ -107,6 +108,7 @@ model User {
   refundRequests    RefundRequest[] @relation("RefundRequester")
   payoutRequests    PayoutRequest[] @relation("PayoutInstructor")
   financeActions    FinanceAudit[] @relation("FinanceActor")
+  adminActions      AdminAudit[] @relation("AdminActor")
   reviews           Review[]
   contactMessages   ContactMessage[]
   notifications     Notification[]
@@ -255,6 +257,21 @@ model Course {
   @@index([instructorId, status])
   @@index([status, publishedAt])
   @@map("courses")
+}
+
+model AdminAudit {
+  id         String   @id @default(uuid()) @db.Uuid
+  actorId    String   @db.Uuid
+  action     String   @db.VarChar(60)
+  targetType String   @db.VarChar(30)
+  targetId   String   @db.Uuid
+  oldValue   String?  @db.VarChar(60)
+  newValue   String   @db.VarChar(60)
+  createdAt  DateTime @default(now()) @db.Timestamptz(3)
+  actor      User     @relation("AdminActor", fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([targetType, targetId, createdAt])
+  @@map("admin_audit")
 }
 
 model CourseSection {

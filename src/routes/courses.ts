@@ -158,7 +158,18 @@ export function courseRouter(db: PrismaClient) {
     try { const course = await db.course.findUnique({ where: { id: String(req.params.id) }, include: { sections: { include: { lessons: true } } } }); if (!course) { fail(res, 404, "NOT_FOUND"); return; } if (course.instructorId !== req.auth!.userId) { fail(res, 403, "FORBIDDEN"); return; } if (course.status !== "DRAFT" || !course.sections.some((s) => s.lessons.length)) { fail(res, 409, "INVALID_STATUS"); return; } res.json({ course: await db.course.update({ where: { id: course.id }, data: { status: "IN_REVIEW" } }) }); } catch (e) { next(e); }
   });
   router.post("/:id/approve", requireRole("ADMIN"), async (req, res, next) => {
-    try { const result = await db.course.updateMany({ where: { id: String(req.params.id), status: "IN_REVIEW" }, data: { status: "PUBLISHED", publishedAt: new Date() } }); if (!result.count) { fail(res, 409, "INVALID_STATUS"); return; } res.json({ course: await db.course.findUnique({ where: { id: String(req.params.id) } }) }); } catch (e) { next(e); }
+    const id = String(req.params.id);
+    if (!uuid.test(id)) { fail(res, 400, "VALIDATION_ERROR"); return; }
+    try {
+      const result = await db.$transaction(async (tx) => {
+        const changed = await tx.course.updateMany({ where: { id, status: "IN_REVIEW" }, data: { status: "PUBLISHED", publishedAt: new Date() } });
+        if (!changed.count) return false;
+        await tx.adminAudit.create({ data: { actorId: req.auth!.userId, action: "COURSE_APPROVED", targetType: "COURSE", targetId: id, oldValue: "IN_REVIEW", newValue: "PUBLISHED" } });
+        return true;
+      });
+      if (!result) { fail(res, 409, "INVALID_STATUS"); return; }
+      res.json({ course: await db.course.findUnique({ where: { id } }) });
+    } catch (e) { next(e); }
   });
   return router;
 }

@@ -32,6 +32,7 @@ describe("M05 course creation integration", function () {
     }
   });
   after(async function () {
+    await db.$executeRawUnsafe('TRUNCATE TABLE "admin_audit"');
     if (courseId) await db.course.deleteMany({ where: { id: courseId } });
     if (categoryId) await db.category.deleteMany({ where: { id: categoryId } });
     for (const id of ids) await db.user.delete({ where: { id } });
