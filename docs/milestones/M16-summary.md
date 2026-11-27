@@ -1,6 +1,6 @@
 # M16 — Socket.IO notifications
 
-**Status:** Implemented on `feature/M16-socket-notifications` from merged M15 `main` (`5ed9ab9`). [Draft PR #21](https://github.com/Omegacarlos1/Sage-product/pull/21) is open for review and human approval. No merge or deployment performed.
+**Status:** Implemented on `feature/M16-socket-notifications` from merged M15 `main` (`5ed9ab9`). User approved M16; [PR #21](https://github.com/Omegacarlos1/Sage-product/pull/21) merged into `main` at `68933ba` on 2026-11-27. No deployment performed.
 
 ## Objectives and implemented work
 
@@ -26,7 +26,7 @@ Exact REST methods, URLs, headers, sample bodies, success and error examples, pl
 
 ## Learning notes and PR
 
-Persisting within the business transaction avoids an event for a rolled back operation. Emitting after commit avoids telling a client about uncommitted data. REST history is the reliable recovery path when a socket disconnects. Implementation commit: `b42865c`. [Draft PR #21](https://github.com/Omegacarlos1/Sage-product/pull/21) targets `main`. Stop for human review; do not merge.
+Persisting within the business transaction avoids an event for a rolled back operation. Emitting after commit avoids telling a client about uncommitted data. REST history is the reliable recovery path when a socket disconnects. Implementation commit: `b42865c`. [PR #21](https://github.com/Omegacarlos1/Sage-product/pull/21) merged after user approval and both GitHub `verify` checks passed. M17 has not started.
 
 ## Ready-to-paste M17 prompt
 
