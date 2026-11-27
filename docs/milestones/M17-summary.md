@@ -1,6 +1,6 @@
 # M17 — Security and end-to-end quality
 
-**Status:** Implemented on `feature/M17-security-e2e` from merged M16 `main` (`ac3f4ac`). Human review and approval pending. No merge or deployment performed.
+**Status:** Implemented on `feature/M17-security-e2e` from merged M16 `main` (`ac3f4ac`). [Draft PR #23](https://github.com/Omegacarlos1/Sage-product/pull/23) is open for human review and approval. No merge or deployment performed.
 
 ## Objectives and implemented
 
@@ -26,7 +26,7 @@ Exact methods, URLs, headers, bodies and expected success/error examples for COR
 
 ## Learning notes and PR
 
-Dependency audits can report transitive development packages even with `--omit=dev` when they are reachable through the package graph. Patch-level overrides were verified with the full gate. Rate limits must precede expensive password checks and database writes. A 429 includes a retry time so clients can back off. PR status and implementation commit are recorded below after push.
+Dependency audits can report transitive development packages even with `--omit=dev` when they are reachable through the package graph. Patch-level overrides were verified with the full gate. Rate limits must precede expensive password checks and database writes. A 429 includes a retry time so clients can back off. Implementation commit: `e89e59c`. [Draft PR #23](https://github.com/Omegacarlos1/Sage-product/pull/23) is open; review and approval are pending.
 
 ## Ready-to-paste M18 prompt
 
