@@ -114,6 +114,8 @@ model User {
   notifications     Notification[]
   sessions          AuthSession[]
   resetTokens       PasswordResetToken[]
+  learnerLinks      AccountLink[] @relation("LinkedLearner")
+  instructorLinks   AccountLink[] @relation("LinkedInstructor")
 
   @@index([status])
   @@map("users")
@@ -166,6 +168,22 @@ model UserRoleAssignment {
   @@id([userId, roleId])
   @@index([roleId])
   @@map("user_role_assignments")
+}
+
+model AccountLink {
+  id           String   @id @default(uuid()) @db.Uuid
+  learnerId    String   @unique @db.Uuid
+  instructorId String   @unique @db.Uuid
+  status       String   @default("PENDING") @db.VarChar(16)
+  expiresAt    DateTime @db.Timestamptz(3)
+  createdAt    DateTime @default(now()) @db.Timestamptz(3)
+  confirmedAt  DateTime? @db.Timestamptz(3)
+  learner      User     @relation("LinkedLearner", fields: [learnerId], references: [id], onDelete: Cascade)
+  instructor   User     @relation("LinkedInstructor", fields: [instructorId], references: [id], onDelete: Cascade)
+
+  @@unique([learnerId, instructorId])
+  @@index([instructorId, status, expiresAt])
+  @@map("account_links")
 }
 
 model LearnerProfile {

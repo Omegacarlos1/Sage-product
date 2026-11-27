@@ -70,6 +70,9 @@ export function adminRouter(db: PrismaClient, publish: NotificationPublisher = n
         if (current.verificationStatus !== "PENDING" || current.user.status !== "ACTIVE") return "INVALID_STATUS";
         const changed = await tx.instructorProfile.updateMany({ where: { userId: id, verificationStatus: "PENDING" }, data: { verificationStatus: status as "VERIFIED" | "REJECTED" } });
         if (!changed.count) return "INVALID_STATUS";
+        if (status === "VERIFIED" && !await tx.userRoleAssignment.findFirst({ where: { userId: id, role: { code: "INSTRUCTOR" } } })) {
+          await tx.userRoleAssignment.create({ data: { user: { connect: { id } }, role: { connect: { code: "INSTRUCTOR" } } } });
+        }
         await tx.adminAudit.create({ data: { actorId: req.auth!.userId, action: "INSTRUCTOR_VERIFICATION", targetType: "INSTRUCTOR", targetId: id, oldValue: "PENDING", newValue: status } });
         return null;
       });

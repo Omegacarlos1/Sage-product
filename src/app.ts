@@ -16,6 +16,7 @@ import { certificateRouter } from "./routes/certificates";
 import { reviewRouter } from "./routes/reviews";
 import { financeRouter } from "./routes/finance";
 import { adminRouter } from "./routes/admin";
+import { accountLinkRouter } from "./routes/account-links";
 import type { PaymentGateway } from "./services/paystack";
 import { LocalMediaStorage } from "./services/media-storage";
 import { randomBytes } from "node:crypto";
@@ -63,6 +64,7 @@ export function createApp(config: AppConfig, checkDatabase: () => Promise<void> 
   });
 
   if (database) {
+    app.use("/api/v1/account-links", accountLinkRouter(database));
     app.use("/api/v1/notifications", notificationRouter(database));
     app.use("/api/v1", enrollmentRouter(database, publish));
     app.use("/api/v1", progressRouter(database));

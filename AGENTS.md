@@ -43,6 +43,8 @@ M12 PR #15 merged into `main` on 2026-11-25. M13 was approved by the user and [P
 
 ## Git and GitHub Development Workflow
 
+V2 account model work was requested on 2026-11-27 and is implemented on `feature/V2-separate-accounts` for review. It adds separate instructor signup and optional two-party account linking while preserving legacy combined accounts. See `docs/milestones/V2-account-model-summary.md`. No production migration or deployment was performed.
+
 All backend development must follow a milestone-based Git workflow.
 
 ### Branch Management
