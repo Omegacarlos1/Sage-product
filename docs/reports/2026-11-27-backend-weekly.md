@@ -26,3 +26,9 @@ The user requested M15 after PR #18 merged. Branch `feature/M15-admin-management
 ## M16 approval and merge — 2026-11-27
 
 The user approved M16. Both GitHub `verify` checks passed for PR #21; [PR #21](https://github.com/Omegacarlos1/Sage-product/pull/21) merged into `main` at [`68933ba`](https://github.com/Omegacarlos1/Sage-product/commit/68933bad0effca060f0f07e826afe14db1621eae). Local final `npm run ci` passed lint, typecheck, Jest 7/7, Mocha 53/53 against `sage_lms_test`, and runtime smoke. No production deployment was performed; M17 has not started.
+
+## M17 security and quality update — 2026-11-27
+
+**Reporting period:** 2026-11-27. **Milestone:** M17. **Branch:** `feature/M17-security-e2e`. **PR:** To be recorded after push. **Evidence:** [M17 summary](../milestones/M17-summary.md), [security API contract](../api/M17-security.md), [Postman cases](../../postman/SAGE-M17.postman_collection.json), and [integration checks](../../tests/integration/security-m17.test.js).
+
+Verified work includes Helmet headers, production CORS validation, rate limits on auth/contact/newsletter, dependency advisory remediation, a safe environment template, and negative HTTP tests. Final lint, TypeScript, Jest, Mocha/PostgreSQL, runtime and load-smoke results are in the M17 summary. The Postman collection is prepared with exact example requests and expected responses but was not manually executed. Backup instructions were reviewed; no restore drill was performed. Risk: in-memory limits need shared storage and a reviewed proxy policy before multi-replica production use. Next week: obtain M17 review and approval, then begin M18 deployment, monitoring and backups on a separate branch.
