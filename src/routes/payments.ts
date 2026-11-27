@@ -5,6 +5,7 @@ import type { AppConfig } from "../config/env";
 import { authMiddleware, requireRole } from "./auth";
 import { isFreeCourse } from "../services/entitlements";
 import { PaystackGateway, PaystackInvalidEmailError, type PaymentGateway, validPaystackSignature } from "../services/paystack";
+import { createNotification, publishNotification, type NotificationPublisher, noPublisher } from "../services/notifications";
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const error = (res: express.Response, status: number, code: string) => res.status(status).json({ error: { code, message: code.replaceAll("_", " ").toLowerCase() + "." } });
@@ -13,7 +14,7 @@ const view = (payment: { id: string; courseId: string; amount: { toString(): str
   reference: payment.providerReference, checkoutUrl: payment.checkoutUrl, createdAt: payment.createdAt, settledAt: payment.settledAt,
 });
 
-export function paymentRouter(db: PrismaClient, config: AppConfig, gateway: PaymentGateway = new PaystackGateway(config.paystackSecretKey ?? "")) {
+export function paymentRouter(db: PrismaClient, config: AppConfig, gateway: PaymentGateway = new PaystackGateway(config.paystackSecretKey ?? ""), publish: NotificationPublisher = noPublisher) {
   const router = Router();
   router.post("/payments/paystack/webhook", express.raw({ type: "application/json", limit: "100kb" }), async (req, res, next) => {
     if (!config.paystackSecretKey || !Buffer.isBuffer(req.body) || !validPaystackSignature(req.body, req.get("paystack-signature"), req.get("x-paystack-signature"), config.paystackWebhookSecret, config.paystackSecretKey)) { error(res, 401, "INVALID_SIGNATURE"); return; }
@@ -31,12 +32,14 @@ export function paymentRouter(db: PrismaClient, config: AppConfig, gateway: Paym
       if (verified.status !== "success" || verified.reference !== reference || verified.amount !== amount || verified.currency !== "NGN" || verified.customer?.email?.toLowerCase() !== payment.user.email.toLowerCase()) {
         error(res, 409, "PAYMENT_NOT_VERIFIED"); return;
       }
-      await db.$transaction(async (tx) => {
+      const notification = await db.$transaction(async (tx) => {
         const claimed = await tx.payment.updateMany({ where: { id: payment.id, status: { in: ["PENDING", "FAILED"] } }, data: { status: "SUCCEEDED", settledAt: new Date() } });
-        if (!claimed.count) return;
+        if (!claimed.count) return null;
         const enrollment = await tx.enrollment.upsert({ where: { learnerId_courseId: { learnerId: payment.userId, courseId: payment.courseId } }, create: { learnerId: payment.userId, courseId: payment.courseId }, update: { status: "ACTIVE" }, include: { payment: true } });
         if (!enrollment.payment) await tx.payment.update({ where: { id: payment.id }, data: { enrollmentId: enrollment.id } });
+        return createNotification(tx, payment.userId, "COURSE", "Enrollment confirmed", { event: "ENROLLMENT_CREATED", courseId: payment.courseId });
       });
+      if (notification) publishNotification(publish, notification);
       res.json({ received: true });
     } catch (cause) { next(cause); }
   });

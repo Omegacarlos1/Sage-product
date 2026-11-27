@@ -2,11 +2,12 @@ import { Router, type Response } from "express";
 import type { PrismaClient } from "../generated/prisma/client";
 import { authMiddleware, requireRole } from "./auth";
 import { isFreeCourse } from "../services/entitlements";
+import { createNotification, publishNotification, type NotificationPublisher, noPublisher } from "../services/notifications";
 
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const fail = (res: Response, status: number, code: string) => res.status(status).json({ error: { code, message: code.replaceAll("_", " ").toLowerCase() + "." } });
 
-export function certificateRouter(db: PrismaClient) {
+export function certificateRouter(db: PrismaClient, publish: NotificationPublisher = noPublisher) {
   const router = Router();
 
   router.post("/courses/:id/certificate", authMiddleware(db), requireRole("LEARNER"), async (req, res, next) => {
@@ -31,9 +32,11 @@ export function certificateRouter(db: PrismaClient) {
         }
         const certificate = await tx.certificate.create({ data: { enrollmentId: enrollment.id } });
         await tx.enrollment.update({ where: { id: enrollment.id }, data: { status: "COMPLETED", completedAt: new Date() } });
-        return { certificate, courseTitle: course.title };
+        const notification = await createNotification(tx, req.auth!.userId, "CERTIFICATE", "Certificate issued", { event: "CERTIFICATE_ISSUED", certificateId: certificate.id });
+        return { certificate, courseTitle: course.title, notification };
       });
       if ("code" in result) { fail(res, result.status!, result.code!); return; }
+      publishNotification(publish, result.notification);
       res.status(201).json({ certificate: { id: result.certificate.id, courseId, courseTitle: result.courseTitle, verificationCode: result.certificate.verificationCode, issuedAt: result.certificate.issuedAt, verificationPath: `/api/v1/certificates/verify/${result.certificate.verificationCode}` } });
     } catch (error) { next(error); }
   });
