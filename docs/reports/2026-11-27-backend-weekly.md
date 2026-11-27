@@ -13,3 +13,7 @@ PR #18 conflicted with the separately merged M13 approval record in PR #17; the 
 ## Next week
 
 Confirm finance policy with the team, then plan M15 on its own branch after a separate user request. Do not activate transfers before the required decisions.
+
+## M15 addendum — 2026-11-27
+
+The user requested M15 after PR #18 merged. Branch `feature/M15-admin-management` contains admin management, course approval/rejection, payment overview, basic analytics and immutable admin audit work. `npm run ci` passed: lint and TypeScript passed; Jest 3 suites and 7 tests passed, 0 failed, 0 skipped; Mocha 51 passed, 0 failed, 0 skipped against local `sage_lms_test`; runtime smoke passed. The M15 migration was applied only to the local test database. [M15 API contract](../api/M15-admin.md), [Postman cases](../../postman/SAGE-M15.postman_collection.json), and [integration tests](../../tests/integration/admin-m15.test.js) provide evidence. Postman has not been manually run; its responses are examples. Draft PR #20 is open at implementation commit db6f298; review and manual Postman demonstration are pending. Finance decisions listed above remain open; M16 Socket.IO notifications awaits M15 approval.
