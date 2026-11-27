@@ -1,6 +1,6 @@
 # M14 — Refunds, instructor sales and payouts
 
-**Status:** Implemented on `feature/M14-refunds-earnings-payouts`; [draft PR #18](https://github.com/Omegacarlos1/Sage-product/pull/18) awaits human review. Based on `origin/main` at `1e1e69f`, which merged approved M13 PR #16. No deployment, live refund, transfer, or merge.
+**Status:** Approved by the user on 2026-11-27. Implemented on `feature/M14-refunds-earnings-payouts`; [PR #18](https://github.com/Omegacarlos1/Sage-product/pull/18) is awaiting reconciliation with newer `main`. No deployment, live refund, or transfer.
 
 ## Objectives and implemented work
 
@@ -16,7 +16,7 @@ Added `src/routes/finance.ts`, `tests/integration/finance-m14.test.js`, [API con
 
 ## Actual verification
 
-`npm ci --offline` installed 657 packages with 0 reported vulnerabilities. `npm run lint` passed with 0 errors. `npm run typecheck` passed. `npm run db:migrate:test` applied the ninth migration locally and the full rerun found no pending migration. `npx mocha tests/integration/finance-m14.test.js` passed 3/0/0. Full `npm run ci` passed: ESLint 0 errors, TypeScript passed, Jest 3 suites and 7 tests passed/0 failed/0 skipped, Mocha 48 passed/0 failed/0 skipped against local PostgreSQL `sage_lms_test`, and runtime smoke passed. Postman was not manually run; its responses are contract examples. The initial typecheck was blocked by Prisma cache permissions under AppData and passed when rerun with the required permission. An initial lint run found a syntax error in the new test, which was fixed before the successful checks.
+`npm ci --offline` installed 657 packages with 0 reported vulnerabilities. `npm run lint` passed with 0 errors. `npm run typecheck` passed. `npm run db:migrate:test` applied the ninth migration locally and the full rerun found no pending migration. `npx mocha tests/integration/finance-m14.test.js` passed 3/0/0. Full `npm run ci` passed before and after reconciling with newer `main`: ESLint 0 errors, TypeScript passed, Jest 3 suites and 7 tests passed/0 failed/0 skipped, Mocha 48 passed/0 failed/0 skipped against local PostgreSQL `sage_lms_test`, and runtime smoke passed. Postman was not manually run; its responses are contract examples. The initial typecheck was blocked by Prisma cache permissions under AppData and passed when rerun with the required permission. An initial lint run found a syntax error in the new test, which was fixed before the successful checks. During reconciliation, local `.worktrees` copies caused initial lint and Jest failures; the configuration now excludes that directory and the final full run passed.
 
 ## API, security, and Postman
 
@@ -24,7 +24,7 @@ Added `src/routes/finance.ts`, `tests/integration/finance-m14.test.js`, [API con
 
 ## Learning notes and PR
 
-The database unique constraint protects duplicate refund requests, including concurrent calls. A per instructor transaction lock makes the payout hold check atomic against other payout requests. Gross sales alone cannot establish an instructor entitlement without a finance policy or settlement records. Implementation commit: `9d920ff`. PR status/link: [draft PR #18](https://github.com/Omegacarlos1/Sage-product/pull/18); do not merge before human approval.
+The database unique constraint protects duplicate refund requests, including concurrent calls. A per instructor transaction lock makes the payout hold check atomic against other payout requests. Gross sales alone cannot establish an instructor entitlement without a finance policy or settlement records. Implementation commit: `9d920ff`. PR status/link: [PR #18](https://github.com/Omegacarlos1/Sage-product/pull/18); user approval was given on 2026-11-27.
 
 ## Ready-to-paste M15 prompt
 

@@ -24,7 +24,7 @@ Added `src/routes/reviews.ts`, `tests/integration/reviews-m13.test.js`, [API con
 
 ## Learning notes and PR
 
-Database constraints protect concurrent duplicate and out-of-range writes; application validation gives clearer errors. A repeatable-read snapshot keeps the list and aggregate aligned during concurrent moderation. PR status/link: [draft PR #16](https://github.com/Omegacarlos1/Sage-product/pull/16) targets `main` and awaits review. Do not merge without human approval.
+Database constraints protect concurrent duplicate and out-of-range writes; application validation gives clearer errors. A repeatable-read snapshot keeps the list and aggregate aligned during concurrent moderation. PR status/link: [PR #16](https://github.com/Omegacarlos1/Sage-product/pull/16) passed both Backend CI `verify` checks, was approved by the user, and merged at `1e1e69f`. M14 subsequently began on its own feature branch.
 
 ## Ready-to-paste M14 prompt
 
