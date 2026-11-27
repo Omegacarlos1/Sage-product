@@ -35,6 +35,18 @@ export function readConfig(env: NodeJS.ProcessEnv): AppConfig {
     .split(",")
     .map((origin) => origin.trim())
     .filter(Boolean);
+  if (nodeEnv === "production" && !env.CORS_ORIGINS) {
+    throw new ConfigurationError("CORS_ORIGINS must be explicitly set in production.");
+  }
+  if (corsOrigins.some((origin) => {
+    try {
+      const parsed = new URL(origin);
+      return parsed.origin !== origin || !["http:", "https:"].includes(parsed.protocol) ||
+        (nodeEnv === "production" && parsed.protocol !== "https:");
+    } catch { return true; }
+  }) || new Set(corsOrigins).size !== corsOrigins.length) {
+    throw new ConfigurationError("CORS_ORIGINS must contain unique valid origins (HTTPS in production).");
+  }
 
   const databaseUrl = env.DATABASE_URL;
   if (!databaseUrl) {

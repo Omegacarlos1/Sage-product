@@ -1,4 +1,5 @@
 import cors from "cors";
+import helmet from "helmet";
 import express, { type ErrorRequestHandler, type Request, type Response } from "express";
 import type { AppConfig } from "./config/env";
 import type { PrismaClient } from "./generated/prisma/client";
@@ -27,6 +28,7 @@ export function createApp(config: AppConfig, checkDatabase: () => Promise<void> 
   const app = express();
 
   app.disable("x-powered-by");
+  app.use(helmet());
   app.use(cors({ origin: config.corsOrigins.length > 0 ? config.corsOrigins : false }));
   app.use("/api/v1/payments/paystack/webhook", express.raw({ type: "application/json", limit: "100kb" }));
   app.use(express.json({ limit: "100kb" }));

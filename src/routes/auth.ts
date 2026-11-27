@@ -2,6 +2,7 @@ import { Router, type Request, type Response, type NextFunction } from "express"
 import type { PrismaClient } from "../generated/prisma/client";
 import type { AppConfig } from "../config/env";
 import { completeReset, createResetToken, hashToken, issueSession, rotateSession, hashPassword, verifyPassword } from "../services/auth";
+import { rateLimit } from "../services/rate-limit";
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordValid = (value: unknown): value is string => typeof value === "string" && value.length >= 12 && value.length <= 128;
@@ -42,7 +43,7 @@ export function authRouter(database: PrismaClient, config: AppConfig) {
   const router = Router();
   const authenticate = authMiddleware(database);
 
-  router.post("/signup", async (request, response, next) => {
+  router.post("/signup", rateLimit("auth-signup", 10), async (request, response, next) => {
     try {
       const { email, password, ...extra } = request.body ?? {};
       if (Object.keys(extra).length || !emailValid(email) || !passwordValid(password)) {
@@ -64,7 +65,7 @@ export function authRouter(database: PrismaClient, config: AppConfig) {
     }
   });
 
-  router.post("/login", async (request, response, next) => {
+  router.post("/login", rateLimit("auth-login", 20), async (request, response, next) => {
     try {
       const { email, password } = request.body ?? {};
       if (!emailValid(email) || typeof password !== "string" || password.length > 128) {
@@ -78,7 +79,7 @@ export function authRouter(database: PrismaClient, config: AppConfig) {
     } catch (caught) { next(caught); }
   });
 
-  router.post("/refresh", async (request, response, next) => {
+  router.post("/refresh", rateLimit("auth-refresh", 30), async (request, response, next) => {
     try {
       const token = request.body?.refreshToken;
       if (!tokenValid(token)) { error(response, 400, "VALIDATION_ERROR", "Provide a valid refresh token."); return; }
@@ -103,7 +104,7 @@ export function authRouter(database: PrismaClient, config: AppConfig) {
     response.json({ status: "ok" });
   });
 
-  router.post("/password-reset/request", async (request, response, next) => {
+  router.post("/password-reset/request", rateLimit("auth-reset-request", 5), async (request, response, next) => {
     try {
       if (!emailValid(request.body?.email)) { error(response, 400, "VALIDATION_ERROR", "Provide a valid email."); return; }
       if (config.nodeEnv === "production") { error(response, 503, "RESET_UNAVAILABLE", "Password reset is temporarily unavailable."); return; }
@@ -113,7 +114,7 @@ export function authRouter(database: PrismaClient, config: AppConfig) {
     } catch (caught) { next(caught); }
   });
 
-  router.post("/password-reset/complete", async (request, response, next) => {
+  router.post("/password-reset/complete", rateLimit("auth-reset-complete", 10), async (request, response, next) => {
     try {
       if (!tokenValid(request.body?.token) || !passwordValid(request.body?.password)) {
         error(response, 400, "VALIDATION_ERROR", "Provide a valid token and password of 12 to 128 characters."); return;
