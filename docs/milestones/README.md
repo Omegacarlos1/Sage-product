@@ -18,6 +18,6 @@
 | M14 | Refunds, instructor sales and payouts | Approved; [PR #18](https://github.com/Omegacarlos1/Sage-product/pull/18) merged into `main` | `feature/M14-refunds-earnings-payouts` | [M14 summary](M14-summary.md) |
 | M15 | Admin management and approvals | [PR #20](https://github.com/Omegacarlos1/Sage-product/pull/20) merged at `5ed9ab9` | `feature/M15-admin-management` | [M15 summary](M15-summary.md) |
 | M16 | Socket.IO notifications | [PR #21](https://github.com/Omegacarlos1/Sage-product/pull/21) merged at `68933ba` | `feature/M16-socket-notifications` | [M16 summary](M16-summary.md) |
-| M17 | Security and end-to-end quality | [Draft PR #23](https://github.com/Omegacarlos1/Sage-product/pull/23) open; review pending | `feature/M17-security-e2e` | [M17 summary](M17-summary.md) |
+| M17 | Security and end-to-end quality | Approved; [PR #23](https://github.com/Omegacarlos1/Sage-product/pull/23) merged at `df46a87` | `feature/M17-security-e2e` | [M17 summary](M17-summary.md) |
 
 Later milestones remain as defined in `SAGE_Revised_Backend_Milestones.docx` and `SAGE_Codex_Milestone_Prompts.md`.
