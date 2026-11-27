@@ -1,6 +1,6 @@
 # SAGE LMS backend weekly update — 2026-11-27
 
-**Reporting period:** 2026-11-25 through 2026-11-27. **Milestone:** M14 refunds, instructor sales and payouts. **Branch:** `feature/M14-refunds-earnings-payouts`. **PR:** [#18](https://github.com/Omegacarlos1/Sage-product/pull/18), approved by the user on 2026-11-27; merge in progress. Implementation commit: [`9d920ff`](https://github.com/Omegacarlos1/Sage-product/commit/9d920ff). Evidence: [M14 summary](../milestones/M14-summary.md), [API contract](../api/M14-finance.md), [Postman collection](../../postman/SAGE-M14.postman_collection.json), and `tests/integration/finance-m14.test.js`.
+**Reporting period:** 2026-11-25 through 2026-11-27. **Milestone:** M14 refunds, instructor sales and payouts. **Branch:** `feature/M14-refunds-earnings-payouts`. **PR:** [#18](https://github.com/Omegacarlos1/Sage-product/pull/18), approved by the user and merged into `main` at [`64ab1d7`](https://github.com/Omegacarlos1/Sage-product/commit/64ab1d795a90b313e2768211cedf63896da17719) on 2026-11-27. Implementation commit: [`9d920ff`](https://github.com/Omegacarlos1/Sage-product/commit/9d920ff). Evidence: [M14 summary](../milestones/M14-summary.md), [API contract](../api/M14-finance.md), [Postman collection](../../postman/SAGE-M14.postman_collection.json), and `tests/integration/finance-m14.test.js`.
 
 ## Verified completed
 
@@ -8,8 +8,8 @@ M14 request workflow, sales dashboard, audit records and migration are committed
 
 ## In progress and blockers
 
-PR #18 conflicted with the separately merged M13 approval record in PR #17; the conflict is confined to milestone documents. Finance policy, fees, taxes, payout share, provider, refund eligibility, and transfer approval process remain undecided. No live refund or transfer operation is enabled. A pending payout followed by a refund request can make the provisional balance negative; the dashboard shows the deficit.
+PR #18 conflicted with the separately merged M13 approval record in PR #17; the document conflict was resolved on the feature branch and both fresh Backend CI `verify` checks passed before merge. Finance policy, fees, taxes, payout share, provider, refund eligibility, and transfer approval process remain undecided. No live refund or transfer operation is enabled. A pending payout followed by a refund request can make the provisional balance negative; the dashboard shows the deficit.
 
 ## Next week
 
-Complete PR #18 reconciliation and merge after CI, confirm finance policy with the team, then plan M15 on its own branch. Do not activate transfers before the required decisions.
+Confirm finance policy with the team, then plan M15 on its own branch after a separate user request. Do not activate transfers before the required decisions.
