@@ -20,5 +20,6 @@
 | M16 | Socket.IO notifications | [PR #21](https://github.com/Omegacarlos1/Sage-product/pull/21) merged at `68933ba` | `feature/M16-socket-notifications` | [M16 summary](M16-summary.md) |
 | M17 | Security and end-to-end quality | [PR #23](https://github.com/Omegacarlos1/Sage-product/pull/23) merged at `df46a87` | `feature/M17-security-e2e` | [M17 summary](M17-summary.md) |
 | M18 | Production deployment and handover | Prepared; live deployment and restore drill pending | `feature/M18-deployment-handover` | [M18 summary](M18-summary.md) |
+| V2 account model | Separate learner and instructor credentials; consent-based linking | Implemented on feature branch; review pending | `feature/V2-separate-accounts` | [V2 account model summary](V2-account-model-summary.md) |
 
 Later milestones remain as defined in `SAGE_Revised_Backend_Milestones.docx` and `SAGE_Codex_Milestone_Prompts.md`.

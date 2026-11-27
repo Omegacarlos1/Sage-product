@@ -1,0 +1,20 @@
+{
+  "info": { "name": "SAGE V2 separate accounts", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "learnerToken", "value": "" },
+    { "key": "instructorToken", "value": "" },
+    { "key": "adminToken", "value": "" },
+    { "key": "instructorId", "value": "" },
+    { "key": "linkId", "value": "" }
+  ],
+  "item": [
+    { "name": "Instructor signup", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"email\":\"teacher@example.test\",\"password\":\"a secure password of 12+ characters\",\"displayName\":\"Ada Teacher\"}" }, "url": "{{baseUrl}}/api/v1/auth/instructor/signup" } },
+    { "name": "Instructor login", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\"email\":\"teacher@example.test\",\"password\":\"a secure password of 12+ characters\"}" }, "url": "{{baseUrl}}/api/v1/auth/login" } },
+    { "name": "Admin approve instructor", "request": { "method": "PATCH", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{adminToken}}" }], "body": { "mode": "raw", "raw": "{\"status\":\"VERIFIED\"}" }, "url": "{{baseUrl}}/api/v1/admin/instructors/{{instructorId}}/verification" } },
+    { "name": "Learner requests link", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }, { "key": "Authorization", "value": "Bearer {{learnerToken}}" }], "body": { "mode": "raw", "raw": "{\"instructorEmail\":\"teacher@example.test\"}" }, "url": "{{baseUrl}}/api/v1/account-links/requests" } },
+    { "name": "Instructor sees pending links", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{instructorToken}}" }], "url": "{{baseUrl}}/api/v1/account-links" } },
+    { "name": "Instructor confirms link", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{instructorToken}}" }], "url": "{{baseUrl}}/api/v1/account-links/{{linkId}}/confirm" } },
+    { "name": "Learner revokes link", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{learnerToken}}" }], "url": "{{baseUrl}}/api/v1/account-links/{{linkId}}" } }
+  ]
+}
