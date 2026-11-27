@@ -1,6 +1,6 @@
 # M18 — Production deployment and handover
 
-**Status:** Prepared on `feature/M18-deployment-handover` on 2026-11-27. No production deployment, monitoring integration or restore drill has been performed. Human review and live deployment approval are pending.
+**Status:** Prepared on `feature/M18-deployment-handover` on 2026-11-27; [draft PR #26](https://github.com/Omegacarlos1/Sage-product/pull/26) awaits review. No production deployment, monitoring integration or restore drill has been performed. Human review and live deployment approval are pending.
 
 ## Objectives and implemented
 
@@ -24,7 +24,7 @@ Container runs as uid 10001 and excludes local secrets from build context. Produ
 
 ## PR and decisions
 
-PR status: draft PR to be created after commit and push; no merge. Team must choose host/region, production DB, TLS/domain, frontend origins, persistent media, backup frequency/retention/RPO/RTO, alert destination/on-call and restore-drill environment. Obtain explicit approval for live deploy and for any production migration or restore. The runbook proposes a single instance until shared state is available.
+PR status: [draft #26](https://github.com/Omegacarlos1/Sage-product/pull/26), implementation commit `7dfcfdc`; no merge. Team must choose host/region, production DB, TLS/domain, frontend origins, persistent media, backup frequency/retention/RPO/RTO, alert destination/on-call and restore-drill environment. Obtain explicit approval for live deploy and for any production migration or restore. The runbook proposes a single instance until shared state is available.
 
 ## Ready-to-paste post-release maintenance prompt
 
