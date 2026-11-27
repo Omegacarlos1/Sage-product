@@ -25,5 +25,3 @@ Both sessions authenticate independently; no access token is passed between acco
 ## PR and next prompt
 
 PR status: reviewable draft PR to be created after commit and push. Human approval required before merge. Next prompt: review the V2 account model contract and existing combined-account inventory. Decide the migration policy for legacy users, including verified second email, password setup, explicit consent, ownership transfer of courses and enrollments, session revocation and rollback. Implement only the approved conversion on a separate branch with PostgreSQL migration rehearsal and tests. Do not run a production migration, deploy or merge without explicit approval.
-
-
